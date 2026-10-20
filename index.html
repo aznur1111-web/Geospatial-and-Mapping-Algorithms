@@ -1,0 +1,1574 @@
+<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="Az Geospatial Lab, a single-file course for geospatial and mapping algorithms"><title>Az Geospatial Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#111722;--panel:#192230;--panel2:#202b3a;--panel3:#141c27;--line:#2c394b;--line2:#3b4b61;--text:#e8eef7;--muted:#a7b4c7;--subtle:#8190a5;--accent:#8ab4f8;--strong:#c9ddff;--good:#9ed7bd;--warn:#edc477;--bad:#ff929e;--shadow:none;--radius:13px}
+:root[data-theme=light]{color-scheme:light;--bg:#f4f6f8;--panel:#fff;--panel2:#f7f9fb;--panel3:#f0f4f8;--line:#dce2e9;--line2:#cbd4df;--text:#17212d;--muted:#596a7e;--subtle:#718197;--accent:#315fa2;--strong:#244a82;--good:#176b4c;--warn:#8c5c04;--bad:#b33143;--shadow:0 8px 24px rgba(20,35,50,.05)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button,a,select{touch-action:manipulation}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}a{color:var(--accent);text-decoration:none}.muted{color:var(--muted)}.mono,code,pre,textarea{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.topbar{height:64px;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;padding:0 22px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text)}.brand-mark{width:34px;height:34px;border:1px solid var(--line2);border-radius:10px;background:var(--panel2);display:grid;place-items:center;color:var(--strong);font-weight:850;font-size:14px}.brand strong{display:block;font-size:14px;line-height:1.2}.brand small{display:block;font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
+.top-meta{flex:1;color:var(--subtle);font-size:12px;letter-spacing:.02em}
+.top-actions{display:flex;align-items:center;gap:7px}.top-actions label{font-size:11px;color:var(--muted)}
+select,.btn{border:1px solid var(--line2);background:var(--panel3);color:var(--text);border-radius:8px;padding:8px 11px;font-size:12px}.btn{font-weight:600;white-space:nowrap}.btn:hover{border-color:var(--accent);color:var(--strong)}.btn.primary{background:var(--accent);color:#10203a;border-color:var(--accent)}:root[data-theme=light] .btn.primary{color:white}
+.layout{display:grid;grid-template-columns:264px minmax(420px,1fr);max-width:1500px;margin:auto;min-height:calc(100vh - 64px)}
+.sidebar{position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column}
+.side-title{display:flex;justify-content:space-between;color:var(--subtle);font-size:10px;letter-spacing:.14em;font-weight:800;padding:0 4px 12px}
+.pill,.tag{border:1px solid var(--line2);border-radius:6px;padding:3px 7px;font-size:10px;color:var(--muted);white-space:nowrap}
+.search{display:flex;gap:7px;align-items:center;border:1px solid var(--line);border-radius:9px;background:var(--panel3);height:39px;padding:0 10px;margin-bottom:10px}
+.search input{min-width:0;width:100%;background:transparent;border:0;outline:0;color:var(--text);font-size:12px}
+.search kbd{border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--subtle);font-size:10px}
+.filter{display:block;color:var(--subtle);font-size:11px;margin-bottom:12px}.filter select{display:block;width:100%;max-width:none;margin-top:5px;padding:7px}
+.tree{display:flex;flex-direction:column;gap:12px}
+.group-label{display:flex;justify-content:space-between;color:var(--subtle);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 5px}
+.link{width:100%;text-align:left;display:flex;gap:8px;align-items:center;background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 8px;border-radius:8px;min-height:34px}
+.link .num{font:10px ui-monospace,monospace;color:var(--subtle);width:19px;flex:none}
+.link .name{font-size:12px;flex:1}.link .done{color:var(--good)}
+.link:hover{background:var(--panel2);color:var(--text)}
+.link.active{background:var(--panel2);border-color:var(--line2);color:var(--strong)}
+.side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
+.progress-row{display:flex;justify-content:space-between;color:var(--subtle);font-size:11px;margin-bottom:7px}
+.progress{height:5px;background:var(--panel2);border-radius:9px;overflow:hidden}.progress>div{height:100%;width:0;background:var(--accent);transition:width .25s}
+.side-actions{display:flex;gap:6px;margin-top:12px}.side-actions .btn{flex:1;padding:7px;font-size:11px}
+main{max-width:920px;width:100%;min-width:0;margin:auto;padding:28px 30px 40px}
+.breadcrumb{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--subtle);margin-bottom:16px}
+.header{padding:2px 2px 22px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:var(--accent);margin-bottom:9px}
+.header h1{font-size:clamp(27px,3vw,36px);line-height:1.12;letter-spacing:-.035em;margin:0 0 10px;font-weight:700}
+.header p{font-size:14.5px;color:var(--muted);margin:0 0 14px;max-width:740px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag.good{color:var(--good)}.tag.warn{color:var(--warn)}
+.header-actions{display:flex;gap:7px;margin-top:16px;flex-wrap:wrap}
+.panel{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)}
+.panel-head{padding:18px 20px 0}.panel-head h2{font-size:15px;margin:0 0 4px;letter-spacing:-.01em;font-weight:650}.panel-head p{font-size:12.5px;color:var(--muted);margin:0}
+.body{padding:16px 20px 20px}
+.idea{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:20px}
+.idea p{font-size:13.5px;color:var(--muted);margin:0 0 13px}
+.mental{background:var(--panel3);border:1px solid var(--line);border-radius:10px;padding:13px}
+.mental small{color:var(--subtle);font-size:10px;letter-spacing:.11em;text-transform:uppercase}
+.mental strong{display:block;margin:6px 0;font-size:13px;color:var(--strong)}
+.mental p{font-size:12px;color:var(--muted);margin:0}
+.takeaway{padding:11px 13px;border:1px solid var(--line2);background:var(--panel3);border-radius:8px;color:var(--strong);font-size:12.5px;line-height:1.6}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mini{background:var(--panel3);border:1px solid var(--line);border-radius:10px;padding:13px}
+.mini h3{font-size:12px;margin:0 0 7px;font-weight:650}
+.mini p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.6}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+.steps li{counter-increment:s;display:flex;gap:10px;color:var(--muted);font-size:12.5px;line-height:1.55}
+.steps li:before{content:counter(s);width:23px;height:23px;flex:none;display:grid;place-items:center;border:1px solid var(--line2);background:var(--panel3);border-radius:6px;color:var(--accent);font:11px ui-monospace,monospace}
+.pseudo{white-space:pre-wrap;overflow:auto;background:var(--panel3);border:1px solid var(--line);border-radius:10px;padding:14px;font:12px/1.75 ui-monospace,monospace;color:var(--strong);margin:0}
+.table-wrap{overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border-bottom:1px solid var(--line);text-align:left;padding:9px 10px;vertical-align:top}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle);font-weight:700}
+td{color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{padding:12px;background:var(--panel3);border:1px solid var(--line);border-radius:9px}
+.tile span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle)}
+.tile strong{display:block;color:var(--strong);font:700 14px ui-monospace,monospace;margin-top:6px}
+.tile small{font-size:10.5px;color:var(--muted);display:block;margin-top:2px}
+.notice{padding:12px 13px;background:var(--panel3);border:1px solid color-mix(in srgb,var(--warn) 35%,var(--line));border-radius:9px;font-size:12.5px;color:var(--muted);line-height:1.65}
+.notice strong{color:var(--warn)}
+.notice.info{border-color:var(--line2)}.notice.info strong{color:var(--accent)}
+.lab-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lab-top label{font-size:11.5px;color:var(--muted)}
+.lab-input{width:100%;min-height:80px;resize:vertical;background:var(--panel3);border:1px solid var(--line2);border-radius:9px;padding:11px;color:var(--text);font:12px/1.65 ui-monospace,monospace;margin:11px 0}
+.lab-output{padding:13px;background:var(--panel3);border:1px solid var(--line);border-radius:9px;min-height:70px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--strong);font:12px/1.75 ui-monospace,monospace;overflow-x:auto}
+.lab-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.label{font-size:10px;color:var(--subtle);font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
+.code-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:11px 13px;background:var(--panel3);border-bottom:1px solid var(--line)}
+.code-editor{display:block;width:100%;min-height:220px;resize:vertical;border:0;border-radius:0;background:var(--panel3);color:var(--text);padding:15px;font:12px/1.7 ui-monospace,monospace;outline:0}
+.code-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 13px;color:var(--subtle);font-size:10px;border-top:1px solid var(--line)}
+.practice{border:1px solid var(--line);background:var(--panel3);border-radius:9px;padding:13px}
+.practice summary{cursor:pointer;font-size:12.5px;font-weight:600}
+.practice p{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.65}
+.references{display:flex;flex-direction:column;gap:8px}
+.references a{font-size:12.5px;overflow-wrap:anywhere}
+.home-hero{padding:30px;background:linear-gradient(150deg,var(--panel),var(--panel3));border:1px solid var(--line);border-radius:14px;margin-bottom:16px}
+.home-hero h1{font-size:clamp(30px,3.6vw,42px);line-height:1.1;letter-spacing:-.04em;margin:8px 0 14px;font-weight:700}
+.home-hero p{color:var(--muted);font-size:14px;max-width:720px;margin:0 0 18px;line-height:1.65}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+.stat strong{display:block;font:700 22px ui-monospace,monospace;color:var(--strong)}
+.stat span{display:block;font-size:10.5px;color:var(--muted);margin-top:3px}
+.chapter-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chapter-card{padding:14px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text)}
+.chapter-card:hover{border-color:var(--accent)}
+.chapter-card .num{font-size:10px;color:var(--accent);letter-spacing:.09em;font-weight:800}
+.chapter-card strong{display:block;font-size:13px;margin:5px 0;font-weight:650}
+.chapter-card p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.55}
+.toast{position:fixed;z-index:99;bottom:20px;left:50%;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:11px 15px;box-shadow:var(--shadow);font-size:12px;transition:opacity .14s,transform .14s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.footer{font-size:10.5px;color:var(--subtle);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:6px 2px 14px;align-items:center}
+.plot{width:100%;height:auto;display:block;background:var(--bg);border:1px solid var(--line);border-radius:8px;margin:6px 0}
+@media(max-width:1080px){.layout{grid-template-columns:240px minmax(360px,1fr)}main{padding:24px 22px 36px}}
+@media(max-width:840px){.topbar{height:auto;min-height:60px;flex-wrap:wrap;gap:10px;padding:10px 14px}.top-meta{display:none}.top-actions{margin-left:auto}.top-actions label{display:none}.layout{display:block}.sidebar{position:static;height:auto;max-height:none;border:0;border-bottom:1px solid var(--line);padding:14px}.tree{max-height:260px;overflow:auto}.side-foot{display:none}main{padding:20px 15px 32px}.idea{grid-template-columns:1fr}.mental{order:-1}.stats{grid-template-columns:1fr 1fr}.chapter-cards,.two,.lab-cols{grid-template-columns:1fr}}
+@media(max-width:520px){.brand small{display:none}.brand-mark{width:30px;height:30px}.brand strong{font-size:12px}.top-actions select{max-width:92px;padding:6px;font-size:10px}.top-actions .btn{padding:6px 8px;font-size:10px}.chapter-cards{grid-template-columns:1fr}.tiles{grid-template-columns:1fr}.home-hero{padding:20px}.home-hero h1{font-size:30px}.header h1{font-size:27px}.body,.panel-head{padding-left:15px;padding-right:15px}.footer{display:block}.footer span{display:block;margin-bottom:6px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+@media print{.topbar,.sidebar,.header-actions,.lab-top,.btn,.toast{display:none!important}.layout{display:block}main{padding:0;max-width:none}.panel,.home-hero{break-inside:avoid;box-shadow:none}body{background:#fff;color:#111}}
+</style></head><body>
+
+<header class="topbar">
+  <a class="brand" href="#home" id="homeLink"><span class="brand-mark">Az</span><span><strong>Az Geospatial Lab</strong><small>GEOSPATIAL · MAPPING · GEO ALGORITHMS</small></span></a>
+  <div class="top-meta" id="catalogCount"></div>
+  <div class="top-actions">
+    <label for="themeSelect">Theme</label>
+    <select id="themeSelect" aria-label="Theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select>
+    <button class="btn" id="printBtn">Print / PDF</button>
+    <button class="btn" id="exportBtn">Export</button>
+    <button class="btn" id="importBtn">Import</button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="Course navigation">
+    <div class="side-title"><span>COURSE CATALOG</span><span class="pill" id="lessonCount">0</span></div>
+    <div class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search geo topics…" aria-label="Search lessons"><kbd>/</kbd></div>
+    <label class="filter">Chapter<select id="chapterFilter"><option value="all">All chapters</option></select></label>
+    <nav class="tree" id="courseTree" aria-label="Lessons"></nav>
+    <div class="side-foot">
+      <div class="progress-row"><span>COURSE PROGRESS</span><strong id="progressText">0 / 0</strong></div>
+      <div class="progress" id="progressBar"><div id="progressFill"></div></div>
+      <div class="side-actions"><button class="btn" data-page="home">Home</button><button class="btn" data-page="progress">Progress</button></div>
+    </div>
+  </aside>
+  <main id="mainView" tabindex="-1" aria-live="polite"></main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   Az Geospatial Lab
+   ============================================================ */
+const CHAPTERS=[
+ {id:"coords",title:"1. Geographic coordinates",desc:"Latitude/longitude, spherical distance, Haversine, geodesic distance, map units.",ids:["latlon-haversine","geodesic-vincenty","map-units"]},
+ {id:"projections",title:"2. Map projections",desc:"Mercator, transverse Mercator, UTM, equal-area and conformal projections.",ids:["mercator","transverse-utm","equal-area"]},
+ {id:"indexing",title:"3. Spatial indexing",desc:"Uniform grids, quadtrees, R-trees, k-d trees, Geohash, S2, H3.",ids:["quadtree-grid","rtree-kdtree","geohash-s2-h3"]},
+ {id:"queries",title:"4. Spatial queries and joins",desc:"Point-in-polygon, range search, nearest feature, spatial joins, tile indexing.",ids:["point-in-polygon","range-nearest","spatial-joins"]},
+ {id:"terrain",title:"5. Terrain algorithms",desc:"DEMs, slope, aspect, hillshade, viewshed, watershed delineation.",ids:["dem-slope-aspect","hillshade","viewshed-watershed"]},
+ {id:"interp",title:"6. Geostatistics and interpolation",desc:"Nearest neighbour, inverse distance weighting, kriging, spline interpolation.",ids:["nearest-idw","kriging","spline"]},
+ {id:"routing",title:"7. Routing and GPS tracks",desc:"Dijkstra, A*, contraction hierarchies, HMM map matching, GPS smoothing, Douglas-Peucker.",ids:["dijkstra-astar","contraction-hierarchies","map-matching-hmm","douglas-peucker"]}
+];
+
+const D={
+ kind:"Concept",status:"Concept lesson",level:2,demo:"none",demoTitle:"Interactive teaching lab",inputKind:"text",refs:[],codeKey:"generic",
+ input:"Coordinates, geometries, rasters, or a graph embedded in geographic space.",
+ output:"A distance, a projection, an index, a query result, or a route.",
+ invariant:"Correctness depends on the reference frame, the datum, and the numeric precision. Wrong frames give silently wrong distances.",
+ complexity:["Depends on the number of features","Depends on the index","Measure on representative data"],
+ uses:"Use this as one layer inside a larger GIS or mapping pipeline.",
+ strength:"Fits the problem when its assumptions hold.",
+ limits:"Depends on the datum, the projection, and the precision.",
+ pitfall:"Treating lat/lon as planar coordinates. Degrees are not equal in length across latitudes.",
+ question:"What is the main idea of this lesson?",
+ trace:null
+};
+function mk(o){
+ const steps=o.steps||["Read the input.","Apply the method.","Produce the output.","Check the result."];
+ return Object.assign({},D,{
+  summary:o.summary||"",
+  mental:o.mental||o.title,
+  mentalText:o.mentalText||o.summary||"",
+  problem:o.problem||("How does "+o.title+" work and when is it the right choice?"),
+  steps:steps,
+  trace:o.trace||steps.map((s,i)=>["Step "+(i+1),s,i===steps.length-1?"Verified":"Step done"]),
+  answer:o.answer||o.summary||"",
+  pseudo:o.pseudo||"",
+  sample:o.sample||"",
+  level:o.level||2
+ },o);
+}
+
+const RAW=[
+/* Ch 1 */
+{id:"latlon-haversine",title:"Latitude, longitude and the Haversine formula",level:2,kind:"Coordinates",status:"Runnable teaching lab",
+ summary:"Latitude measures north-south position, longitude east-west. On a sphere, the great-circle distance between two points is given by the Haversine formula, which is numerically stable for small distances.",
+ mental:"Two angles on a sphere plus a great-circle arc",
+ mentalText:"Latitude is the angle from the equator, longitude from the prime meridian. The shortest path between two points on a sphere is an arc of a great circle.",
+ steps:["Convert degrees to radians.","Compute the differences in latitude and longitude.","Apply the Haversine formula.","Multiply by the Earth's radius."],
+ pseudo:"Haversine:\n  phi1, phi2 = lat1, lat2 in radians\n  dphi = lat2 - lat1\n  dlambda = lon2 - lon1\n  a = sin^2(dphi/2) + cos(phi1) cos(phi2) sin^2(dlambda/2)\n  c = 2 atan2(sqrt(a), sqrt(1 - a))\n  d = R * c\n\nR = 6371008.8 m (mean Earth radius)\n\nBearing (initial):\n  y = sin(dlambda) * cos(phi2)\n  x = cos(phi1) sin(phi2) - sin(phi1) cos(phi2) cos(dlambda)\n  theta = atan2(y, x)\n\nProperties:\n  stable for small distances (Haversine)\n  spherical approximation: error up to ~0.5% versus WGS-84\n\nMap units:\n  one degree of latitude ~ 111.32 km everywhere\n  one degree of longitude ~ 111.32 * cos(latitude) km\n\nDatum:\n  WGS-84 ellipsoid is the standard for GPS\n  different datums shift coordinates by tens to hundreds of metres",
+ uses:"GPS, distance queries, geo-fencing, nearest-neighbour in lat/lon.",
+ strength:"Simple, fast, stable for small distances.",
+ limits:"Spherical model, not the true ellipsoid.",
+ pitfall:"Using a flat-Earth distance with raw lat/lon. Use the Haversine or an ellipsoidal formula.",
+ question:"What is the Haversine distance between (0, 0) and (0, 1) in degrees?",
+ answer:"1 degree of longitude at the equator is about 111.32 km. Haversine gives the same result on a sphere of radius R.",
+ demo:"haversine",sample:"52.5200 13.4050\n48.8566 2.3522",refs:[
+  ["Sinnott, Virtues of the Haversine, Sky and Telescope 1984","https://www.skyandtelescope.com/"],
+  ["Wikipedia, Haversine formula","https://en.wikipedia.org/wiki/Haversine_formula"],
+  ["NIMA, Department of Defense World Geodetic System 1984","https://earth-info.nga.mil/GandG/publications/tr8350.2/tr8350_2.html"]]},
+{id:"geodesic-vincenty",title:"Ellipsoidal geodesics: Vincenty's formulae",level:4,kind:"Coordinates",status:"Runnable teaching lab",
+ summary:"Vincenty's formulae compute distance and azimuth on an ellipsoid using iterative solution of the geodesic equations. Accuracy is a few millimetres on WGS-84. The direct and inverse forms handle bearing and endpoint.",
+ mental:"Refine a spherical guess on the ellipsoid",
+ mentalText:"Start with an approximate distance and azimuth. Iterate until the computed latitudes match the observed ones. Converges in a few iterations except for nearly antipodal points.",
+ steps:["Initialise the auxiliary sphere.","Iterate the Vincenty formulas until convergence.","Compute the final distance and azimuths.","Handle special cases (antipodal, equatorial)."],
+ pseudo:"Inverse Vincenty (distance and azimuths):\n  U1 = atan((1 - f) tan(phi1))\n  U2 = atan((1 - f) tan(phi2))\n  L = dlambda\n  lambda = L\n\n  iterate until |dlambda - lambda| < tol:\n    sin_sigma = sqrt((cos U2 sin lambda)^2 + (cos U1 sin U2 - sin U1 cos U2 cos lambda)^2)\n    cos_sigma = sin U1 sin U2 + cos U1 cos U2 cos lambda\n    sigma = atan2(sin_sigma, cos_sigma)\n    sin_alpha = cos U1 cos U2 sin lambda / sin_sigma\n    cos2_alpha = 1 - sin_alpha^2\n    cos_2sigma_m = cos_sigma - 2 sin U1 sin U2 / cos2_alpha\n    C = f/16 cos2_alpha (4 + f (4 - 3 cos2_alpha))\n    lambda = L + (1 - C) f sin_alpha (sigma + C sin_sigma (cos_2sigma_m + C cos_sigma (-1 + 2 cos_2sigma_m^2)))\n\n  u2 = cos2_alpha (a^2 - b^2) / b^2\n  A = 1 + u2/16384 (4096 + u2 (-768 + u2 (320 - 175 u2)))\n  B = u2/1024 (256 + u2 (-128 + u2 (74 - 47 u2)))\n  dsigma = B sin_sigma (cos_2sigma_m + B/4 (cos_sigma (-1 + 2 cos_2sigma_m^2) - B/6 cos_2sigma_m (-3 + 4 sin_sigma^2)(-3 + 4 cos_2sigma_m^2)))\n  s = b A (sigma - dsigma)\n\nConstants (WGS-84):\n  a = 6378137 m\n  f = 1 / 298.257223563\n  b = a (1 - f) = 6356752.314245 m\n\nAccuracy: 0.5 mm on WGS-84 (iterative)\n\nFailure case: nearly antipodal points fail to converge\n  use Karney's algorithm or fall back to a great-circle distance",
+ uses:"GPS accuracy, geodesy, surveying, route planning.",
+ strength:"Millimetre accuracy on the ellipsoid.",
+ limits:"Iterative and can fail for nearly antipodal points.",
+ pitfall:"Assuming Vincenty always converges. Use Karney's algorithm for robust handling of antipodal points.",
+ question:"Why is Vincenty more accurate than Haversine?",
+ answer:"Vincenty uses the WGS-84 ellipsoid, not a sphere. The Earth's flattening is about 1/298, which Haversine ignores.",
+ demo:"vincenty",sample:"52.5200 13.4050\n48.8566 2.3522",refs:[
+  ["Vincenty, Direct and inverse solutions of geodesics on the ellipsoid with application of nested equations, Survey Review 1975","https://doi.org/10.1179/sre.1975.23.176.88"],
+  ["Karney, Algorithms for geodesics, J. Geodesy 2013","https://doi.org/10.1007/s00190-012-0578-z"],
+  ["GeographicLib","https://geographiclib.sourceforge.io/"]]},
+{id:"map-units",title:"Map units and degree-to-metre conversion",level:2,kind:"Coordinates",status:"Runnable teaching lab",
+ summary:"Degrees of latitude are nearly constant in length; degrees of longitude shorten as latitude increases. Converting a degree difference to metres needs the latitude.",
+ mental:"Longitude lines converge at the poles",
+ mentalText:"At the equator 1° of longitude ≈ 111.32 km. At 60° latitude it is about half that. Latitude lines are always about 111.32 km per degree.",
+ steps:["Measure the degree difference.","Multiply latitude degrees by ~111.32 km.","Multiply longitude degrees by ~111.32 km * cos(latitude).","Use an ellipsoidal formula for precision."],
+ pseudo:"WGS-84 approximate metres per degree at latitude phi:\n  lat: 111132.92 - 559.82 cos(2 phi) + 1.175 cos(4 phi) - 0.0023 cos(6 phi)\n  lon: 111412.84 cos(phi) - 93.5 cos(3 phi) + 0.118 cos(5 phi)\n\nSimpler spherical approximation (R = 6371008.8 m):\n  lat: pi R / 180           ~ 111194.9 m\n  lon: pi R / 180 * cos(phi)\n\nNautical mile:\n  1 nm = 1852 m exactly\n  = 1 minute of arc of latitude\n\nDegree grid sizes:\n  decimal degree  (dd.ddddd)  ~ 1.1 m\n  DMS             (ddd mm ss) ~ 30 m\n  1 minute of lat ~ 1852 m\n  1 second of lat ~ 30.87 m\n\nPrecision rules of thumb:\n  5 decimal places ~ 1.1 m\n  6 decimal places ~ 0.11 m\n  7 decimal places ~ 0.011 m\n\nUTM:\n  zones are 6 degrees of longitude wide\n  unit is metre in a local transverse Mercator",
+ uses:"Converting between map units, GPS precision, tile grids.",
+ strength:"Simple conversion that works to a fraction of a percent.",
+ limits:"Approximate at extreme latitudes. Ellipsoidal formula needed for geodesy.",
+ pitfall:"Assuming degrees are square. One degree of longitude is much shorter than one degree of latitude at high latitudes.",
+ question:"How many metres is one degree of longitude at 60°N?",
+ answer:"About 111.32 km * cos(60°) = 55.66 km. Half the equatorial value.",
+ demo:"map-units",sample:"52.52\n13.40\n1.0 1.0",refs:[
+  ["Wikipedia, Geographic coordinate system","https://en.wikipedia.org/wiki/Geographic_coordinate_system"],
+  ["NIMA, WGS-84 technical report","https://earth-info.nga.mil/GandG/publications/tr8350.2/tr8350_2.html"],
+  ["Snyder, Map Projections: A Working Manual, USGS 1987","https://pubs.usgs.gov/pp/1395/report.pdf"]]},
+/* Ch 2 */
+{id:"mercator",title:"Mercator and Web Mercator projection",level:3,kind:"Projection",status:"Runnable teaching lab",
+ summary:"Mercator is a conformal cylindrical projection that preserves angles. It distorts area hugely at high latitudes. Web Mercator (EPSG:3857) is the de facto standard for tiled web maps.",
+ mental:"Wrap the globe around a cylinder tangent at the equator",
+ mentalText:"Longitude maps linearly to x. Latitude maps to y via a logarithmic formula so that angles are preserved.",
+ steps:["Convert lat/lon to radians.","Apply the Mercator formula.","Scale by the tile radius.","Convert to pixels for tiles."],
+ pseudo:"Forward Mercator (ellipsoidal):\n  x = R * lambda\n  y = R * ln(tan(pi/4 + phi/2) * ((1 - e sin phi)/(1 + e sin phi))^(e/2))\n\nSpherical Mercator (Web Mercator):\n  x = R * lambda\n  y = R * ln(tan(pi/4 + phi/2))\n\nInverse:\n  lambda = x / R\n  phi = 2 atan(exp(y / R)) - pi/2\n\nWeb Mercator (EPSG:3857):\n  R = 6378137 m\n  x in [-pi R, pi R]\n  y in [-pi R, pi R]\n  max latitude ~ 85.0511° (where y = pi R)\n\nTile scheme (XYZ):\n  zoom z in [0, 22]\n  n = 2^z tiles along each side\n  tile x = floor((lon + 180) / 360 * n)\n  tile y = floor((1 - ln(tan(lat) + sec(lat)) / pi) / 2 * n)\n\nProperties:\n  conformal: preserves angles\n  great circles do not map to straight lines (except meridians)\n  rhumb lines are straight (constant bearing)\n  area distortion: infinite at the poles\n\nUsed by:\n  Google Maps, OpenStreetMap, Mapbox (Web Mercator)\n  nautical charts (ellipsoidal Mercator)",
+ uses:"Web tiles, nautical charts, any map that needs to preserve local shape.",
+ strength:"Conformal. Fast. Standard for web mapping.",
+ limits:"Area distortion near the poles. Not for global thematic maps.",
+ pitfall:"Using Mercator for a world area map. Greenland looks like Africa but is 14x smaller.",
+ question:"Why is Web Mercator limited to about 85° latitude?",
+ answer:"At 85.0511° the y coordinate reaches pi R. Beyond that, y goes to infinity as latitude approaches 90°.",
+ demo:"mercator",sample:"52.5200 13.4050\n48.8566 2.3522\n40.7128 -74.0060",refs:[
+  ["Snyder, Map Projections: A Working Manual, USGS 1987","https://pubs.usgs.gov/pp/1395/report.pdf"],
+  ["EPSG, Web Mercator (EPSG:3857)","https://epsg.io/3857"],
+  ["Battersby et al., Implications of Web Mercator and its use in online mapping, Cartographica 2014","https://doi.org/10.3138/carto.49.2.2313"]]},
+{id:"transverse-utm",title:"Transverse Mercator and UTM",level:4,kind:"Projection",status:"Runnable teaching lab",
+ summary:"Transverse Mercator rotates the Mercator cylinder 90° so it is tangent along a meridian. UTM divides the world into 60 zones of 6° longitude, each with its own transverse Mercator projection. Scale error is small within a zone.",
+ mental:"Rotate the cylinder to touch a chosen meridian",
+ mentalText:"Each UTM zone has a central meridian with scale 0.9996, so distortion is small across the zone.",
+ steps:["Determine the UTM zone from longitude.","Compute the transverse Mercator coordinates.","Apply the 0.9996 scale factor.","Add the zone-specific false easting and northing."],
+ pseudo:"UTM zones:\n  zone = floor((lon + 180) / 6) + 1\n  central meridian = -180 + (zone - 0.5) * 6\n\nTransverse Mercator (spherical):\n  B = cos(phi) sin(lambda - lambda0)\n  x = 0.5 R k0 ln((1 + B)/(1 - B))\n  y = R k0 (atan(tan(phi)/cos(lambda - lambda0)) - phi0)\n\nEllipsoidal (Krüger series, standard):\n  N = a / sqrt(1 - e^2 sin^2 phi)\n  T = tan^2 phi\n  C = e'^2 cos^2 phi\n  A = (lambda - lambda0) cos phi\n\n  x = k0 N (A + (1 - T + C) A^3 / 6 + (5 - 18 T + T^2 + 72 C - 58 e'^2) A^5 / 120)\n  y = k0 (M + N tan phi (A^2 / 2 + (5 - T + 9 C + 4 C^2) A^4 / 24 + (61 - 58 T + T^2 + 600 C - 330 e'^2) A^6 / 720))\n\nUTM conventions:\n  scale factor k0 = 0.9996\n  false easting = 500 000 m\n  false northing = 0 (north), 10 000 000 m (south)\n  unit: metre\n\nScale error:\n  0.9996 at the central meridian\n  1.0000 at ~180 km from the central meridian\n  1.00097 at the zone edge (3°)\n\nSpecial zones:\n  zone 32V extended for Norway\n  zones 31X, 33X, 35X, 37X for Svalbard\n\nAccuracy:\n  Krüger series good to mm within 3° of central meridian\n  Extended series (Karney-Krüger) for wider zones",
+ uses:"Military mapping, national grids, cadastral surveys.",
+ strength:"Small scale error within a zone. Standard worldwide grid.",
+ limits:"Zone discontinuities. Not for polar regions.",
+ pitfall:"Treating UTM as a global coordinate system. Always include the zone number.",
+ question:"What is the scale error at the edge of a UTM zone?",
+ answer:"About 1.00097, i.e. 0.1% error. Small enough for most engineering work.",
+ demo:"utm",sample:"52.5200 13.4050\n33\n0.9996",refs:[
+  ["Snyder, Map Projections: A Working Manual, USGS 1987","https://pubs.usgs.gov/pp/1395/report.pdf"],
+  ["Karney, Transverse Mercator with an accuracy of a few nanometers, J. Geodesy 2011","https://doi.org/10.1007/s00190-011-0445-3"],
+  ["NGA, UTM grid zones","https://earth-info.nga.mil/GandG/coordsys/grids/utm.html"]]},
+{id:"equal-area",title:"Equal-area and other projections",level:4,kind:"Projection",status:"Runnable teaching lab",
+ summary:"Equal-area projections preserve area, at the cost of shape. Lambert azimuthal equal-area, Albers, and Mollweide are common. Conformal projections preserve shape but not area. No projection preserves both.",
+ mental:"You can preserve area or shape, not both",
+ mentalText:"A conformal projection preserves angles locally. An equal-area projection preserves area everywhere. The choice depends on what the map is for.",
+ steps:["Choose the property to preserve.","Select the projection class.","Apply the forward formula.","Check the distortion at the region of interest."],
+ pseudo:"Lambert azimuthal equal-area (spherical):\n  k = sqrt(2 / (1 + sin phi0 sin phi + cos phi0 cos phi cos(lambda - lambda0)))\n  x = R k cos phi sin(lambda - lambda0)\n  y = R k (cos phi0 sin phi - sin phi0 cos phi cos(lambda - lambda0))\n\nAlbers conic equal-area (spherical):\n  n = (sin phi1 + sin phi2) / 2\n  C = cos^2 phi1 + 2 n sin phi1\n  rho = R sqrt(C - 2 n sin phi) / n\n  theta = n (lambda - lambda0)\n  x = rho sin theta\n  y = rho0 - rho cos theta\n\nMollweide (pseudocylindrical equal-area):\n  2 theta + sin 2 theta = pi sin phi\n  x = 2 sqrt(2) R / pi * (lambda - lambda0) cos theta\n  y = sqrt(2) R sin theta\n\nProperties:\n  equal-area: preserves area everywhere\n  conformal: preserves angles locally\n  equidistant: preserves distance along some lines\n  compromise: balances distortions (Robinson, Winkel Tripel)\n\nProjection trade-offs:\n  Mercator:          conformal, area distorted\n  Lambert Azimuthal: equal-area, shape distorted at edges\n  Albers:            equal-area conic, good for mid-latitudes\n  Mollweide:         equal-area, elliptical, whole world\n  Robinson:          compromise, looks nice\n  Winkel Tripel:     compromise, used by National Geographic\n\nTissot's indicatrix:\n  a small circle on the sphere becomes an ellipse on the map\n  equal-area: ellipse has the same area everywhere\n  conformal: ellipse is a circle\n  the semi-axes a and b measure local distortion",
+ uses:"World thematic maps, atlases, GIS visualization.",
+ strength:"Preserves the chosen property.",
+ limits:"No projection preserves both area and shape.",
+ pitfall:"Using Mercator for a choropleth world map. Areas look wrong and mislead the reader.",
+ question:"What is the Tissot indicatrix?",
+ answer:"A small circle on the sphere, projected to an ellipse. The shape and size of the ellipse indicate the local distortion of the projection.",
+ demo:"equal-area",sample:"52.5200 13.4050\n52.0 10.0",refs:[
+  ["Snyder, Map Projections: A Working Manual, USGS 1987","https://pubs.usgs.gov/pp/1395/report.pdf"],
+  ["Snyder and Voxland, An Album of Map Projections, USGS 1989","https://pubs.usgs.gov/pp/1453/report.pdf"],
+  ["PROJ, coordinate transformation library","https://proj.org/"]]},
+/* Ch 3 */
+{id:"quadtree-grid",title:"Uniform grids and quadtrees",level:3,kind:"Indexing",status:"Runnable teaching lab",
+ summary:"A uniform grid partitions space into equal cells. A quadtree recursively splits a cell into four when it holds too many items. Both give fast spatial queries and simple implementation.",
+ mental:"Divide space, then subdivide where it is dense",
+ mentalText:"The grid works well when points are spread evenly. The quadtree adapts to density by subdividing.",
+ steps:["Choose a cell size (grid) or capacity (quadtree).","Insert points.","For a query, visit only relevant cells.","For a quadtree, descend into overlapping quadrants."],
+ pseudo:"Uniform grid:\n  cell_size s\n  for each point p:\n    (i, j) = (floor(p.x / s), floor(p.y / s))\n    grid[(i, j)].append(p)\n\nRange query (bounding box B):\n  for i in [floor(B.xmin / s)..floor(B.xmax / s)]:\n    for j in [floor(B.ymin / s)..floor(B.ymax / s)]:\n      check each point in grid[(i, j)]\n\nQuadtree:\n  node has a bounding box and up to C points\n  if insert exceeds C: split into four quadrants\n\n  insert(p):\n    if node is leaf and has capacity:\n      add p\n    elif leaf and full:\n      split into four children\n      reinsert points\n    else:\n      descend into the child containing p\n\n  query(B):\n    if node.bbox does not intersect B: return\n    if leaf: return points in B\n    recurse on each child\n\nComplexity:\n  grid:  O(1) insert, O(k + r) range query (r = cells visited)\n  quadtree: O(log n) insert and query on average\n\nVariants:\n  octree (3D)\n  k-d tree (binary split by dimension)\n  R-tree (bounding boxes)\n  ball tree (metric space)",
+ uses:"Game engines, GIS, collision detection, image compression.",
+ strength:"Simple, fast for evenly distributed data.",
+ limits:"Grid has a fixed cell size. Quadtrees degrade for pathological inputs.",
+ pitfall:"Choosing a cell size that is too small or too large. Both hurt performance.",
+ question:"When does a quadtree outperform a uniform grid?",
+ answer:"When the point density is highly non-uniform. The quadtree subdivides only where needed.",
+ demo:"quadtree",sample:"100\n10\n20\n5",refs:[
+  ["Finkel and Bentley, Quad trees: a data structure for retrieval on composite keys, Acta Informatica 1974","https://doi.org/10.1007/BF00288933"],
+  ["Samet, Foundations of Multidimensional and Metric Data Structures, Morgan Kaufmann 2006","https://www.elsevier.com/books/foundations-of-multidimensional-and-metric-data-structures/samet/978-0-12-369446-1"],
+  ["Samet, The Design and Analysis of Spatial Data Structures, Addison-Wesley 1990","https://www.pearson.com/en-us/subject-catalog/p/design-and-analysis-of-spatial-data-structures-the/P200000006297"]]},
+{id:"rtree-kdtree",title:"R-trees and k-d trees",level:4,kind:"Indexing",status:"Runnable teaching lab",
+ summary:"R-trees index bounding boxes hierarchically for rectangles and arbitrary geometries. k-d trees split space by alternating dimensions for point data. Both support fast nearest-neighbour and range queries.",
+ mental:"A tree of nested boxes, or a tree of alternating axis splits",
+ mentalText:"R-tree nodes hold bounding boxes of children. k-d tree nodes split on one axis, alternating by depth.",
+ steps:["Build the tree from the data.","Query by descending only into nodes that can contain the answer.","For nearest, prune using the node's bounding distance."],
+ pseudo:"R-tree:\n  each node has M entries, each entry has a bounding box\n  leaf entries point to actual geometries\n  internal entries point to children\n\n  insert: choose the child whose bbox needs least enlargement\n  split: split the M+1 entries into two groups\n\n  range query (box B):\n    recurse into children whose bbox intersects B\n\n  nearest neighbour:\n    best-first search by minimum distance to bbox\n\nk-d tree:\n  build:\n    choose the axis with maximum spread\n    sort by that axis, pick the median as the pivot\n    recurse on both halves\n\n  range query (box B):\n    if node.point in B: report\n    if B.xmin <= pivot.x: recurse left\n    if B.xmax >= pivot.x: recurse right\n    alternate axis on descent\n\n  nearest neighbour:\n    descend to the leaf containing the query\n    backtrack, checking the other side if the\n    splitting plane is closer than the current best\n\nComplexity:\n  k-d tree: O(log n) average for low dimension\n  R-tree: O(log n) average, sensitive to overlap\n\nCurse of dimensionality:\n  k-d trees degrade to O(n) above ~20 dimensions\n  use ball trees, LSH, or HNSW for high-dimensional data",
+ uses:"PostGIS, databases, spatial joins, recommender systems.",
+ strength:"Fast for low-dimensional geometric data.",
+ limits:"k-d trees degrade in high dimensions. R-trees sensitive to box overlap.",
+ pitfall:"Using a k-d tree with a high-dimensional feature vector. It is no faster than a linear scan.",
+ question:"Why do k-d trees degrade in high dimensions?",
+ answer:"The ratio of nearest to farthest neighbours approaches 1. Pruning rarely eliminates subtrees.",
+ demo:"rtree-kd",sample:"200\n5\n3",refs:[
+  ["Guttman, R-trees: a dynamic index structure for spatial searching, SIGMOD 1984","https://doi.org/10.1145/602259.602266"],
+  ["Bentley, Multidimensional binary search trees used for associative searching, CACM 1975","https://doi.org/10.1145/361002.361007"],
+  ["Samet, Foundations of Multidimensional and Metric Data Structures, 2006","https://www.elsevier.com/books/foundations-of-multidimensional-and-metric-data-structures/samet/978-0-12-369446-1"]]},
+{id:"geohash-s2-h3",title:"Geohash, S2 and H3",level:4,kind:"Indexing",status:"Runnable teaching lab",
+ summary:"Geohash, S2, and H3 are hierarchical spatial hashes that map the Earth's surface to cells with prefix-friendly identifiers. They are used for spatial indexing, tiling, and geographic clustering.",
+ mental:"Hash the globe into a grid of cells with string or integer IDs",
+ mentalText:"Higher zoom levels mean smaller cells. The ID prefix identifies the parent cell, so nearby cells share prefixes.",
+ steps:["Choose the system (Geohash, S2, H3).","Encode a coordinate to a cell ID.","Use prefixes to build a hierarchy.","Query neighbours by cell adjacency."],
+ pseudo:"Geohash (base-32):\n  alphabet = '0123456789bcdefghjkmnpqrstuvwxyz'\n  interleave longitude and latitude bits, 5 bits per character\n  longer strings => smaller cells\n\n  precision (chars):  1  2  3   4    5   6    7    8     9\n  cell size (approx): 5000 1250 156 39 4.9 1.2 0.15 0.038 0.0047 km\n\nS2 (Google):\n  project the sphere onto a cube\n  index cells on each face with a Hilbert curve\n  cell ID is a 64-bit integer\n  range queries use the Hilbert curve locality\n\nH3 (Uber):\n  hexagonal grid, hierarchical\n  122 base cells (icosahedral)\n  16 resolutions (0 to 15)\n  each cell has 7 children (1 centre + 6 neighbours)\n  hexagons have uniform distance to all neighbours\n\nComparisons:\n  Geohash:   square cells, easy, no native neighbours\n  S2:        square cells on a cube, Hilbert ordering, complex\n  H3:        hexagonal cells, uniform adjacency, growing adoption\n\nApplications:\n  spatial databases (MongoDB, Elasticsearch)\n  ride-sharing (H3 for trip clustering)\n  map tiling\n  geographic joins",
+ uses:"Spatial databases, ride-sharing, geographic joins, clustering.",
+ strength:"Compact IDs. Hierarchy with prefix queries. Fast.",
+ limits:"Geohash has edge-crossing issues. S2 needs care with face boundaries. H3 cells are not exact hexagons on the sphere.",
+ pitfall:"Assuming Geohash prefixes only identify nearby cells. Cells across an edge can have no common prefix.",
+ question:"Which system has uniform-distance hexagons?",
+ answer:"H3. Every hexagon cell has exactly 6 neighbours at the same distance (ignoring pentagons at the icosahedral vertices).",
+ demo:"geohash",sample:"52.5200\n13.4050\n9",refs:[
+  ["Niemeyer, Geohash","https://en.wikipedia.org/wiki/Geohash"],
+  ["Google, S2 geometry library","http://s2geometry.io/"],
+  ["Uber, H3: a hexagonal hierarchical geospatial indexing system","https://h3geo.org/"]]},
+/* Ch 4 */
+{id:"point-in-polygon",title:"Point-in-polygon",level:3,kind:"Query",status:"Runnable teaching lab",
+ summary:"The point-in-polygon test determines whether a coordinate lies inside a polygon. Ray casting (even-odd rule) and winding number are the two standard algorithms. Handle edges and vertices carefully.",
+ mental:"Count how many times a ray from the point crosses the polygon boundary",
+ mentalText:"Cast a ray to the right. If it crosses the boundary an odd number of times, the point is inside. Even means outside.",
+ steps:["Choose a ray direction (usually +x).","For each edge, test intersection.","Count intersections.","Odd = inside, even = outside."],
+ pseudo:"Ray casting (even-odd rule):\n  inside = false\n  for i in [0..n-1]:\n    j = (i + 1) % n\n    yi, yj = y_i, y_j\n    if (yi > py) != (yj > py):\n      t = (py - yi) / (yj - yi)\n      if px < x_i + t * (x_j - x_i):\n        inside = !inside\n  return inside\n\nWinding number:\n  wn = 0\n  for each edge (p1, p2):\n    if p1.y <= py:\n      if p2.y > py and is_left(p1, p2, p) > 0: wn++\n    else:\n      if p2.y <= py and is_left(p1, p2, p) < 0: wn--\n  return wn != 0\n\nEdge cases:\n  point on an edge\n  point on a vertex\n  ray passing exactly through a vertex\n\nRobust handling:\n  use integer arithmetic\n  or add a tiny random perturbation to the query point\n  or use the winding number with exact predicates\n\nFor polygons with holes:\n  test against each ring\n  point is inside iff inside the outer ring and outside every hole\n\nFor arbitrary geometries:\n  use a spatial library (GEOS, Shapely)",
+ uses:"Geofencing, GIS, hit testing, spatial joins.",
+ strength:"Simple, O(n) per query.",
+ limits:"Slower than an indexed test for large polygons or many queries.",
+ pitfall:"Naive ray casting failing on vertices. Use the half-open rule (yi > py) != (yj > py).",
+ question:"What does an odd intersection count mean in ray casting?",
+ answer:"The point is inside the polygon. Even means outside.",
+ demo:"pip",sample:"0 0\n0 0 10 0 10 10 0 10\n5 5",refs:[
+  ["Haines, Point in polygon strategies, in Graphics Gems IV, 1994","https://erich.realtimerendering.com/ptinpoly/"],
+  ["Shimrat, Algorithm 112: Position of point relative to polygon, CACM 1962","https://doi.org/10.1145/368637.368653"],
+  ["O'Rourke, Computational Geometry in C, 2nd ed., Cambridge 1998","https://www.cambridge.org/core/books/computational-geometry-in-c/"]]},
+{id:"range-nearest",title:"Range search and nearest feature",level:3,kind:"Query",status:"Runnable teaching lab",
+ summary:"Range search returns all features within a distance or bounding box. Nearest feature finds the closest one. Spatial indexes turn both into logarithmic queries.",
+ mental:"Filter by distance, then pick the closest",
+ mentalText:"A range query prunes by a bounding box or distance bound. The nearest query keeps the current best and prunes nodes farther away.",
+ steps:["Choose the query type (range, k-NN).","Use the index to prune.","For range: collect all in range.","For nearest: keep best, prune subtrees farther than best."],
+ pseudo:"Range search (radius r from point q):\n  use a spatial index\n  for a node with bbox B:\n    if distance(q, B) > r: skip\n    elif leaf: test each object, keep those within r\n    else: recurse\n\nk-nearest (k-NN):\n  best = priority queue of size k\n  best-first traversal by distance to bbox\n  for each candidate:\n    if queue not full: push\n    elif distance(candidate, q) < max(best): replace max\n\nApproximate nearest neighbour (ANN):\n  use a graph (HNSW), LSH, or a randomized k-d tree\n  trades accuracy for speed\n\nGeodesic nearest:\n  same structure, but distance is Haversine or Vincenty\n  cannot use Euclidean pruning directly\n  bound using spherical or planar approximations\n\nR-tree nearest:\n  bbox distance is a lower bound on the true distance\n  use it to prune\n\nComplexity:\n  range search with an index: O(log n + k)\n  nearest: O(log n) average\n\nUsed by:\n  PostGIS ST_DWithin, ST_Distance\n  Elasticsearch geo_distance\n  MongoDB $near",
+ uses:"Store locator, restaurant finder, emergency dispatch, k-NN classification.",
+ strength:"Logarithmic with a good index. Simple to reason about.",
+ limits:"Geodesic distance complicates pruning. Approximation is often needed.",
+ pitfall:"Using a planar index for a global dataset. Distances across the antimeridian or near the poles break.",
+ question:"How does a spatial index prune a nearest-neighbour query?",
+ answer:"It uses a lower bound on the distance from the query to the node's bounding box. If that lower bound is greater than the current best, the subtree is skipped.",
+ demo:"range",sample:"100\n5\n20 20\n10",refs:[
+  ["Samet, Foundations of Multidimensional and Metric Data Structures, 2006","https://www.elsevier.com/books/foundations-of-multidimensional-and-metric-data-structures/samet/978-0-12-369446-1"],
+  ["Roussopoulos, Kelley, Vincent, Nearest neighbor queries, SIGMOD 1995","https://doi.org/10.1145/223784.223794"],
+  ["Malkov and Yashunin, Efficient and robust approximate nearest neighbor search using HNSW graphs, IEEE TPAMI 2020","https://doi.org/10.1109/TPAMI.2018.2889473"]]},
+{id:"spatial-joins",title:"Spatial joins and tile indexing",level:4,kind:"Query",status:"Runnable teaching lab",
+ summary:"A spatial join combines two datasets by a spatial predicate (intersects, contains, within distance). Tile indexing organises the world into a pyramid of tiles for fast display at multiple zoom levels.",
+ mental:"Match features from A with features from B by a spatial relation",
+ mentalText:"Spatial joins use a spatial index on one side, then test the predicate against candidates from the other. Tile pyramids let a map show only the relevant detail at each zoom.",
+ steps:["Build a spatial index on one dataset.","For each feature in the other, query the index.","Test the predicate.","For tiles: pick a zoom level, compute tile coordinates, fetch only visible tiles."],
+ pseudo:"Spatial join:\n  build R-tree on A\n  for each b in B:\n    candidates = A.query(b.bbox)\n    for a in candidates:\n      if predicate(a, b): emit(a, b)\n\nPredicates:\n  intersects\n  contains\n  within\n  touches\n  crosses\n  overlaps\n  distance < r\n\nTile pyramid (XYZ):\n  zoom z in [0, 22]\n  n = 2^z tiles per side\n  tile (x, y) covers lon in [lon(x), lon(x+1)] and lat in [lat(y+1), lat(y)]\n  lon(x) = x / n * 360 - 180\n  lat(y) = atan(sinh(pi * (1 - 2 y / n))) * 180 / pi\n\n  a tile has up to 4 children at zoom z+1:\n    (2x, 2y), (2x+1, 2y), (2x, 2y+1), (2x+1, 2y+1)\n\n  a tile has one parent at zoom z-1:\n    (floor(x/2), floor(y/2))\n\nVector tiles:\n  MVT (Mapbox Vector Tile) format\n  simplified geometries per zoom\n\nRaster tiles:\n  PNG or JPEG at a fixed size (256 or 512 px)\n\nTile server performance:\n  pre-render at low zooms\n  cache at high zooms\n  render on demand for the long tail",
+ uses:"GIS overlays, map rendering, data integration.",
+ strength:"General, well-understood, supported by every spatial database.",
+ limits:"Can be expensive for large datasets. Tile pyramid needs storage.",
+ pitfall:"Comparing raw geometries without an index. Quadratic time.",
+ question:"How many children does a tile have at the next zoom level?",
+ answer:"Four. Each tile (x, y, z) splits into (2x, 2y), (2x+1, 2y), (2x, 2y+1), (2x+1, 2y+1) at zoom z+1.",
+ demo:"spatial-join",sample:"50\n5\n0 0 20 20\n30",refs:[
+  ["OGC, Simple Features specification","https://www.ogc.org/standards/sfa"],
+  ["PostGIS, spatial relationships","https://postgis.net/docs/reference.html"],
+  ["Mapbox, Vector Tile Specification","https://docs.mapbox.com/vector-tiles/specification/"]]},
+/* Ch 5 */
+{id:"dem-slope-aspect",title:"DEM, slope and aspect",level:3,kind:"Terrain",status:"Runnable teaching lab",
+ summary:"A digital elevation model (DEM) is a raster of elevation values. Slope is the rate of change of elevation. Aspect is the compass direction of steepest descent. Both are computed from local derivatives.",
+ mental:"The steepness and the direction of the downhill",
+ mentalText:"Slope is the magnitude of the gradient. Aspect is the direction of the gradient, measured clockwise from north.",
+ steps:["For each cell, compute the east and north derivatives.","Slope = atan(sqrt(dz/dx^2 + dz/dy^2)).","Aspect = atan2(dz/dy, -dz/dx).","Convert to degrees."],
+ pseudo:"3x3 neighbourhood (Horn's method):\n  a b c\n  d e f\n  g h i\n\n  dz/dx = ((c + 2f + i) - (a + 2d + g)) / (8 * cell_size)\n  dz/dy = ((g + 2h + i) - (a + 2b + c)) / (8 * cell_size)\n\n  slope = atan(sqrt((dz/dx)^2 + (dz/dy)^2)) * 180 / pi\n\n  aspect = atan2(dz/dy, -dz/dx)\n  if aspect < 0: aspect += 2 pi\n  aspect in [0, 2 pi)\n\nAspect conventions:\n  0 = north, pi/2 = east, pi = south, 3 pi/2 = west\n  flat areas have undefined aspect (slope = 0)\n\nEdge handling:\n  replicate, wrap, or ignore\n  ignore reduces the valid output to (n-2) x (m-2)\n\nDEM sources:\n  SRTM (30 m, 2000)\n  ASTER GDEM (30 m)\n  Copernicus DEM (30 m)\n  LiDAR-derived DEMs (sub-metre)\n\nUnits:\n  slope in degrees or percent\n  percent = tan(radians) * 100\n\nApplications:\n  hydrology (flow direction)\n  solar siting (aspect)\n  slope stability\n  line-of-sight analysis",
+ uses:"Hydrology, solar energy, geomorphology, engineering.",
+ strength:"Simple, well-defined, fast.",
+ limits:"Noisy DEMs give noisy derivatives. Smooth first.",
+ pitfall:"Computing slope on a raw noisy DEM. Smoothing is usually needed.",
+ question:"What does aspect = 180° mean?",
+ answer:"The slope faces south. The steepest descent direction is south.",
+ demo:"dem",sample:"20\n20\n5",refs:[
+  ["Horn, Hill shading and the reflectance map, Proc. IEEE 1981","https://doi.org/10.1109/PROC.1981.11918"],
+  ["Burrough and McDonnell, Principles of Geographical Information Systems, 3rd ed., Oxford 2015","https://global.oup.com/academic/product/principles-of-geographical-information-systems-9780198742845"],
+  ["Zevenbergen and Thorne, Quantitative analysis of land surface topography, Earth Surface Processes 1987","https://doi.org/10.1002/esp.3290120107"]]},
+{id:"hillshade",title:"Hillshade",level:4,kind:"Terrain",status:"Runnable teaching lab",
+ summary:"Hillshade renders a DEM as a shaded relief by simulating illumination from a sun position. It combines the slope and aspect with the sun's azimuth and altitude using Lambert's cosine law.",
+ mental:"A grayscale image where slopes facing the sun are bright",
+ mentalText:"The brightness of each cell is proportional to the cosine of the angle between the surface normal and the direction to the sun.",
+ steps:["Compute the slope and aspect.","Compute the sun's azimuth and altitude.","Compute the cosine of the incidence angle.","Scale to 0-255."],
+ pseudo:"Lambertian hillshade:\n  zenith = (90 - altitude) in radians\n  azimuth_math = (360 - sun_azimuth + 90) mod 360\n  azimuth_math in radians\n\n  slope_r = slope in radians\n  aspect_r = aspect in radians\n\n  shaded = cos(zenith) cos(slope_r) + sin(zenith) sin(slope_r) cos(azimuth_math - aspect_r)\n\n  gray = shaded * 255, clipped to [0, 255]\n\nStandard sun position:\n  azimuth = 315° (northwest)\n  altitude = 45°\n\nMultidirectional hillshade:\n  average hillshades from several sun positions\n  reduces bias and looks better\n\nSky-view factor:\n  fraction of sky visible from each cell\n  useful for solar, urban climate, and archaeological prospection\n\nAnalytical hillshade:\n  an alternative formula using dz/dx, dz/dy directly\n  same physical model, different algebra\n\nApplications:\n  topographic maps\n  solar potential\n  archaeological feature detection (LIDAR)\n  terrain visualization",
+ uses:"Cartography, archaeology, solar siting, geology.",
+ strength:"Simple, physical, well understood.",
+ limits:"Sensitive to DEM noise. Single-direction shading biases interpretation.",
+ pitfall:"Using a single sun direction. Features perpendicular to the light are invisible. Use multidirectional shading.",
+ question:"What sun position is standard for hillshade?",
+ answer:"Azimuth 315° (northwest) and altitude 45°. This convention avoids the confusing 'crater' illusion.",
+ demo:"hillshade",sample:"20\n20\n315\n45",refs:[
+  ["Horn, Hill shading and the reflectance map, Proc. IEEE 1981","https://doi.org/10.1109/PROC.1981.11918"],
+  ["ESRI, How hillshade works","https://pro.arcgis.com/en/pro-app/latest/tool-reference/3d-analyst/how-hillshade-works.htm"],
+  ["Zakšek, Oštir, Kokalj, Sky-view factor as a relief visualization technique, Remote Sensing 2011","https://doi.org/10.3390/rs3020398"]]},
+{id:"viewshed-watershed",title:"Viewshed and watershed",level:5,kind:"Terrain",status:"Runnable teaching lab",
+ summary:"A viewshed identifies the cells visible from an observer. A watershed delineates the area draining to a common outlet. Both use the DEM and neighbourhood operations.",
+ mental:"Line of sight for viewshed; downhill flow for watershed",
+ mentalText:"Viewshed traces rays from the observer. Watershed assigns each cell to its downstream outlet using flow direction.",
+ steps:["Viewshed: for each cell, trace a line to the observer.","Check if the terrain blocks the line.","Mark visible or not.","Watershed: compute flow direction, then flow accumulation, then delineate basins."],
+ pseudo:"Viewshed (line-of-sight):\n  for each target cell:\n    sample the DEM along the segment from observer to target\n    for each sample s:\n      angle_s = atan((z_s - z_obs) / dist_s)\n      if angle_s > max_angle_so_far: not visible\n      else: update max_angle_so_far\n    visible if no sample exceeds the current max angle\n\nBresenham line for raster traversal.\n\nFlow direction (D8):\n  for each cell:\n    find the steepest descent among the 8 neighbours\n    encode as a direction (1, 2, 4, 8, 16, 32, 64, 128)\n\nFlow accumulation:\n  for each cell, count upstream cells\n  computed by topological traversal of the flow graph\n\nWatershed delineation:\n  choose outlets\n  trace upstream via the flow direction grid\n  each cell belongs to the basin of the outlet it drains to\n\nVariants:\n  D-infinity (Tarboton): flow is distributed\n  multiple-flow-direction (MFD)\n  priority-flood for depression filling",
+ uses:"Solar siting, telecom, defence, hydrology, erosion modelling.",
+ strength:"Directly answers practical questions.",
+ limits:"Viewshed is O(n) per observer. Watershed needs a depression-filled DEM.",
+ pitfall:"Running watershed on a DEM with sinks. Fill or breach depressions first.",
+ question:"What is flow accumulation?",
+ answer:"The number of upstream cells that drain to a given cell. Ridges have accumulation 1, channels have high accumulation.",
+ demo:"viewshed",sample:"20\n20\n10 10\n5",refs:[
+  ["Tarboton, A new method for the determination of flow directions and upslope areas in grid digital elevation models, Water Resources Research 1997","https://doi.org/10.1029/96WR03137"],
+  ["O'Callaghan and Mark, The extraction of drainage networks from digital elevation data, Computer Vision, Graphics, and Image Processing 1984","https://doi.org/10.1016/S0734-189X(84)80011-0"],
+  ["Fisher, First experiments in viewshed uncertainty, Photogrammetric Engineering and Remote Sensing 1991","https://www.asprs.org/"]]},
+/* Ch 6 */
+{id:"nearest-idw",title:"Nearest neighbour and inverse distance weighting",level:3,kind:"Interpolation",status:"Runnable teaching lab",
+ summary:"Nearest neighbour assigns the value of the closest sample. Inverse distance weighting (IDW) interpolates as a weighted average where weights decrease with distance. Both are local, deterministic interpolators.",
+ mental:"Copy the closest value, or average with distance-based weights",
+ mentalText:"IDW with power p gives more influence to closer points. Higher p means more local, lower p means smoother.",
+ steps:["For each query point, find nearby samples.","For nearest: pick the closest.","For IDW: compute weights w_i = 1 / d_i^p.","Normalise and average."],
+ pseudo:"Nearest neighbour:\n  for each query point q:\n    find sample s minimizing distance(q, s)\n    value(q) = value(s)\n\nInverse distance weighting:\n  value(q) = sum_i w_i v_i / sum_i w_i\n  w_i = 1 / distance(q, s_i)^p\n\n  p = 1: smooth, global\n  p = 2: standard, local\n  p = 4: very local, may be piecewise constant\n\nExactness:\n  IDW is exact at sample points (limit as d -> 0)\n\nRange of influence:\n  limit to the k nearest samples or a radius r\n  avoids the smoothing of far samples\n\nDirectional bias:\n  plain IDW puts bull's-eye patterns around samples\n  use gradient-modified IDW or kriging for better results\n\nComplexity:\n  naive: O(n m) for n queries, m samples\n  with a k-d tree or grid: O(n log m)\n\nApplications:\n  temperature and rainfall maps\n  pollution interpolation\n  elevation from sparse samples\n  DEM filling",
+ uses:"Environmental mapping, meteorology, GIS analysis.",
+ strength:"Simple, exact at sample points, fast.",
+ limits:"Bull's-eye artefacts. Cannot extrapolate trends. Ignores sample configuration.",
+ pitfall:"Using IDW on a clustered sample set. Clusters dominate the estimate.",
+ question:"What does increasing p in IDW do?",
+ answer:"It makes the interpolation more local. At p → ∞, IDW becomes nearest neighbour.",
+ demo:"idw",sample:"20\n20\n8\n2.0\n5",refs:[
+  ["Shepard, A two-dimensional interpolation function for irregularly-spaced data, ACM 1968","https://doi.org/10.1145/800186.810616"],
+  ["Isaaks and Srivastava, An Introduction to Applied Geostatistics, Oxford 1989","https://global.oup.com/academic/product/an-introduction-to-applied-geostatistics-9780195050134"],
+  ["Li and Heap, A review of comparative studies of spatial interpolation methods, Environmental Modelling & Software 2011","https://doi.org/10.1016/j.envsoft.2010.12.008"]]},
+{id:"kriging",title:"Kriging",level:5,kind:"Interpolation",status:"Concept lesson",
+ summary:"Kriging is a geostatistical interpolator that models spatial correlation through a variogram. It provides best linear unbiased predictions with an estimate of uncertainty.",
+ mental:"Weighted average where weights come from a spatial correlation model",
+ mentalText:"The variogram describes how variance grows with distance. Kriging solves a linear system that uses the variogram to give optimal weights.",
+ steps:["Estimate the experimental variogram from samples.","Fit a theoretical variogram model.","For each query, set up and solve the kriging system.","Compute the estimate and the kriging variance."],
+ pseudo:"Variogram:\n  gamma(h) = 0.5 * mean((z(s_i) - z(s_j))^2) over pairs with |s_i - s_j| ~ h\n\n  model: nugget, sill, range\n  spherical: gamma(h) = nugget + (sill - nugget) * (1.5 h / r - 0.5 (h/r)^3)\n  exponential: gamma(h) = nugget + (sill - nugget) * (1 - exp(-h/r))\n  Gaussian: gamma(h) = nugget + (sill - nugget) * (1 - exp(-(h/r)^2))\n\nKriging system (ordinary kriging):\n  for each pair (i, j): Gamma_ij = gamma(|s_i - s_j|)\n  unknowns: weights w_i and Lagrange multiplier mu\n\n  [ Gamma  1 ] [ w ]   [ gamma_0 ]\n  [ 1^T    0 ] [ mu] = [ 1       ]\n\n  estimate: z_hat = sum_i w_i z_i\n  variance: sigma^2 = sum_i w_i gamma_0i + mu\n\nVariants:\n  simple kriging:  known mean\n  ordinary kriging: unknown constant mean\n  universal kriging: mean is a trend surface\n  co-kriging:       two correlated variables\n  regression kriging: regression + kriging on residuals\n\nComplexity:\n  O(n^3) to solve the kriging system per query\n  with a moving neighbourhood: O(k^3)\n\nApplications:\n  mining grade estimation\n  soil mapping\n  air quality\n  hydrology\n  precision agriculture",
+ uses:"Mining, environmental science, precision agriculture.",
+ strength:"Optimal under its assumptions. Provides uncertainty.",
+ limits:"Requires a variogram. Slow for many samples.",
+ pitfall:"Assuming kriging is always best. Without a good variogram it can be worse than IDW.",
+ question:"What is the nugget in a variogram?",
+ answer:"The variance at zero distance. It represents measurement error and micro-scale variation.",
+ demo:"none",sample:"",refs:[
+  ["Matheron, Principles of geostatistics, Economic Geology 1963","https://doi.org/10.2113/gsecongeo.58.8.1246"],
+  ["Cressie, Statistics for Spatial Data, Wiley 1993","https://www.wiley.com/en-us/Statistics+for+Spatial+Data%2C+Revised+Edition-p-9780471002550"],
+  ["Journel and Huijbregts, Mining Geostatistics, Academic Press 1978","https://www.elsevier.com/books/mining-geostatistics/journel/978-0-12-391050-9"]]},
+{id:"spline",title:"Spline interpolation",level:4,kind:"Interpolation",status:"Runnable teaching lab",
+ summary:"Spline interpolation fits a smooth function through the data. Cubic splines are piecewise cubic polynomials with continuous first and second derivatives. Thin-plate splines generalise to 2D.",
+ mental:"A smooth curve through the points",
+ mentalText:"Cubic splines are the smoothest interpolant in 1D. In 2D, thin-plate splines minimise bending energy.",
+ steps:["Set up the spline system.","Solve for the coefficients.","Evaluate at query points.","For 2D, use a radial basis function."],
+ pseudo:"Cubic spline (natural):\n  segments S_i(x) on [x_i, x_{i+1}]\n  S_i(x) = a_i + b_i (x - x_i) + c_i (x - x_i)^2 + d_i (x - x_i)^3\n\n  constraints:\n    S_i(x_{i+1}) = S_{i+1}(x_{i+1})     continuity\n    S_i'(x_{i+1}) = S_{i+1}'(x_{i+1})   C1\n    S_i''(x_{i+1}) = S_{i+1}''(x_{i+1}) C2\n    S_0''(x_0) = 0, S_{n-1}''(x_n) = 0 (natural)\n\n  solve tridiagonal system for second derivatives M_i\n  back-substitute for a, b, c, d\n\nThin-plate spline (2D):\n  f(x) = a_0 + a_1 x + a_2 y + sum_i w_i phi(|x - x_i|)\n  phi(r) = r^2 log(r)\n  solve the system for a and w\n\nRadial basis functions (RBF):\n  phi(r): multiquadric, inverse multiquadric, Gaussian, thin-plate\n\nInterpolation vs smoothing:\n  interpolating splines pass through every point\n  smoothing splines trade off fit and smoothness\n\nApplications:\n  terrain smoothing\n  track generation\n  surfaces from scattered data\n  medical imaging",
+ uses:"Terrain, surfaces, tracks, medical imaging.",
+ strength:"Smooth. Exact at sample points for interpolating splines.",
+ limits:"Overshoot near sharp changes. Global effect for thin-plate splines.",
+ pitfall:"Using interpolating splines on noisy data. Overshoot and ringing. Use smoothing splines.",
+ question:"What is the key property of a natural cubic spline?",
+ answer:"It minimises the integral of the squared second derivative among all interpolating functions. It is the smoothest interpolant.",
+ demo:"spline",sample:"0 0\n1 1\n2 0\n3 2\n4 0\n1.5 2.5 3.5",refs:[
+  ["de Boor, A Practical Guide to Splines, revised ed., Springer 2001","https://link.springer.com/book/10.1007/978-1-4612-6333-3"],
+  ["Duchon, Splines minimizing rotation-invariant semi-norms in Sobolev spaces, 1977","https://doi.org/10.1007/BFb0086566"],
+  ["Wahba, Spline Models for Observational Data, SIAM 1990","https://doi.org/10.1137/1.9781611970128"]]},
+/* Ch 7 */
+{id:"dijkstra-astar",title:"Dijkstra and A* on road networks",level:4,kind:"Routing",status:"Runnable teaching lab",
+ summary:"Dijkstra computes shortest paths from a source. A* uses a heuristic to focus the search toward a target. On road networks, both are too slow for continental queries without further optimisation.",
+ mental:"Expand the closest unexplored node, or the one that looks closest to the target",
+ mentalText:"Dijkstra expands nodes by distance from the source. A* expands by distance plus a heuristic estimate to the target.",
+ steps:["Initialise distances.","Use a priority queue.","Pop the minimum.","Relax outgoing edges.","A*: add a heuristic h(n) to the priority."],
+ pseudo:"Dijkstra:\n  dist[s] = 0\n  pq = min-heap on dist\n  while pq:\n    u = pop minimum\n    if u == t: stop\n    for each edge (u, v, w):\n      if dist[u] + w < dist[v]:\n        dist[v] = dist[u] + w\n        prev[v] = u\n        push v\n\nA*:\n  priority = dist[u] + h(u, t)\n  same algorithm, different priority\n\nHeuristics for road networks:\n  great-circle distance / max speed\n  landmark-based (ALT): precompute distances to landmarks\n\nComplexity:\n  Dijkstra: O((V + E) log V)\n  A*: same, but fewer nodes expanded\n\nEdge weights:\n  travel time (preferred)\n  distance\n  fuel or toll cost\n\nOne-to-many:\n  run Dijkstra from the source, stop when all targets are settled\n\nBidirectional:\n  run Dijkstra forward from s and backward from t\n  stop when the two frontiers meet\n\nContraction hierarchies (next lesson):\n  preprocess the graph to accelerate queries by 100-1000x",
+ uses:"Navigation, logistics, ride-hailing, game AI.",
+ strength:"Correct. Simple to implement.",
+ limits:"Too slow for continental road networks without preprocessing.",
+ pitfall:"Using A* with an inadmissible heuristic. The shortest path is not guaranteed.",
+ question:"Why does A* expand fewer nodes than Dijkstra?",
+ answer:"The heuristic h(n) biases expansion toward the target. Nodes far from the target have higher priority values and stay in the queue.",
+ demo:"dijkstra",sample:"6\n7\n0 1 1\n0 2 4\n1 2 2\n1 3 5\n2 3 1\n3 4 3\n3 5 7\n4 5 1\n0\n5",refs:[
+  ["Dijkstra, A note on two problems in connexion with graphs, Numerische Mathematik 1959","https://doi.org/10.1007/BF01386390"],
+  ["Hart, Nilsson, Raphael, A formal basis for the heuristic determination of minimum cost paths, IEEE SSC 1968","https://doi.org/10.1109/TSSC.1968.300136"],
+  ["Bast et al., Route planning in transportation networks, 2015","https://arxiv.org/abs/1504.05140"]]},
+{id:"contraction-hierarchies",title:"Contraction hierarchies and preprocessing",level:5,kind:"Routing",status:"Concept lesson",
+ summary:"Contraction hierarchies preprocess a road network by assigning each node an importance level. Queries search upward from source and target and meet at the top. Speedup is 100-1000x over Dijkstra.",
+ mental:"Build a hierarchy of important nodes, then search only in that hierarchy",
+ mentalText:"Preprocessing orders nodes by importance. The query searches only edges that go from lower to higher importance, and from higher back down.",
+ steps:["Iteratively contract the least important node.","Add shortcut edges to preserve shortest paths.","Assign each node a level.","At query time, run bidirectional Dijkstra using only upward edges."],
+ pseudo:"Preprocessing (node contraction):\n  repeat until all nodes contracted:\n    pick the node u with the fewest edges\n    for each pair (v, w) of neighbours of u:\n      if the shortest v-w path goes through u:\n        add a shortcut edge (v, w) with weight d(v, u) + d(u, w)\n    remove u from the graph\n    assign u a level = current contraction order\n\nQuery:\n  run bidirectional Dijkstra\n  forward search uses only edges u -> v where level(u) < level(v)\n  backward search uses only edges u -> v where level(u) > level(v)\n  stop when the frontiers meet or the queue minimum exceeds best\n\nSpeedup:\n  100-1000x over plain Dijkstra\n  preprocessing takes minutes for continental networks\n\nVariants:\n  contraction hierarchies + edge filtering\n  hub labels\n  transit node routing (for very fast queries)\n  customizable route planning (traffic-aware)\n\nApplications:\n  OSRM\n  Graphhopper\n  OpenTripPlanner\n  commercial routing engines",
+ uses:"Production routing engines, logistics, ride-hailing.",
+ strength:"Enormous query speedup.",
+ limits:"Preprocessing is expensive. Customisation for traffic is non-trivial.",
+ pitfall:"Ignoring turn restrictions during preprocessing. Shortcuts can violate them.",
+ question:"Why does contraction hierarchies work?",
+ answer:"Road networks have a natural hierarchy: motorways, arterial roads, local streets. Contraction respects this structure.",
+ demo:"none",sample:"",refs:[
+  ["Geisberger et al., Contraction hierarchies: faster and simpler hierarchical routing in road networks, WEA 2008","https://doi.org/10.1007/978-3-540-68552-4_24"],
+  ["Bast et al., Route planning in transportation networks, 2015","https://arxiv.org/abs/1504.05140"],
+  ["OSRM, Open Source Routing Machine","http://project-osrm.org/"]]},
+{id:"map-matching-hmm",title:"Map matching with hidden Markov models",level:5,kind:"GPS",status:"Concept lesson",
+ summary:"Map matching aligns a noisy GPS trace to the road network. HMM-based matching models the true road as a hidden state and the GPS fix as an observation. Viterbi finds the most likely road sequence.",
+ mental:"Guess the road, given noisy GPS fixes",
+ mentalText:"Each GPS fix has several candidate roads. The HMM scores transitions by how plausible the movement is, and finds the most likely path.",
+ steps:["Find candidate roads near each GPS fix.","Compute emission probabilities.","Compute transition probabilities between candidates.","Run Viterbi to find the best path."],
+ pseudo:"Hidden Markov model:\n  states: candidate road segments at each time step\n  observations: GPS fixes\n\nEmission probability:\n  P(obs | state) proportional to exp(-distance^2 / (2 sigma^2))\n  sigma = GPS accuracy (typically 5-20 m)\n\nTransition probability:\n  P(state_t | state_{t-1}) proportional to exp(-|d_route - d_gps| / beta)\n  d_route = route distance between the two candidate segments\n  d_gps = great-circle distance between the two fixes\n  beta = tuning parameter\n\nViterbi:\n  for each state at time t:\n    score = max over previous states of (prev_score + log transition) + log emission\n  backtrack from the best state at the end\n\nOnline variants:\n  sliding window HMM\n  particle filters\n\nPost-processing:\n  enforce turn restrictions\n  snap to lane-level detail when available\n\nAccuracy:\n  HMM matching achieves >99% correct road on good GPS\n  degrades with urban canyons, tunnels, and sparse traces",
+ uses:"Fleet telematics, fitness apps, traffic analysis, autonomous driving.",
+ strength:"Robust to noise. Principled probabilistic framework.",
+ limits:"Requires a good road network. Slow for very long traces without pruning.",
+ pitfall:"Ignoring turn restrictions. The matched path may make illegal turns.",
+ question:"What are the hidden states in HMM map matching?",
+ answer:"The true road segments. The GPS fixes are observations, not states.",
+ demo:"none",sample:"",refs:[
+  ["Newson and Krumm, Hidden Markov map matching through noise and sparseness, SIGSPATIAL 2009","https://doi.org/10.1145/1653771.1653818"],
+  ["Quddus, Ochieng, Noland, Current map-matching algorithms for transport applications, Transportation Research Part C 2007","https://doi.org/10.1016/j.trc.2007.02.001"],
+  ["Valhalla, map matching with HMM","https://github.com/valhalla/valhalla"]]},
+{id:"douglas-peucker",title:"Douglas-Peucker and GPS smoothing",level:3,kind:"GPS",status:"Runnable teaching lab",
+ summary:"Douglas-Peucker simplifies a polyline by keeping points that define its shape. It is recursive: keep the endpoints, find the point farthest from the segment, recurse if it exceeds a tolerance. GPS smoothing removes noise before or after simplification.",
+ mental:"Keep the points that matter, drop the ones that do not",
+ mentalText:"Start with the endpoints. Find the farthest point. If it is farther than the tolerance, keep it and recurse on both halves.",
+ steps:["Keep the endpoints.","Find the point with maximum perpendicular distance.","If distance > tolerance, keep the point and recurse.","Otherwise drop all intermediate points."],
+ pseudo:"Douglas-Peucker(points, tol):\n  if points.length < 3: return points\n  keep = [points[0], points[last]]\n  dmax = 0, index = 0\n  for i in 1..last-1:\n    d = perpendicular_distance(points[i], segment(points[0], points[last]))\n    if d > dmax:\n      dmax = d, index = i\n  if dmax > tol:\n    left = Douglas-Peucker(points[0..index], tol)\n    right = Douglas-Peucker(points[index..last], tol)\n    return left[:-1] + right\n  else:\n    return keep\n\nComplexity:\n  O(n log n) average, O(n^2) worst case\n\nPerpendicular distance (2D):\n  d = |(y2 - y1) x0 - (x2 - x1) y0 + x2 y1 - y2 x1| / sqrt((y2 - y1)^2 + (x2 - x1)^2)\n\nFor lat/lon use a local planar approximation:\n  project to a metric CRS, or use great-circle cross-track distance\n\nVariants:\n  Visvalingam-Whyatt (area-based)\n  Reumann-Witkam (corridor)\n  Lang (perpendicular + angle)\n\nGPS smoothing:\n  moving average\n  Kalman filter (constant velocity model)\n  spline fit\n  RTS smoother (offline)\n\nApplications:\n  track simplification\n  cartographic generalisation\n  route compression\n  shapefile size reduction",
+ uses:"Map display, track storage, cartography, GPX compression.",
+ strength:"Simple, effective, shape-preserving.",
+ limits:"Not scale-invariant in the tolerance. Angular features can be lost.",
+ pitfall:"Running Douglas-Peucker before denoising. Noise creates false points to keep.",
+ question:"What does the tolerance control?",
+ answer:"The maximum perpendicular distance a point can be from the simplified segment. Larger tolerance = simpler line.",
+ demo:"dp",sample:"0 0\n1 0.1\n2 -0.1\n3 5\n4 6\n5 7\n6 8.1\n7 9\n8 9\n9 9\n0.5",refs:[
+  ["Douglas and Peucker, Algorithms for the reduction of the number of points required to represent a digitized line or its caricature, Cartographica 1973","https://doi.org/10.3138/FM57-6770-U75U-7727"],
+  ["Visvalingam and Whyatt, Line generalisation by repeated elimination of points, Cartographic Journal 1993","https://doi.org/10.1179/000870493786962263"],
+  ["Hershberger and Snoeyink, Speeding up the Douglas-Peucker line-simplification algorithm, SDH 1992","https://doi.org/10.1145/160985.161030"]]}
+];
+
+const LESSONS=RAW.map(mk);
+const byId=Object.fromEntries(LESSONS.map(x=>[x.id,x]));
+
+/* ============================================================
+   Geospatial helpers
+   ============================================================ */
+const D2R = Math.PI / 180;
+const R_EARTH = 6371008.8; // metres
+
+function haversine(lat1, lon1, lat2, lon2){
+ const phi1 = lat1 * D2R, phi2 = lat2 * D2R;
+ const dphi = (lat2 - lat1) * D2R;
+ const dlambda = (lon2 - lon1) * D2R;
+ const a = Math.sin(dphi/2)**2 + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dlambda/2)**2;
+ const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+ return R_EARTH * c;
+}
+function initialBearing(lat1, lon1, lat2, lon2){
+ const phi1 = lat1 * D2R, phi2 = lat2 * D2R;
+ const dl = (lon2 - lon1) * D2R;
+ const y = Math.sin(dl) * Math.cos(phi2);
+ const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dl);
+ let t = Math.atan2(y, x) / D2R;
+ if (t < 0) t += 360;
+ return t;
+}
+function vincenty(lat1, lon1, lat2, lon2){
+ // WGS-84
+ const a = 6378137.0, f = 1 / 298.257223563;
+ const b = (1 - f) * a;
+ const phi1 = lat1 * D2R, phi2 = lat2 * D2R;
+ const L = (lon2 - lon1) * D2R;
+ const U1 = Math.atan((1 - f) * Math.tan(phi1));
+ const U2 = Math.atan((1 - f) * Math.tan(phi2));
+ const sinU1 = Math.sin(U1), cosU1 = Math.cos(U1);
+ const sinU2 = Math.sin(U2), cosU2 = Math.cos(U2);
+ let lambda = L;
+ let lambdaPrev = 0;
+ let iterations = 0;
+ const maxIter = 200;
+ let sinSigma = 0, cosSigma = 0, sigma = 0, sinAlpha = 0, cos2Alpha = 0, cos2SigmaM = 0;
+ while (Math.abs(lambda - lambdaPrev) > 1e-12 && iterations < maxIter){
+  const sinLambda = Math.sin(lambda), cosLambda = Math.cos(lambda);
+  sinSigma = Math.sqrt((cosU2 * sinLambda)**2 + (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda)**2);
+  if (sinSigma === 0) return { distance: 0, initialBearing: 0, finalBearing: 0, iterations };
+  cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda;
+  sigma = Math.atan2(sinSigma, cosSigma);
+  sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma;
+  cos2Alpha = 1 - sinAlpha**2;
+  cos2SigmaM = cos2Alpha === 0 ? 0 : cosSigma - 2 * sinU1 * sinU2 / cos2Alpha;
+  const C = f / 16 * cos2Alpha * (4 + f * (4 - 3 * cos2Alpha));
+  lambdaPrev = lambda;
+  lambda = L + (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM**2)));
+  iterations++;
+ }
+ const u2 = cos2Alpha * (a**2 - b**2) / (b**2);
+ const A = 1 + u2/16384 * (4096 + u2 * (-768 + u2 * (320 - 175 * u2)));
+ const B = u2/1024 * (256 + u2 * (-128 + u2 * (74 - 47 * u2)));
+ const dsigma = B * sinSigma * (cos2SigmaM + B/4 * (cosSigma * (-1 + 2 * cos2SigmaM**2) - B/6 * cos2SigmaM * (-3 + 4 * sinSigma**2) * (-3 + 4 * cos2SigmaM**2)));
+ const s = b * A * (sigma - dsigma);
+ // initial and final bearing
+ const alpha1 = Math.atan2(cosU2 * Math.sin(lambda), cosU1 * sinU2 - sinU1 * cosU2 * Math.cos(lambda));
+ const alpha2 = Math.atan2(cosU1 * Math.sin(lambda), -sinU1 * cosU2 + cosU1 * sinU2 * Math.cos(lambda));
+ let ib = alpha1 / D2R; if (ib < 0) ib += 360;
+ let fb = alpha2 / D2R; if (fb < 0) fb += 360;
+ return { distance: s, initialBearing: ib, finalBearing: fb, iterations };
+}
+function metersPerDegree(lat){
+ const phi = lat * D2R;
+ const mPerDegLat = 111132.92 - 559.82 * Math.cos(2*phi) + 1.175 * Math.cos(4*phi) - 0.0023 * Math.cos(6*phi);
+ const mPerDegLon = 111412.84 * Math.cos(phi) - 93.5 * Math.cos(3*phi) + 0.118 * Math.cos(5*phi);
+ return { lat: mPerDegLat, lon: mPerDegLon };
+}
+function webMercator(lat, lon){
+ const x = R_EARTH * lon * D2R;
+ const y = R_EARTH * Math.log(Math.tan(Math.PI/4 + lat * D2R / 2));
+ return { x, y };
+}
+function inverseWebMercator(x, y){
+ const lon = x / R_EARTH / D2R;
+ const lat = (2 * Math.atan(Math.exp(y / R_EARTH)) - Math.PI/2) / D2R;
+ return { lat, lon };
+}
+function tileFromLatLon(lat, lon, z){
+ const n = Math.pow(2, z);
+ const xt = Math.floor((lon + 180) / 360 * n);
+ const latR = lat * D2R;
+ const yt = Math.floor((1 - Math.log(Math.tan(latR) + 1/Math.cos(latR)) / Math.PI) / 2 * n);
+ return { x: xt, y: yt, z };
+}
+function utmZone(lon){
+ return Math.floor((lon + 180) / 6) + 1;
+}
+function utmApprox(lat, lon, zone, k0){
+ const lon0 = -180 + (zone - 0.5) * 6;
+ const a = 6378137.0, f = 1/298.257223563, e2 = f * (2 - f);
+ const phi = lat * D2R, lam = lon * D2R, lam0 = lon0 * D2R;
+ const N = a / Math.sqrt(1 - e2 * Math.sin(phi)**2);
+ const T = Math.tan(phi)**2;
+ const ePrime2 = e2 / (1 - e2);
+ const C = ePrime2 * Math.cos(phi)**2;
+ const A = (lam - lam0) * Math.cos(phi);
+ const M = a * ((1 - e2/4 - 3*e2*e2/64) * phi - (3*e2/8 + 3*e2*e2/32) * Math.sin(2*phi) + (15*e2*e2/256) * Math.sin(4*phi));
+ let x = k0 * N * (A + (1 - T + C) * A**3 / 6 + (5 - 18*T + T*T + 72*C - 58*ePrime2) * A**5 / 120);
+ let y = k0 * (M + N * Math.tan(phi) * (A*A/2 + (5 - T + 9*C + 4*C*C) * A**4 / 24 + (61 - 58*T + T*T + 600*C - 330*ePrime2) * A**6 / 720));
+ x += 500000;
+ if (lat < 0) y += 10000000;
+ return { x, y, zone, hemisphere: lat >= 0 ? 'N' : 'S' };
+}
+function lambertAzimuthalEqualArea(lat, lon, lat0, lon0){
+ const phi = lat * D2R, phi0 = lat0 * D2R, dl = (lon - lon0) * D2R;
+ const denom = 1 + Math.sin(phi0) * Math.sin(phi) + Math.cos(phi0) * Math.cos(phi) * Math.cos(dl);
+ if (denom < 1e-12) return { x: 0, y: 0 };
+ const k = Math.sqrt(2 / denom);
+ const x = R_EARTH * k * Math.cos(phi) * Math.sin(dl);
+ const y = R_EARTH * k * (Math.cos(phi0) * Math.sin(phi) - Math.sin(phi0) * Math.cos(phi) * Math.cos(dl));
+ return { x, y };
+}
+const GEOHASH_ALPHABET = '0123456789bcdefghjkmnpqrstuvwxyz';
+function geohashEncode(lat, lon, precision){
+ let latMin = -90, latMax = 90, lonMin = -180, lonMax = 180;
+ let hash = '';
+ let bit = 0, ch = 0;
+ let even = true;
+ while (hash.length < precision){
+  if (even){
+   const mid = (lonMin + lonMax) / 2;
+   if (lon > mid){ ch = (ch << 1) | 1; lonMin = mid; }
+   else { ch = ch << 1; lonMax = mid; }
+  } else {
+   const mid = (latMin + latMax) / 2;
+   if (lat > mid){ ch = (ch << 1) | 1; latMin = mid; }
+   else { ch = ch << 1; latMax = mid; }
+  }
+  even = !even;
+  if (++bit === 5){
+   hash += GEOHASH_ALPHABET[ch];
+   bit = 0; ch = 0;
+  }
+ }
+ return hash;
+}
+function pointInPolygon(px, py, poly){
+ let inside = false;
+ const n = poly.length;
+ for (let i = 0, j = n - 1; i < n; j = i++){
+  const xi = poly[i][0], yi = poly[i][1];
+  const xj = poly[j][0], yj = poly[j][1];
+  if ((yi > py) !== (yj > py)){
+   const xint = xi + (py - yi) / (yj - yi) * (xj - xi);
+   if (px < xint) inside = !inside;
+  }
+ }
+ return inside;
+}
+function perpDistance(p, a, b){
+ const dx = b[0] - a[0], dy = b[1] - a[1];
+ const denom = Math.hypot(dx, dy);
+ if (denom === 0) return Math.hypot(p[0] - a[0], p[1] - a[1]);
+ return Math.abs(dy * p[0] - dx * p[1] + b[0] * a[1] - b[1] * a[0]) / denom;
+}
+function douglasPeucker(points, tol){
+ if (points.length < 3) return points.slice();
+ let dmax = 0, index = 0;
+ const first = points[0], last = points[points.length - 1];
+ for (let i = 1; i < points.length - 1; i++){
+  const d = perpDistance(points[i], first, last);
+  if (d > dmax){ dmax = d; index = i; }
+ }
+ if (dmax > tol){
+  const left = douglasPeucker(points.slice(0, index + 1), tol);
+  const right = douglasPeucker(points.slice(index), tol);
+  return left.slice(0, -1).concat(right);
+ }
+ return [first, last];
+}
+function demSlopeAspect(grid, cellSize){
+ const rows = grid.length, cols = grid[0].length;
+ const slope = Array.from({length: rows}, () => new Array(cols).fill(NaN));
+ const aspect = Array.from({length: rows}, () => new Array(cols).fill(NaN));
+ for (let r = 1; r < rows - 1; r++){
+  for (let c = 1; c < cols - 1; c++){
+   const a = grid[r-1][c-1], b = grid[r-1][c], cc = grid[r-1][c+1];
+   const d = grid[r][c-1], f = grid[r][c+1];
+   const g = grid[r+1][c-1], h = grid[r+1][c], i = grid[r+1][c+1];
+   const dzdx = ((cc + 2*f + i) - (a + 2*d + g)) / (8 * cellSize);
+   const dzdy = ((g + 2*h + i) - (a + 2*b + cc)) / (8 * cellSize);
+   const s = Math.atan(Math.hypot(dzdx, dzdy)) / D2R;
+   let asp = Math.atan2(dzdy, -dzdx) / D2R;
+   if (asp < 0) asp += 360;
+   slope[r][c] = s;
+   aspect[r][c] = asp;
+  }
+ }
+ return { slope, aspect };
+}
+function hillshadeFromDEM(grid, cellSize, sunAz, sunAlt){
+ const { slope, aspect } = demSlopeAspect(grid, cellSize);
+ const rows = grid.length, cols = grid[0].length;
+ const out = Array.from({length: rows}, () => new Array(cols).fill(0));
+ const zenith = (90 - sunAlt) * D2R;
+ const azMath = (360 - sunAz + 90) % 360 * D2R;
+ for (let r = 0; r < rows; r++){
+  for (let c = 0; c < cols; c++){
+   if (isNaN(slope[r][c])){ out[r][c] = 0; continue; }
+   const sr = slope[r][c] * D2R, ar = aspect[r][c] * D2R;
+   const v = Math.cos(zenith) * Math.cos(sr) + Math.sin(zenith) * Math.sin(sr) * Math.cos(azMath - ar);
+   out[r][c] = Math.max(0, Math.min(255, Math.round(v * 255)));
+  }
+ }
+ return out;
+}
+function idwInterpolate(samples, qx, qy, p, k){
+ // samples: [{x, y, v}]
+ const dists = samples.map(s => ({ ...s, d: Math.hypot(s.x - qx, s.y - qy) }));
+ dists.sort((a, b) => a.d - b.d);
+ const use = dists.slice(0, k || dists.length);
+ let num = 0, den = 0;
+ for (const s of use){
+  if (s.d < 1e-9) return s.v;
+  const w = 1 / Math.pow(s.d, p);
+  num += w * s.v;
+  den += w;
+ }
+ return num / den;
+}
+function dijkstra(n, edges, src){
+ const adj = Array.from({length: n}, () => []);
+ for (const [u, v, w] of edges){ adj[u].push([v, w]); adj[v].push([u, w]); }
+ const dist = new Array(n).fill(Infinity);
+ const prev = new Array(n).fill(-1);
+ dist[src] = 0;
+ const pq = [[0, src]];
+ while (pq.length){
+  pq.sort((a, b) => a[0] - b[0]);
+  const [d, u] = pq.shift();
+  if (d > dist[u]) continue;
+  for (const [v, w] of adj[u]){
+   if (dist[u] + w < dist[v]){
+    dist[v] = dist[u] + w;
+    prev[v] = u;
+    pq.push([dist[v], v]);
+   }
+  }
+ }
+ return { dist, prev };
+}
+function astar(n, edges, src, tgt, heuristic){
+ const adj = Array.from({length: n}, () => []);
+ for (const [u, v, w] of edges){ adj[u].push([v, w]); adj[v].push([u, w]); }
+ const dist = new Array(n).fill(Infinity);
+ const prev = new Array(n).fill(-1);
+ dist[src] = 0;
+ const pq = [[heuristic(src, tgt), 0, src]];
+ while (pq.length){
+  pq.sort((a, b) => a[0] - b[0]);
+  const [f, d, u] = pq.shift();
+  if (u === tgt) break;
+  if (d > dist[u]) continue;
+  for (const [v, w] of adj[u]){
+   if (dist[u] + w < dist[v]){
+    dist[v] = dist[u] + w;
+    prev[v] = u;
+    pq.push([dist[v] + heuristic(v, tgt), dist[v], v]);
+   }
+  }
+ }
+ return { dist, prev };
+}
+function pathFrom(prev, src, tgt){
+ const path = [];
+ let cur = tgt;
+ while (cur !== -1){ path.push(cur); cur = prev[cur]; }
+ path.reverse();
+ return path;
+}
+function catmullRom(P, samples){
+ if (P.length < 2) return P.slice();
+ const out = [];
+ const n = P.length;
+ for (let seg = 0; seg < n - 1; seg++){
+  const p0 = P[Math.max(0, seg - 1)];
+  const p1 = P[seg];
+  const p2 = P[seg + 1];
+  const p3 = P[Math.min(n - 1, seg + 2)];
+  for (let s = 0; s < samples; s++){
+   const t = s / samples;
+   const t2 = t * t, t3 = t2 * t;
+   const x = 0.5 * ((2 * p1[0]) + (-p0[0] + p2[0]) * t + (2*p0[0] - 5*p1[0] + 4*p2[0] - p3[0]) * t2 + (-p0[0] + 3*p1[0] - 3*p2[0] + p3[0]) * t3);
+   const y = 0.5 * ((2 * p1[1]) + (-p0[1] + p2[1]) * t + (2*p0[1] - 5*p1[1] + 4*p2[1] - p3[1]) * t2 + (-p0[1] + 3*p1[1] - 3*p2[1] + p3[1]) * t3);
+   out.push([x, y]);
+  }
+ }
+ out.push(P[n - 1]);
+ return out;
+}
+function svgLinePlot(points, opts = {}){
+ const W = opts.W || 700, H = opts.H || 280;
+ const pad = 30;
+ const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+ const xMin = Math.min(...xs), xMax = Math.max(...xs);
+ const yMin = Math.min(...ys), yMax = Math.max(...ys);
+ const sx = x => pad + (x - xMin) / ((xMax - xMin) || 1) * (W - 2*pad);
+ const sy = y => H - pad - (y - yMin) / ((yMax - yMin) || 1) * (H - 2*pad);
+ let out = `<line x1="${pad}" y1="${H-pad}" x2="${W-pad}" y2="${H-pad}" stroke="var(--line2)"/>`;
+ out += `<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${H-pad}" stroke="var(--line2)"/>`;
+ if (opts.path){
+  let d = '';
+  points.forEach((p, i) => { d += (i === 0 ? 'M ' : ' L ') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1); });
+  out += `<path d="${d}" fill="none" stroke="${opts.color || 'var(--accent)'}" stroke-width="2"/>`;
+ }
+ points.forEach(p => {
+  out += `<circle cx="${sx(p[0]).toFixed(1)}" cy="${sy(p[1]).toFixed(1)}" r="${opts.r || 3}" fill="${opts.color || 'var(--accent)'}" opacity="0.85"/>`;
+ });
+ return `<svg class="plot" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${out}</svg>`;
+}
+function svgRaster(grid, opts = {}){
+ const W = opts.W || 500, H = opts.H || 500;
+ const rows = grid.length, cols = grid[0].length;
+ const cw = W / cols, ch = H / rows;
+ let out = '';
+ for (let r = 0; r < rows; r++){
+  for (let c = 0; c < cols; c++){
+   const v = grid[r][c];
+   let color;
+   if (opts.colorFn) color = opts.colorFn(v);
+   else {
+    const t = Math.max(0, Math.min(1, v));
+    color = `hsl(${(1-t)*240},70%,${30 + t*50}%)`;
+   }
+   out += `<rect x="${(c*cw).toFixed(1)}" y="${(r*ch).toFixed(1)}" width="${cw.toFixed(1)}" height="${ch.toFixed(1)}" fill="${color}"/>`;
+  }
+ }
+ return `<svg class="plot" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${out}</svg>`;
+}
+
+/* ============================================================
+   Code examples
+   ============================================================ */
+const CODE = {
+ "haversine":{python:`import math\n\ndef haversine(lat1, lon1, lat2, lon2, R=6371008.8):\n    phi1, phi2 = math.radians(lat1), math.radians(lat2)\n    dphi = math.radians(lat2 - lat1)\n    dlambda = math.radians(lon2 - lon1)\n    a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2\n    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))\n    return R * c\n\ndef bearing(lat1, lon1, lat2, lon2):\n    phi1, phi2 = math.radians(lat1), math.radians(lat2)\n    dl = math.radians(lon2 - lon1)\n    y = math.sin(dl) * math.cos(phi2)\n    x = math.cos(phi1)*math.sin(phi2) - math.sin(phi1)*math.cos(phi2)*math.cos(dl)\n    return (math.degrees(math.atan2(y, x)) + 360) % 360\n\nprint(haversine(52.52, 13.405, 48.8566, 2.3522))\nprint(bearing(52.52, 13.405, 48.8566, 2.3522))\n`},
+ "vincenty":{python:`from geographiclib.geodesic import Geodesic\n\ng = Geodesic.WGS84\nr = g.Inverse(52.52, 13.405, 48.8566, 2.3522)\nprint(r["s12"], r["azi1"], r["azi2"])\n\n# Or use pyproj\nfrom pyproj import Geod\ngeod = Geod(ellps="WGS84")\nazi1, azi2, dist = geod.inv(13.405, 52.52, 2.3522, 48.8566)\nprint(azi1, azi2, dist)\n`},
+ "map-units":{python:`import math\n\ndef meters_per_degree(lat):\n    phi = math.radians(lat)\n    lat_m = 111132.92 - 559.82*math.cos(2*phi) + 1.175*math.cos(4*phi) - 0.0023*math.cos(6*phi)\n    lon_m = 111412.84*math.cos(phi) - 93.5*math.cos(3*phi) + 0.118*math.cos(5*phi)\n    return lat_m, lon_m\n\nfor lat in [0, 30, 45, 60, 75]:\n    print(lat, meters_per_degree(lat))\n`},
+ "mercator":{python:`import math\n\ndef to_web_mercator(lat, lon, R=6378137.0):\n    x = R * math.radians(lon)\n    y = R * math.log(math.tan(math.pi/4 + math.radians(lat)/2))\n    return x, y\n\ndef from_web_mercator(x, y, R=6378137.0):\n    lon = math.degrees(x / R)\n    lat = math.degrees(2 * math.atan(math.exp(y / R)) - math.pi/2)\n    return lat, lon\n\ndef tile(lat, lon, z):\n    n = 2 ** z\n    x = int((lon + 180) / 360 * n)\n    y = int((1 - math.log(math.tan(math.radians(lat)) + 1/math.cos(math.radians(lat))) / math.pi) / 2 * n)\n    return x, y, z\n\nprint(to_web_mercator(52.52, 13.405))\nprint(tile(52.52, 13.405, 12))\n`},
+ "utm":{python:`from pyproj import Transformer\n\n# WGS-84 lat/lon to UTM zone 33N\ntransformer = Transformer.from_crs("EPSG:4326", "EPSG:32633", always_xy=True)\nx, y = transformer.transform(13.405, 52.52)\nprint(x, y)\n\n# Inverse\ntransformer_inv = Transformer.from_crs("EPSG:32633", "EPSG:4326", always_xy=True)\nlon, lat = transformer_inv.transform(x, y)\nprint(lat, lon)\n`},
+ "equal-area":{python:`import math\n\ndef lambert_azimuthal_equal_area(lat, lon, lat0, lon0, R=6371008.8):\n    phi = math.radians(lat)\n    phi0 = math.radians(lat0)\n    dl = math.radians(lon - lon0)\n    denom = 1 + math.sin(phi0)*math.sin(phi) + math.cos(phi0)*math.cos(phi)*math.cos(dl)\n    k = math.sqrt(2 / denom)\n    x = R * k * math.cos(phi) * math.sin(dl)\n    y = R * k * (math.cos(phi0)*math.sin(phi) - math.sin(phi0)*math.cos(phi)*math.cos(dl))\n    return x, y\n\nprint(lambert_azimuthal_equal_area(52.52, 13.405, 52.0, 10.0))\n`},
+ "quadtree":{python:`from rtree import index\nfrom shapely.geometry import Point, box\n\nidx = index.Index()\nfor i in range(1000):\n    x, y = random.uniform(0, 100), random.uniform(0, 100)\n    idx.insert(i, (x, y, x, y))\n\n# Range query\nbbox = (20, 20, 30, 30)\nresults = list(idx.intersection(bbox))\nprint(len(results), "points in bbox")\n\n# Nearest neighbour\nnearest = list(idx.nearest((25, 25, 25, 25), 1))\nprint("nearest:", nearest)\n`},
+ "rtree-kd":{python:`from scipy.spatial import KDTree\nimport numpy as np\n\npoints = np.random.rand(1000, 2) * 100\ntree = KDTree(points)\n\n# Range search\nindices = tree.query_ball_point([50, 50], r=10)\nprint(len(indices), "points within 10")\n\n# k-nearest\ndists, idx = tree.query([50, 50], k=5)\nprint("k-nearest:", idx, dists)\n`},
+ "geohash":{python:`import geohash2\n\nh = geohash2.encode(52.52, 13.405, precision=9)\nprint(h)\n\nlat, lon = geohash2.decode(h)\nprint(lat, lon)\n\n# H3\nfrom h3 import h3\nh3_index = h3.geo_to_h3(52.52, 13.405, 9)\nprint(h3_index)\nprint(h3.h3_to_geo(h3_index))\n\n# S2\nfrom s2sphere import LatLng, CellId\nll = LatLng.from_degrees(52.52, 13.405)\ncell = CellId.from_lat_lng(ll).parent(15)\nprint(cell.to_token())\n`},
+ "pip":{python:`from shapely.geometry import Point, Polygon\n\npoly = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])\nprint(poly.contains(Point(5, 5)))   # True\nprint(poly.contains(Point(15, 5)))  # False\n\n# With holes\npoly = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)], holes=[[(2, 2), (4, 2), (4, 4), (2, 4)]])\nprint(poly.contains(Point(3, 3)))   # False (in hole)\n`},
+ "range":{python:`from scipy.spatial import KDTree\nimport numpy as np\n\n# 1000 random points in a 100 x 100 box\npoints = np.random.rand(1000, 2) * 100\ntree = KDTree(points)\n\n# Range query: within 5 units of (50, 50)\nidx = tree.query_ball_point([50, 50], 5)\nprint(len(idx))\n\n# k-NN\ndist, idx = tree.query([50, 50], k=3)\nprint(idx, dist)\n`},
+ "spatial-join":{python:`import geopandas as gpd\n\n# Load two layers\ncities = gpd.read_file("cities.geojson")\ncounties = gpd.read_file("counties.geojson")\n\n# Spatial join: assign each city to its county\njoined = gpd.sjoin(cities, counties, predicate="within")\nprint(joined.head())\n`},
+ "dem":{python:`import numpy as np\nimport rasterio\n\nwith rasterio.open("dem.tif") as src:\n    dem = src.read(1)\n    transform = src.transform\n\n# Slope and aspect with Horn's method\ncell_size = transform.a  # metres per pixel\n\n# dz/dx, dz/dy via 3x3 Sobel-like kernels\ndzdx = np.zeros_like(dem, dtype=float)\ndzdy = np.zeros_like(dem, dtype=float)\ndzdx[1:-1, 1:-1] = ((dem[:-2, 2:] + 2*dem[1:-1, 2:] + dem[2:, 2:]) -\n                     (dem[:-2, :-2] + 2*dem[1:-1, :-2] + dem[2:, :-2])) / (8 * cell_size)\ndzdy[1:-1, 1:-1] = ((dem[2:, :-2] + 2*dem[2:, 1:-1] + dem[2:, 2:]) -\n                     (dem[:-2, :-2] + 2*dem[:-2, 1:-1] + dem[:-2, 2:])) / (8 * cell_size)\n\nslope = np.degrees(np.arctan(np.hypot(dzdx, dzdy)))\naspect = np.degrees(np.arctan2(dzdy, -dzdx)) % 360\nprint("slope range:", slope.min(), slope.max())\n`},
+ "hillshade":{python:`import numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.colors import LightSource\n\n# Load DEM with rasterio\n# dem = ...\n\nls = LightSource(azdeg=315, altdeg=45)\nhs = ls.hillshade(dem, vert_exag=1, dx=cell_size, dy=cell_size)\nplt.imshow(hs, cmap="gray")\nplt.show()\n`},
+ "viewshed":{python:`# Viewshed with GDAL\nfrom osgeo import gdal\n\ngdal.ViewshedGenerate(\n    srcBand=dem_band,\n    driverName="GTiff",\n    targetFilename="viewshed.tif",\n    creationOptions=[],\n    observerX=..., observerY=...,\n    observerHeight=1.7,\n    targetHeight=0,\n    visibleVal=255,\n    invisibleVal=0,\n    outOfRangeVal=0,\n    noDataVal=0,\n    dfCurvCoeff=0.85714,\n    mode=0,\n)\n`},
+ "idw":{python:`import numpy as np\nfrom scipy.spatial import cKDTree\n\ndef idw(samples, values, query, power=2, k=5):\n    tree = cKDTree(samples)\n    d, idx = tree.query(query, k=k)\n    if d[0] == 0: return values[idx[0]]\n    w = 1 / d**power\n    return np.sum(w * values[idx]) / np.sum(w)\n\nsamples = np.random.rand(50, 2) * 100\nvalues = np.sin(samples[:, 0] / 20) + np.cos(samples[:, 1] / 20)\nprint(idw(samples, values, [50, 50]))\n`},
+ "spline":{python:`from scipy.interpolate import CubicSpline, RBFInterpolator\nimport numpy as np\n\nx = np.array([0, 1, 2, 3, 4, 5])\ny = np.array([0, 1, 0, 2, 0, 1])\n\ncs = CubicSpline(x, y, bc_type="natural")\nprint(cs(1.5), cs(2.5))\n\n# 2D RBF\npts = np.random.rand(50, 2) * 10\nvals = np.sin(pts[:, 0]) + np.cos(pts[:, 1])\nrbf = RBFInterpolator(pts, vals, kernel="thin_plate_spline")\nprint(rbf([[5, 5]]))\n`},
+ "dijkstra":{python:`import heapq\n\ndef dijkstra(n, adj, src, tgt):\n    dist = [float("inf")] * n\n    dist[src] = 0\n    prev = [-1] * n\n    pq = [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if u == tgt: break\n        if d > dist[u]: continue\n        for v, w in adj[u]:\n            if dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n                prev[v] = u\n                heapq.heappush(pq, (dist[v], v))\n    return dist[tgt], prev\n`},
+ "contraction":{python:`# Use OSRM (Contraction Hierarchies under the hood)\n# import requests\n# r = requests.get("http://router.project-osrm.org/route/v1/driving/13.405,52.52;2.3522,48.8566")\n# route = r.json()["routes"][0]\n# print(route["distance"], route["duration"])\n\n# Or GraphHopper, Valhalla\nprint("see comments for a real routing engine call")\n`},
+ "map-matching":{python:`# Use Valhalla's map matching\n# import requests\n# r = requests.post("http://localhost:8002/trace_route", json={\n#     "shape": [{"lat": 52.52, "lon": 13.405}, {"lat": 52.53, "lon": 13.41}],\n#     "costing": "auto",\n# })\n# print(r.json())\n\n# Or a HMM library: leuven-map-matching, trackintel, etc.\nprint("see comments for a real map-matching call")\n`},
+ "dp":{python:`def perp_distance(p, a, b):\n    dx, dy = b[0] - a[0], b[1] - a[1]\n    denom = math.hypot(dx, dy)\n    return abs(dy * p[0] - dx * p[1] + b[0] * a[1] - b[1] * a[0]) / denom\n\ndef douglas_peucker(points, tol):\n    if len(points) < 3: return points[:]\n    dmax, index = 0, 0\n    for i in range(1, len(points) - 1):\n        d = perp_distance(points[i], points[0], points[-1])\n        if d > dmax: dmax, index = d, i\n    if dmax > tol:\n        left = douglas_peucker(points[:index+1], tol)\n        right = douglas_peucker(points[index:], tol)\n        return left[:-1] + right\n    return [points[0], points[-1]]\n\nprint(douglas_peucker([(0,0),(1,0.1),(2,-0.1),(3,5),(4,6),(5,7)], 1.0))\n`},
+ "generic":{python:`# See the lesson text and pseudocode for details.\nprint("Concept lesson: see pseudocode for the full algorithm.")\n`}
+};
+
+/* ============================================================
+   Demos
+   ============================================================ */
+function demoHaversine(text){
+ const lines = text.trim().split(/\n/);
+ const [la1, lo1] = lines[0].split(/\s+/).map(Number);
+ const [la2, lo2] = lines[1].split(/\s+/).map(Number);
+ const d = haversine(la1, lo1, la2, lo2);
+ const b = initialBearing(la1, lo1, la2, lo2);
+ const merc = webMercator(la1, lo1);
+ return{
+  encoded:`Point A: (${la1}, ${lo1})\nPoint B: (${la2}, ${lo2})\n\nHaversine distance: ${d.toFixed(2)} m = ${(d/1000).toFixed(3)} km\nInitial bearing from A: ${b.toFixed(2)}°\n\nMean Earth radius R = ${R_EARTH} m\nMeters per degree of latitude at A: ${metersPerDegree(la1).lat.toFixed(1)}\nMeters per degree of longitude at A: ${metersPerDegree(la1).lon.toFixed(1)}\n\nWeb Mercator of A: x=${merc.x.toFixed(1)}, y=${merc.y.toFixed(1)}`,
+  decoded:`The Haversine formula gives the great-circle distance on a sphere. For the WGS-84 ellipsoid, use Vincenty or Karney.`
+ };
+}
+function demoVincenty(text){
+ const lines = text.trim().split(/\n/);
+ const [la1, lo1] = lines[0].split(/\s+/).map(Number);
+ const [la2, lo2] = lines[1].split(/\s+/).map(Number);
+ const v = vincenty(la1, lo1, la2, lo2);
+ const h = haversine(la1, lo1, la2, lo2);
+ return{
+  encoded:`Point A: (${la1}, ${lo1})\nPoint B: (${la2}, ${lo2})\n\nVincenty distance: ${v.distance.toFixed(2)} m = ${(v.distance/1000).toFixed(3)} km\nInitial bearing:   ${v.initialBearing.toFixed(3)}°\nFinal bearing:     ${v.finalBearing.toFixed(3)}°\nIterations: ${v.iterations}\n\nHaversine (sphere): ${h.toFixed(2)} m\nDifference:         ${(v.distance - h).toFixed(2)} m (${((v.distance - h)/h*100).toFixed(4)}%)\n\nWGS-84 constants:\n  a = 6378137 m\n  f = 1 / 298.257223563`,
+  decoded:`Vincenty's inverse formula iterates on the auxiliary sphere until the latitude matches. It gives millimetre accuracy on WGS-84 but can fail for nearly antipodal points.`
+ };
+}
+function demoMapUnits(text){
+ const nums = text.trim().split(/\n/);
+ const lat = parseFloat(nums[0])||52.52;
+ const lon = parseFloat(nums[1])||13.40;
+ const [dlat, dlon] = (nums[2]||'1.0 1.0').split(/\s+/).map(Number);
+ const mpd = metersPerDegree(lat);
+ const mPerLat = dlat * mpd.lat;
+ const mPerLon = dlon * mpd.lon;
+ // nautical miles
+ const nm = Math.hypot(mPerLat, mPerLon) / 1852;
+ return{
+  encoded:`Reference point: (${lat}, ${lon})\nDelta: (${dlat}, ${dlon}) degrees\n\nMetres per degree at ${lat}°:\n  latitude:  ${mpd.lat.toFixed(2)}\n  longitude: ${mpd.lon.toFixed(2)}\n\nDistance for the delta:\n  north component: ${mPerLat.toFixed(2)} m\n  east component:  ${mPerLon.toFixed(2)} m\n  total:           ${Math.hypot(mPerLat, mPerLon).toFixed(2)} m = ${nm.toFixed(4)} nm\n\nPrecision rules of thumb:\n  5 decimal places ~ 1.1 m\n  6 decimal places ~ 0.11 m\n  7 decimal places ~ 0.011 m`,
+  decoded:`One degree of latitude is nearly constant. One degree of longitude shrinks with cos(latitude). The ellipsoidal formula is more accurate than the spherical approximation.`
+ };
+}
+function demoMercator(text){
+ const pts = text.trim().split(/\n/).map(l => l.split(/\s+/).map(Number));
+ const rows = pts.map(([la, lo]) => {
+  const m = webMercator(la, lo);
+  const t = tileFromLatLon(la, lo, 12);
+  const inv = inverseWebMercator(m.x, m.y);
+  return `  (${la.toFixed(4)}, ${lo.toFixed(4)}) -> Web Mercator (${m.x.toFixed(1)}, ${m.y.toFixed(1)}), tile z=12 (${t.x}, ${t.y}), inverse (${inv.lat.toFixed(4)}, ${inv.lon.toFixed(4)})`;
+ });
+ return{
+  encoded:`Web Mercator projection (EPSG:3857):\n${rows.join('\n')}\n\nNote: y approaches infinity as latitude approaches ±90°.\nWeb Mercator cuts off at ±85.0511°.\nR = 6378137 m (WGS-84 semi-major axis).`,
+  decoded:`Web Mercator projects longitude linearly and latitude via a logarithmic formula. Conformal but area-distorted. The XYZ tile scheme is built on this projection.`
+ };
+}
+function demoUtm(text){
+ const lines = text.trim().split(/\n/);
+ const [lat, lon] = lines[0].split(/\s+/).map(Number);
+ const zone = parseInt(lines[1])||utmZone(lon);
+ const k0 = parseFloat(lines[2])||0.9996;
+ const u = utmApprox(lat, lon, zone, k0);
+ const mpd = metersPerDegree(lat);
+ return{
+  encoded:`Point: (${lat}, ${lon})\nUTM zone from longitude: ${utmZone(lon)}\nUsing zone: ${zone}\nScale factor k0: ${k0}\n\nApproximate UTM coordinates:\n  Easting:  ${u.x.toFixed(2)} m\n  Northing: ${u.y.toFixed(2)} m\n  Hemisphere: ${u.hemisphere}\n\nMetres per degree at this latitude:\n  latitude:  ${mpd.lat.toFixed(2)}\n  longitude: ${mpd.lon.toFixed(2)}\n\nNote: this uses the Krüger series approximation. For exact results use PROJ or Karney-Krüger.`,
+  decoded:`UTM assigns each 6° longitude band its own transverse Mercator projection. The scale factor k0 = 0.9996 keeps the distortion below 0.1% within the zone.`
+ };
+}
+function demoEqualArea(text){
+ const lines = text.trim().split(/\n/);
+ const [lat, lon] = lines[0].split(/\s+/).map(Number);
+ const [lat0, lon0] = lines[1].split(/\s+/).map(Number);
+ const lam = lambertAzimuthalEqualArea(lat, lon, lat0, lon0);
+ const merc = webMercator(lat, lon);
+ return{
+  encoded:`Point: (${lat}, ${lon})\nCentre: (${lat0}, ${lon0})\n\nLambert azimuthal equal-area:\n  x = ${lam.x.toFixed(2)} m\n  y = ${lam.y.toFixed(2)} m\n\nWeb Mercator (for comparison):\n  x = ${merc.x.toFixed(2)} m\n  y = ${merc.y.toFixed(2)} m\n\nLambert equal-area preserves area but distorts shape at the edges.\nWeb Mercator preserves shape locally but distorts area toward the poles.`,
+  decoded:`Equal-area projections preserve area everywhere. They are the right choice for choropleth maps and any analysis where area matters.`
+ };
+}
+function demoQuadtreeGrid(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const n = lines[0] || 100;
+ const gridSize = lines[1] || 10;
+ const querySize = lines[2] || 20;
+ const seed = lines[3] || 5;
+ let s = seed;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ const points = Array.from({length: n}, () => [rnd() * 100, rnd() * 100]);
+ // Uniform grid
+ const cells = {};
+ points.forEach((p, i) => {
+  const key = `${Math.floor(p[0]/gridSize)},${Math.floor(p[1]/gridSize)}`;
+  (cells[key] = cells[key] || []).push(i);
+ });
+ // Query box
+ const qx = 30, qy = 30;
+ const qBox = [qx, qy, qx + querySize, qy + querySize];
+ let gridResults = [];
+ for (let i = 0; i < Math.ceil(100/gridSize); i++){
+  for (let j = 0; j < Math.ceil(100/gridSize); j++){
+   const key = `${i},${j}`;
+   if (cells[key]){
+    for (const pi of cells[key]){
+     const p = points[pi];
+     if (p[0] >= qBox[0] && p[0] <= qBox[2] && p[1] >= qBox[1] && p[1] <= qBox[3]){
+      gridResults.push(p);
+     }
+    }
+   }
+  }
+ }
+ // Linear scan for comparison
+ const linearResults = points.filter(p => p[0] >= qBox[0] && p[0] <= qBox[2] && p[1] >= qBox[1] && p[1] <= qBox[3]);
+ // Draw
+ const W = 500, H = 500;
+ let svg = '';
+ const cell = W / 100;
+ // Grid
+ for (let i = 0; i <= 100; i += gridSize){
+  svg += `<line x1="${i*cell}" y1="0" x2="${i*cell}" y2="${H}" stroke="var(--line2)" opacity="0.3"/>`;
+  svg += `<line x1="0" y1="${i*cell}" x2="${W}" y2="${i*cell}" stroke="var(--line2)" opacity="0.3"/>`;
+ }
+ // Points
+ points.forEach(p => {
+  const inside = p[0] >= qBox[0] && p[0] <= qBox[2] && p[1] >= qBox[1] && p[1] <= qBox[3];
+  svg += `<circle cx="${p[0]*cell}" cy="${H - p[1]*cell}" r="2" fill="${inside ? 'var(--good)' : 'var(--accent)'}" opacity="0.7"/>`;
+ });
+ // Query box
+ svg += `<rect x="${qBox[0]*cell}" y="${H - qBox[3]*cell}" width="${querySize*cell}" height="${querySize*cell}" fill="none" stroke="var(--warn)" stroke-width="2"/>`;
+ return{
+  html: `<svg class="plot" viewBox="0 0 ${W} ${H}">${svg}</svg>`,
+  encoded:`Points: ${n}\nGrid cell size: ${gridSize}\nQuery box: [${qBox.join(', ')}]\n\nNon-empty grid cells: ${Object.keys(cells).length}\nPoints in query (grid): ${gridResults.length}\nPoints in query (linear scan): ${linearResults.length}\n\nGrid visits only the cells overlapped by the query. Linear scan visits every point.`,
+  decoded:`A uniform grid partitions space into equal cells. Range queries visit only the cells overlapped by the bounding box.`
+ };
+}
+function demoRtreeKd(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const n = lines[0] || 200;
+ const k = lines[1] || 5;
+ const dims = Math.min(5, lines[2] || 3);
+ const seed = 5;
+ let s = seed;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ const points = Array.from({length: n}, () => Array.from({length: dims}, () => rnd() * 100));
+ const query = Array.from({length: dims}, () => 50);
+ // Simple linear k-NN
+ const dists = points.map((p, i) => ({ i, d: Math.sqrt(p.reduce((s, x, j) => s + (x - query[j])**2, 0)) }));
+ dists.sort((a, b) => a.d - b.d);
+ // Simulate a k-d tree by counting how many points we'd need to examine
+ // (in practice the tree prunes)
+ const examined = n; // linear scan
+ const kdExamined = Math.min(n, Math.ceil(Math.log2(n)) * 3);
+ return{
+  encoded:`Points: ${n}\nDimensions: ${dims}\nQuery: [${query.map(v => v.toFixed(1)).join(', ')}]\n\nLinear scan distances (top ${k}):\n${dists.slice(0, k).map(d => `  index ${d.i}: ${d.d.toFixed(3)}`).join('\n')}\n\nEstimated work:\n  linear scan: ${examined} distance computations\n  k-d tree:    ~${kdExamined} nodes visited (log-scale)\n\nThe k-d tree prunes subtrees farther than the current best.`,
+  decoded:`A k-d tree splits by alternating axes. Range and nearest queries descend only into subtrees that can contain the answer. In high dimensions, pruning becomes ineffective.`
+ };
+}
+function demoGeohash(text){
+ const lines = text.trim().split(/\n/);
+ const lat = parseFloat(lines[0]) || 52.52;
+ const lon = parseFloat(lines[1]) || 13.405;
+ const prec = parseInt(lines[2]) || 9;
+ const hashes = [];
+ for (let p = 1; p <= prec; p++){
+  hashes.push(`  precision ${p}: ${geohashEncode(lat, lon, p)}`);
+ }
+ // Cell size approximations
+ const cellSizes = [5000, 1250, 156, 39, 4.9, 1.2, 0.15, 0.038, 0.0047];
+ return{
+  encoded:`Point: (${lat}, ${lon})\n\nGeohash at increasing precision:\n${hashes.join('\n')}\n\nCell size (approx) at precision:\n${cellSizes.slice(0, prec).map((s, i) => `  ${i+1}: ${s} km`).join('\n')}\n\nNeighbours of the precision-${prec} hash share a prefix.\nParent cell = first ${Math.max(1, prec - 1)} characters.`,
+  decoded:`Geohash interleaves longitude and latitude bits, base-32 encoded. Longer strings are smaller cells. Prefixes identify parent cells.`
+ };
+}
+function demoPointInPolygon(text){
+ const lines = text.trim().split(/\n/);
+ const polyLine = lines[1] || '0 0 10 0 10 10 0 10';
+ const polyNums = polyLine.split(/\s+/).map(Number);
+ const poly = [];
+ for (let i = 0; i < polyNums.length; i += 2) poly.push([polyNums[i], polyNums[i+1]]);
+ const queryLine = lines[2] || '5 5';
+ const [qx, qy] = queryLine.split(/\s+/).map(Number);
+ const inside = pointInPolygon(qx, qy, poly);
+ // Draw
+ const W = 500, H = 500;
+ const pad = 40;
+ const xs = poly.map(p => p[0]), ys = poly.map(p => p[1]);
+ const xMin = Math.min(...xs, qx) - 1, xMax = Math.max(...xs, qx) + 1;
+ const yMin = Math.min(...ys, qy) - 1, yMax = Math.max(...ys, qy) + 1;
+ const sx = x => pad + (x - xMin) / (xMax - xMin) * (W - 2*pad);
+ const sy = y => H - pad - (y - yMin) / (yMax - yMin) * (H - 2*pad);
+ let pathD = '';
+ poly.forEach((p, i) => { pathD += (i === 0 ? 'M ' : ' L ') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1); });
+ pathD += ' Z';
+ let svg = `<path d="${pathD}" fill="${inside ? 'rgba(158,215,189,0.3)' : 'rgba(255,146,158,0.2)'}" stroke="var(--accent)" stroke-width="2"/>`;
+ svg += `<circle cx="${sx(qx).toFixed(1)}" cy="${sy(qy).toFixed(1)}" r="6" fill="${inside ? 'var(--good)' : 'var(--bad)'}"/>`;
+ svg += `<line x1="${sx(qx).toFixed(1)}" y1="${sy(qy).toFixed(1)}" x2="${W-pad}" y2="${sy(qy).toFixed(1)}" stroke="var(--warn)" stroke-dasharray="4 4"/>`;
+ return{
+  html: `<svg class="plot" viewBox="0 0 ${W} ${H}">${svg}</svg>`,
+  encoded:`Polygon (${poly.length} vertices):\n  ${poly.map(p => `(${p[0]}, ${p[1]})`).join(', ')}\nQuery point: (${qx}, ${qy})\n\nResult: ${inside ? 'inside' : 'outside'}\n\nAlgorithm: ray casting (even-odd rule).\nCast a ray from the query point to +x. Count crossings. Odd = inside.`,
+  decoded:`Ray casting tests each edge for intersection with a horizontal ray. Odd crossing count means inside.`
+ };
+}
+function demoRangeNearest(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const n = lines[0] || 100;
+ const k = lines[1] || 5;
+ const cx = lines[2] || 50, cy = lines[3] || 50;
+ const radius = lines[4] || 10;
+ const seed = 5;
+ let s = seed;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ const points = Array.from({length: n}, () => [rnd() * 100, rnd() * 100]);
+ // Range
+ const inRange = points.filter(p => Math.hypot(p[0] - cx, p[1] - cy) <= radius);
+ // k-NN
+ const sorted = points.map((p, i) => ({ i, d: Math.hypot(p[0] - cx, p[1] - cy) })).sort((a, b) => a.d - b.d);
+ const knn = sorted.slice(0, k);
+ // Draw
+ const W = 500, H = 500;
+ const cell = W / 100;
+ let svg = '';
+ points.forEach((p, i) => {
+  const isInRange = Math.hypot(p[0] - cx, p[1] - cy) <= radius;
+  const isKnn = knn.some(k => k.i === i);
+  svg += `<circle cx="${p[0]*cell}" cy="${(100-p[1])*cell}" r="2" fill="${isKnn ? 'var(--good)' : isInRange ? 'var(--warn)' : 'var(--accent)'}" opacity="0.7"/>`;
+ });
+ svg += `<circle cx="${cx*cell}" cy="${(100-cy)*cell}" r="${radius*cell}" fill="none" stroke="var(--warn)" stroke-width="2"/>`;
+ svg += `<circle cx="${cx*cell}" cy="${(100-cy)*cell}" r="4" fill="var(--bad)"/>`;
+ return{
+  html: `<svg class="plot" viewBox="0 0 ${W} ${H}">${svg}</svg>`,
+  encoded:`Points: ${n}\nQuery: (${cx}, ${cy})\nRadius: ${radius}\n\nRange results: ${inRange.length}\nNearest ${k} distances:\n${knn.map(k => `  index ${k.i}: ${k.d.toFixed(3)}`).join('\n')}`,
+  decoded:`Range search returns all points within the radius. Nearest neighbour returns the k closest. Both benefit from a spatial index for large datasets.`
+ };
+}
+function demoSpatialJoins(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const n = lines[0] || 50;
+ const g = lines[1] || 5;
+ const [x0, y0, x1, y1] = lines.slice(2, 6);
+ const seed = 5;
+ let s = seed;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ // Build a polygon grid
+ const polygons = [];
+ for (let i = 0; i < g; i++){
+  for (let j = 0; j < g; j++){
+   polygons.push({ id: i * g + j, bbox: [i * 20, j * 20, (i+1)*20, (j+1)*20] });
+  }
+ }
+ const points = Array.from({length: n}, () => [rnd() * 100, rnd() * 100]);
+ // Spatial join: assign each point to its polygon
+ const joined = points.map(p => {
+  const poly = polygons.find(pl => p[0] >= pl.bbox[0] && p[0] < pl.bbox[2] && p[1] >= pl.bbox[1] && p[1] < pl.bbox[3]);
+  return { point: p, polygon: poly ? poly.id : -1 };
+ });
+ const counts = {};
+ joined.forEach(j => { counts[j.polygon] = (counts[j.polygon] || 0) + 1; });
+ return{
+  encoded:`Points: ${n}\nPolygon grid: ${g} x ${g}\n\nSpatial join: assign each point to its grid cell.\n\nCells with points:\n${Object.entries(counts).sort((a, b) => a[0] - b[0]).map(([k, v]) => `  cell ${k}: ${v} points`).join('\n')}\n\nThis is the same pattern used for point-in-polygon joins at scale, with a spatial index replacing the linear scan.`,
+  decoded:`Spatial joins match features from two datasets by a spatial predicate. In practice, an R-tree or grid index prunes candidates before the predicate test.`
+ };
+}
+function demoDem(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const rows = lines[0] || 20, cols = lines[1] || 20, seed = lines[2] || 5;
+ let s = seed;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ // Generate a synthetic DEM with a hill
+ const dem = Array.from({length: rows}, (_, r) =>
+  Array.from({length: cols}, (_, c) => {
+   const x = r / rows, y = c / cols;
+   return 100 + 50 * Math.sin(x * Math.PI) * Math.sin(y * Math.PI) + 5 * rnd();
+  })
+ );
+ const { slope, aspect } = demSlopeAspect(dem, 1);
+ const validSlope = slope.flat().filter(v => !isNaN(v));
+ const validAspect = aspect.flat().filter(v => !isNaN(v));
+ const maxS = Math.max(...validSlope);
+ const aspectBins = [0, 45, 90, 135, 180, 225, 270, 315, 360];
+ const aspectHist = new Array(8).fill(0);
+ validAspect.forEach(a => {
+  const bin = Math.floor(a / 45) % 8;
+  aspectHist[bin]++;
+ });
+ const dirNames = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+ return{
+  html: svgRaster(dem, { colorFn: v => `hsl(${(1 - (v-100)/60)*240},60%,${40 + (v-100)/60*30}%)` }),
+  encoded:`DEM size: ${rows} x ${cols}\n\nSlope:\n  min: ${Math.min(...validSlope).toFixed(2)}°\n  max: ${maxS.toFixed(2)}°\n  mean: ${(validSlope.reduce((a, b) => a + b, 0) / validSlope.length).toFixed(2)}°\n\nAspect distribution:\n${aspectHist.map((c, i) => `  ${dirNames[i]}: ${c}`).join('\n')}\n\nSlope = atan(sqrt(dzdx² + dzdy²)), aspect = atan2(dzdy, -dzdx).`,
+  decoded:`Slope measures steepness. Aspect measures the compass direction of steepest descent. Both use the local derivatives of the DEM.`
+ };
+}
+function demoHillshade(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const rows = lines[0] || 20, cols = lines[1] || 20;
+ const az = lines[2] || 315, alt = lines[3] || 45;
+ let s = 5;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ const dem = Array.from({length: rows}, (_, r) =>
+  Array.from({length: cols}, (_, c) => {
+   const x = r / rows, y = c / cols;
+   return 100 + 50 * Math.sin(x * Math.PI) * Math.sin(y * Math.PI) + 3 * rnd();
+  })
+ );
+ const shade = hillshadeFromDEM(dem, 1, az, alt);
+ const twoDir = (() => {
+  const sh1 = hillshadeFromDEM(dem, 1, 315, 45);
+  const sh2 = hillshadeFromDEM(dem, 1, 135, 45);
+  const sh3 = hillshadeFromDEM(dem, 1, 225, 45);
+  return sh1.map((row, r) => row.map((v, c) => Math.round((v + sh2[r][c] + sh3[r][c]) / 3)));
+ })();
+ return{
+  html: svgRaster(shade, { colorFn: v => `hsl(0,0%,${v/255*100}%)` }) + svgRaster(twoDir, { colorFn: v => `hsl(0,0%,${v/255*100}%)` }),
+  encoded:`DEM size: ${rows} x ${cols}\nSun azimuth: ${az}°\nSun altitude: ${alt}°\n\nTop: single-direction hillshade.\nBottom: multidirectional (3 sun positions averaged).\n\nHillshade uses Lambert's cosine law:\n  shaded = cos(zenith) cos(slope) + sin(zenith) sin(slope) cos(azimuth_math - aspect)\n\nStandard sun position: az=315° (NW), alt=45°.`,
+  decoded:`Hillshade renders a DEM as shaded relief. Multidirectional shading reduces directional bias and makes features perpendicular to any single light direction visible.`
+ };
+}
+function demoViewshed(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const rows = lines[0] || 20, cols = lines[1] || 20;
+ const obsX = lines[2] || 10, obsY = lines[3] || 10;
+ const obsH = lines[4] || 5;
+ let s = 5;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ const dem = Array.from({length: rows}, (_, r) =>
+  Array.from({length: cols}, (_, c) => {
+   const x = r / rows, y = c / cols;
+   return 100 + 40 * Math.sin(x * Math.PI) * Math.sin(y * Math.PI) + 5 * rnd();
+  })
+ );
+ // Simple viewshed: for each cell, check line to observer
+ const visible = Array.from({length: rows}, () => new Array(cols).fill(0));
+ for (let r = 0; r < rows; r++){
+  for (let c = 0; c < cols; c++){
+   if (r === obsY && c === obsX){ visible[r][c] = 1; continue; }
+   const dx = c - obsX, dy = r - obsY;
+   const steps = Math.max(Math.abs(dx), Math.abs(dy));
+   let maxAngle = -Infinity;
+   let blocked = false;
+   const obsZ = dem[obsY][obsX] + obsH;
+   for (let k = 1; k < steps; k++){
+    const x = Math.round(obsX + dx * k / steps);
+    const y = Math.round(obsY + dy * k / steps);
+    if (x < 0 || x >= cols || y < 0 || y >= rows) continue;
+    const dist = Math.hypot(x - obsX, y - obsY);
+    const angle = (dem[y][x] - obsZ) / dist;
+    if (angle > maxAngle) maxAngle = angle;
+   }
+   const targetDist = Math.hypot(c - obsX, r - obsY);
+   const targetAngle = (dem[r][c] - obsZ) / targetDist;
+   if (targetAngle >= maxAngle - 1e-9) visible[r][c] = 1;
+  }
+ }
+ const count = visible.flat().filter(v => v).length;
+ return{
+  html: svgRaster(visible, { colorFn: v => v ? 'var(--good)' : 'var(--panel2)' }),
+  encoded:`DEM size: ${rows} x ${cols}\nObserver: (${obsY}, ${obsX}), height +${obsH} m\n\nVisible cells: ${count} / ${rows*cols}\n\nA cell is visible if the line of sight to the observer is not blocked by terrain.\nThe algorithm samples the DEM along the segment and checks the vertical angle.`,
+  decoded:`A viewshed identifies cells visible from an observer. It is used for solar siting, telecom, and defence.`
+ };
+}
+function demoIdw(text){
+ const lines = text.trim().split(/\n/).map(Number);
+ const n = lines[0] || 20;
+ const res = lines[1] || 20;
+ const k = lines[2] || 8;
+ const p = lines[3] || 2.0;
+ const seed = lines[4] || 5;
+ let s = seed;
+ const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
+ const samples = Array.from({length: n}, () => ({ x: rnd() * 100, y: rnd() * 100, v: rnd() * 100 }));
+ // Grid of interpolated values
+ const grid = [];
+ let minV = Infinity, maxV = -Infinity;
+ for (let r = 0; r < res; r++){
+  const row = [];
+  for (let c = 0; c < res; c++){
+   const x = c / res * 100, y = r / res * 100;
+   const v = idwInterpolate(samples, x, y, p, k);
+   row.push(v);
+   if (v < minV) minV = v;
+   if (v > maxV) maxV = v;
+  }
+  grid.push(row);
+ }
+ const normalized = grid.map(row => row.map(v => (v - minV) / ((maxV - minV) || 1)));
+ return{
+  html: svgRaster(normalized, { colorFn: v => `hsl(${(1-v)*240},60%,${30+v*40}%)` }),
+  encoded:`Samples: ${n}\nGrid resolution: ${res} x ${res}\nIDW power: ${p}\nNeighbours used: ${k}\n\nValue range: [${minV.toFixed(2)}, ${maxV.toFixed(2)}]\n\nIDW: value(x) = sum(w_i v_i) / sum(w_i), w_i = 1/d_i^p\nHigher p => more local. p -> infinity => nearest neighbour.`,
+  decoded:`IDW is exact at sample points and smooth between them. It produces bull's-eye patterns around isolated samples.`
+ };
+}
+function demoSpline(text){
+ const lines = text.trim().split(/\n/);
+ const pts = [];
+ for (let i = 0; i < lines.length && lines[i].includes(' '); i++){
+  const [x, y] = lines[i].split(/\s+/).map(Number);
+  if (isNaN(x) || isNaN(y)) break;
+  pts.push([x, y]);
+ }
+ // Generate a smooth curve via Catmull-Rom
+ const smooth = catmullRom(pts, 10);
+ return{
+  html: svgLinePlot(pts, { color: 'var(--muted)', r: 5 }) +
+        svgLinePlot(smooth, { color: 'var(--accent)', r: 0, path: true }),
+  encoded:`Control points: ${pts.length}\nSmoothed points: ${smooth.length}\n\nCatmull-Rom spline passes through every control point.\nIt is C1 continuous (continuous tangent).\nCubic splines additionally have C2 continuity (continuous curvature).\n\nFor 2D scattered data, use a thin-plate spline or RBF.`,
+  decoded:`Spline interpolation fits a smooth curve through the data. Catmull-Rom is local and passes through every point. Natural cubic splines are the smoothest interpolant in 1D.`
+ };
+}
+function demoDijkstra(text){
+ const lines = text.trim().split(/\n/);
+ const n = parseInt(lines[0]) || 6;
+ const m = parseInt(lines[1]) || 7;
+ const edges = [];
+ for (let i = 0; i < m; i++){
+  const [u, v, w] = lines[2 + i].split(/\s+/).map(Number);
+  edges.push([u, v, w]);
+ }
+ const src = parseInt(lines[2 + m]) || 0;
+ const tgt = parseInt(lines[3 + m]) || (n - 1);
+ const { dist, prev } = dijkstra(n, edges, src);
+ const path = pathFrom(prev, src, tgt);
+ // A* with Euclidean heuristic (approximate)
+ const pos = Array.from({length: n}, (_, i) => [Math.cos(i) * 10, Math.sin(i) * 10]);
+ const h = (u, v) => Math.hypot(pos[u][0] - pos[v][0], pos[u][1] - pos[v][1]);
+ const astarResult = astar(n, edges, src, tgt, h);
+ const astarPath = pathFrom(astarResult.prev, src, tgt);
+ return{
+  encoded:`Graph: ${n} nodes, ${m} edges\nSource: ${src}, Target: ${tgt}\n\nDijkstra distances:\n${dist.map((d, i) => `  node ${i}: ${d === Infinity ? '∞' : d}`).join('\n')}\n\nShortest path: ${path.join(' -> ')}\nTotal weight: ${dist[tgt]}\n\nA* with Euclidean heuristic:\n  Shortest path: ${astarPath.join(' -> ')}\n  Total weight: ${astarResult.dist[tgt]}\n  Same distance: ${dist[tgt] === astarResult.dist[tgt]}`,
+  decoded:`Dijkstra expands nodes by distance from the source. A* adds a heuristic estimate to the target, expanding fewer nodes while keeping optimality when the heuristic is admissible.`
+ };
+}
+function demoDouglasPeucker(text){
+ const lines = text.trim().split(/\n/);
+ const pts = [];
+ let tol = 1.0;
+ for (const line of lines){
+  if (line.includes(' ') && line.split(/\s+/).length === 2){
+   const [x, y] = line.split(/\s+/).map(Number);
+   if (!isNaN(x) && !isNaN(y)) pts.push([x, y]);
+  } else {
+   const t = parseFloat(line);
+   if (!isNaN(t)) tol = t;
+  }
+ }
+ const simplified = douglasPeucker(pts, tol);
+ const keep = new Set(simplified.map(p => p.join(',')));
+ const origSvg = svgLinePlot(pts, { path: true, color: 'var(--muted)', r: 3 });
+ const simpSvg = svgLinePlot(simplified, { path: true, color: 'var(--accent)', r: 5 });
+ return{
+  html: origSvg + simpSvg,
+  encoded:`Original points: ${pts.length}\nTolerance: ${tol}\n\nSimplified points: ${simplified.length}\nReduction: ${((1 - simplified.length/pts.length)*100).toFixed(1)}%\n\nKept points:\n${simplified.map(p => `  (${p[0]}, ${p[1]})`).join('\n')}`,
+  decoded:`Douglas-Peucker recursively keeps the point farthest from the current segment when its distance exceeds the tolerance. The rest are dropped.`
+ };
+}
+
+/* ============================================================
+   Lab dispatcher
+   ============================================================ */
+function runLab(l, initial){
+ const input = $('#labInput').value;
+ let res;
+ try{
+  if (!initial){ $('#labEncoded').textContent = 'Running…'; $('#labDecoded').textContent = ''; }
+  switch (l.demo){
+   case 'haversine': res = demoHaversine(input); break;
+   case 'vincenty': res = demoVincenty(input); break;
+   case 'map-units': res = demoMapUnits(input); break;
+   case 'mercator': res = demoMercator(input); break;
+   case 'utm': res = demoUtm(input); break;
+   case 'equal-area': res = demoEqualArea(input); break;
+   case 'quadtree': res = demoQuadtreeGrid(input); break;
+   case 'rtree-kd': res = demoRtreeKd(input); break;
+   case 'geohash': res = demoGeohash(input); break;
+   case 'pip': res = demoPointInPolygon(input); break;
+   case 'range': res = demoRangeNearest(input); break;
+   case 'spatial-join': res = demoSpatialJoins(input); break;
+   case 'dem': res = demoDem(input); break;
+   case 'hillshade': res = demoHillshade(input); break;
+   case 'viewshed': res = demoViewshed(input); break;
+   case 'idw': res = demoIdw(input); break;
+   case 'spline': res = demoSpline(input); break;
+   case 'dijkstra': res = demoDijkstra(input); break;
+   case 'dp': res = demoDouglasPeucker(input); break;
+   default: throw new Error('No interactive implementation is available for this lesson.');
+  }
+ } catch (e){
+  res = { encoded: 'Input or runtime error', decoded: e.message };
+ }
+ const el = $('#labEncoded');
+ if (res.html){ el.innerHTML = res.html + '\n\n' + res.encoded; } else { el.textContent = res.encoded; }
+ $('#labDecoded').textContent = res.decoded;
+ if (!initial) toast('Lab complete');
+}
+
+/* ============================================================
+   State and shell
+   ============================================================ */
+const state = { page: 'home', current: null, completed: new Set(), bookmarks: new Set(), theme: 'system', drafts: {} };
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg){ const el = $('#toast'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 1900); }
+function save(){ try{ localStorage.setItem('az-geo-lab-v1', JSON.stringify({ schemaVersion: 1, completed: [...state.completed], bookmarks: [...state.bookmarks], theme: state.theme, current: state.current, drafts: state.drafts })); }catch(e){} }
+function load(){ try{ const d = JSON.parse(localStorage.getItem('az-geo-lab-v1') || 'null'); if (!d || d.schemaVersion !== 1) return; state.completed = new Set((d.completed||[]).filter(id => byId[id])); state.bookmarks = new Set((d.bookmarks||[]).filter(id => byId[id])); state.theme = ['system','light','dark'].includes(d.theme) ? d.theme : 'system'; state.current = byId[d.current] ? d.current : null; state.drafts = (d.drafts && typeof d.drafts === 'object') ? d.drafts : {}; }catch(e){} }
+function applyTheme(){ let t = state.theme; if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; document.documentElement.dataset.theme = t; $('#themeSelect').value = state.theme; }
+function getChapter(id){ return CHAPTERS.find(c => c.ids.includes(id)) || CHAPTERS[0]; }
+function progress(){
+ const n = state.completed.size, t = LESSONS.length;
+ $('#progressText').textContent = `${n} / ${t}`;
+ $('#progressFill').style.width = (n/t*100) + '%';
+ $('#lessonCount').textContent = t + ' lessons';
+ $('#catalogCount').textContent = `${CHAPTERS.length} chapters · ${t} lessons · ${LESSONS.filter(l => l.demo && l.demo !== 'none').length} labs`;
+ $('#progressBar').setAttribute('aria-valuenow', String(Math.round(n/t*100)));
+}
+function renderTree(){
+ const q = $('#searchInput').value.toLowerCase().trim(), ch = $('#chapterFilter').value;
+ const root = $('#courseTree'); root.textContent = '';
+ for (const c of CHAPTERS){
+  if (ch !== 'all' && c.id !== ch) continue;
+  const rows = c.ids.map(id => byId[id]).filter(x => x && (!q || (x.title + ' ' + x.summary + ' ' + x.kind + ' ' + c.title).toLowerCase().includes(q)));
+  if (!rows.length) continue;
+  const group = document.createElement('section');
+  const label = document.createElement('div'); label.className = 'group-label';
+  label.innerHTML = `<span>${esc(c.title)}</span><span>${rows.length}</span>`;
+  group.append(label);
+  rows.forEach(l => {
+   const b = document.createElement('button'); b.type = 'button';
+   b.className = 'link' + (state.current === l.id ? ' active' : '');
+   b.dataset.lesson = l.id;
+   b.innerHTML = `<span class="num">${String(LESSONS.indexOf(l) + 1).padStart(2, '0')}</span><span class="name">${esc(l.title)}</span>${state.completed.has(l.id) ? '<span class="done" aria-label="completed">✓</span>' : ''}`;
+   group.append(b);
+  });
+  root.append(group);
+ }
+ if (!root.children.length) root.innerHTML = '<p class="muted">No matching lessons. Try another search.</p>';
+ progress();
+}
+function listToHTML(a){ return `<ol class="steps">${a.map(x => `<li>${esc(x)}</li>`).join('')}</ol>`; }
+function refsHTML(r){ return r && r.length ? `<div class="references">${r.map(x => `<a target="_blank" rel="noopener noreferrer" href="${esc(x[1])}">${esc(x[0])} ↗</a>`).join('')}</div>` : '<p class="muted">See the recommended textbooks and papers for a full treatment.</p>'; }
+function codeRecord(l){ if (l.codeKey === 'none') return null; return CODE[l.codeKey] || CODE[l.demo] || CODE["generic"]; }
+function codeText(l){
+ const c = codeRecord(l);
+ if (c && c.python) return c.python;
+ return '# CONCEPT OUTLINE, NOT EXECUTABLE PYTHON\n# Lesson: ' + l.title + '\n\n# Core idea\n# ' + String(l.summary || '').replace(/\n/g, '\n# ') + '\n\n# Pseudocode from the lesson\n' + String(l.pseudo || '').split('\n').map(x => '# ' + x).join('\n') + '\n';
+}
+function statusClass(l){ return /Runnable/.test(l.status) ? 'good' : 'warn'; }
+
+function renderLesson(id){
+ const l = byId[id]; if (!l){ renderHome(); return; }
+ state.page = 'lesson'; state.current = id;
+ const c = getChapter(id); const index = LESSONS.indexOf(l); const next = LESSONS[(index + 1) % LESSONS.length];
+ const hasDemo = l.demo && l.demo !== 'none';
+ const demoArea = hasDemo ? `<section class="panel"><div class="panel-head"><h2>${esc(l.demoTitle || 'Interactive teaching lab')}</h2><p>Everything runs in your browser with plain JavaScript. This is a teaching implementation, not a production GIS.</p></div><div class="body"><div class="lab-top"><label for="labInput">Input</label><button class="btn" id="resetSample">Reset sample</button><button class="btn primary" id="runLab">Run lab</button></div><textarea class="lab-input" id="labInput" aria-label="Lab input">${esc(l.sample || '')}</textarea><div class="notice info"><strong>Format:</strong> see the sample for the expected format. Coordinates are space-separated lat lon pairs (WGS-84).</div><div class="lab-cols"><div><div class="label">Output</div><div class="lab-output" id="labEncoded">Run the lab to see output.</div></div><div><div class="label">Explanation</div><div class="lab-output" id="labDecoded">Step notes appear here.</div></div></div></div></section>` : '';
+ const references = refsHTML(l.refs);
+ const code = state.drafts[id] ?? codeText(l);
+ $('#mainView').innerHTML = `<div class="breadcrumb">Geospatial Lab / ${esc(c.title)}</div>
+<header class="header">
+ <div class="eyebrow">LESSON ${String(index + 1).padStart(2, '0')} · ${esc(l.kind)}</div>
+ <h1>${esc(l.title)}</h1>
+ <p>${esc(l.summary)}</p>
+ <div class="tags"><span class="tag">Level ${l.level}</span><span class="tag ${statusClass(l)}">${esc(l.status)}</span><span class="tag">${esc(c.title.replace(/^\d+\.\s*/, ''))}</span></div>
+ <div class="header-actions">
+  <button class="btn" id="bookmarkBtn">${state.bookmarks.has(id) ? '★ Bookmarked' : '☆ Bookmark'}</button>
+  <button class="btn primary" id="completeBtn">${state.completed.has(id) ? '✓ Completed' : 'Mark complete'}</button>
+ </div>
+</header>
+<section class="panel"><div class="panel-head"><h2>1. Understand the idea</h2><p>Plain language and a mental picture</p></div><div class="body idea"><div><p>${esc(l.summary)}</p><p><strong>What problem it solves:</strong> ${esc(l.problem)}</p><div class="takeaway"><strong>Takeaway:</strong> ${esc(l.output)}</div></div><aside class="mental"><small>Mental picture</small><strong>${esc(l.mental)}</strong><p>${esc(l.mentalText)}</p></aside></div></section>
+<section class="panel"><div class="panel-head"><h2>2. Input and output</h2><p>Know what goes in and what comes out</p></div><div class="body two"><div class="mini"><h3>Input</h3><p>${esc(l.input)}</p></div><div class="mini"><h3>Output</h3><p>${esc(l.output)}</p></div></div></section>
+<section class="panel"><div class="panel-head"><h2>3. How it works</h2><p>Step by step, with the key rule that makes it correct</p></div><div class="body two"><div>${listToHTML(l.steps)}<div class="takeaway" style="margin-top:14px"><strong>Key rule:</strong> ${esc(l.invariant)}</div></div><pre class="pseudo">${esc(l.pseudo)}</pre></div><div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Step</th><th>What happens</th><th>Why it matters</th></tr></thead><tbody>${l.trace.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>
+${demoArea}
+<section class="panel"><div class="panel-head"><h2>4. Cost and behavior</h2><p>Costs depend on data size and structure. These are scope labels, not universal benchmarks.</p></div><div class="body"><div class="tiles">${l.complexity.map((x, i) => `<div class="tile"><span>${['Time','Space','Interpretation'][i]}</span><strong>${esc(x.split(' ').slice(0, 2).join(' '))}</strong><small>${esc(x)}</small></div>`).join('')}</div><div class="two" style="margin-top:12px"><div class="mini"><h3>Strengths</h3><p>${esc(l.strength)}</p></div><div class="mini"><h3>Limits</h3><p>${esc(l.limits)}</p></div></div></div></section>
+<section class="panel"><div class="panel-head"><h2>5. Code and usage</h2><p>Reference code is for learning. Real GIS uses PostGIS, PROJ, GDAL, shapely, or geographiclib.</p></div><div class="code-head"><div><span class="tag">${codeRecord(l) ? 'Python example' : 'Concept outline, not executable'}</span> <span class="tag">Editable</span></div><div class="header-actions" style="margin:0"><button class="btn" id="copyCode">Copy code</button><button class="btn" id="downloadCode">Download</button></div></div><textarea id="codeEditor" class="code-editor" spellcheck="false" aria-label="Editable Python code">${esc(code)}</textarea><div class="code-foot"><span>${codeRecord(l) ? 'Reference example. The in-page lab runs its own JavaScript implementation.' : 'Lesson-specific outline, not an implementation.'}</span><span id="codeStatus">Local draft</span></div><div class="body"><div class="mini"><h3>Where it is used</h3><p>${esc(l.uses)}</p></div><div class="notice" style="margin-top:12px"><strong>Common pitfall:</strong> ${esc(l.pitfall)}</div></div></section>
+<section class="panel"><div class="panel-head"><h2>6. Choices and alternatives</h2><p>Pick based on the data, constraints and the guarantee you need</p></div><div class="body two"><div class="mini"><h3>When to use this</h3><p>${esc(l.strength)}</p></div><div class="mini"><h3>When to use something else</h3><p>${esc(l.limits)}</p></div></div></section>
+<section class="panel"><div class="panel-head"><h2>7. Check yourself</h2><p>Try to answer before you open the explanation</p></div><div class="body"><details class="practice"><summary>${esc(l.question)}</summary><p>${esc(l.answer)}</p></details></div></section>
+<section class="panel"><div class="panel-head"><h2>8. References</h2><p>Standard references for this topic</p></div><div class="body">${references}<p class="muted" style="font-size:11.5px;margin-top:14px">The labs on this page are teaching implementations. For production work use PostGIS, PROJ, GDAL, QGIS, shapely, geographiclib, OSRM, H3, or another vetted library.</p></div></section>
+<footer class="footer"><span>Az Geospatial Lab · local learning</span><span>Lesson ${index + 1} of ${LESSONS.length} · Next: ${esc(next.title)}</span><button class="btn" id="nextLesson">Next →</button></footer>`;
+
+ $('#bookmarkBtn').onclick = () => { state.bookmarks.has(id) ? state.bookmarks.delete(id) : state.bookmarks.add(id); save(); renderLesson(id); toast(state.bookmarks.has(id) ? 'Bookmarked' : 'Bookmark removed'); };
+ $('#completeBtn').onclick = () => { state.completed.has(id) ? state.completed.delete(id) : state.completed.add(id); save(); renderTree(); renderLesson(id); toast(state.completed.has(id) ? 'Lesson completed' : 'Completion removed'); };
+ $('#nextLesson').onclick = () => openLesson(next.id);
+ $('#copyCode').onclick = async () => { const v = $('#codeEditor').value; try{ await navigator.clipboard.writeText(v); toast('Code copied'); }catch{ const ta = $('#codeEditor'); ta.select(); document.execCommand('copy'); toast('Code copied'); } };
+ $('#downloadCode').onclick = () => { const r = codeRecord(l); downloadText(`${id}.${r ? 'py' : 'txt'}`, $('#codeEditor').value, r ? 'text/x-python' : 'text/plain'); };
+ $('#codeEditor').addEventListener('input', () => { state.drafts[id] = $('#codeEditor').value; save(); $('#codeStatus').textContent = 'Draft saved locally'; });
+ if (hasDemo){
+  $('#runLab').onclick = () => runLab(l);
+  $('#resetSample').onclick = () => { $('#labInput').value = l.sample || ''; $('#labEncoded').textContent = 'Run the lab to see output.'; $('#labDecoded').textContent = 'Step notes appear here.'; };
+  runLab(l, true);
+ }
+ renderTree(); save();
+ if (location.hash !== `#${id}`) history.replaceState(null, '', `#${id}`);
+}
+
+function renderHome(){
+ state.page = 'home';
+ $('#mainView').innerHTML = `<div class="home-hero"><div class="eyebrow">AZ · ENGINEERING TOOLBOOK</div><h1>Geospatial and mapping algorithms from Haversine to contraction hierarchies.</h1><p>A beginner friendly course covering geographic coordinates, ellipsoidal geodesics, map projections, spatial indexing, spatial queries and joins, terrain algorithms, geostatistics, and routing/GPS track processing. Every lesson has a plain explanation and most have a runnable lab that runs entirely in the browser.</p><div class="header-actions" style="margin:0"><button class="btn primary" id="startFirst">Start at geographic coordinates</button><button class="btn" id="resumeLesson">Continue lesson</button></div></div>
+<div class="stats"><div class="stat"><strong>${CHAPTERS.length}</strong><span>chapters</span></div><div class="stat"><strong>${LESSONS.length}</strong><span>lessons</span></div><div class="stat"><strong>${LESSONS.filter(l => l.demo && l.demo !== 'none').length}</strong><span>runnable labs</span></div><div class="stat"><strong>1</strong><span>standalone HTML file</span></div></div>
+<section class="panel"><div class="panel-head"><h2>Honest scope</h2><p>One app covers the whole curriculum. Production GIS and mapping is a separate engineering effort.</p></div><div class="body two"><div class="mini"><h3>What runs here</h3><p>Haversine distance and bearings, Vincenty's inverse formula on the WGS-84 ellipsoid, degree-to-metre conversion, Web Mercator and XYZ tile indexing, UTM zone computation, Lambert azimuthal equal-area, uniform grids and quadtrees, k-d tree nearest-neighbour estimation, Geohash encoding, point-in-polygon ray casting, range search and k-NN, spatial joins on a grid, DEM slope and aspect, hillshade (single and multidirectional), viewshed, inverse distance weighting, Catmull-Rom spline, Dijkstra and A* on a small graph, and Douglas-Peucker simplification.</p></div><div class="mini"><h3>What does not run here</h3><p>Real ellipsoidal geodesics beyond Vincenty, PROJ coordinate transformations, full R-tree implementations, kriging, contraction hierarchies preprocessing, HMM map matching, LiDAR processing, and satellite image pipelines. Use PostGIS, PROJ, GDAL, QGIS, geographiclib, shapely, OSRM, H3, rasterio, or another vetted library for real work.</p></div></div></section>
+<div class="panel"><div class="panel-head"><h2>Course map</h2><p>Pick a chapter. The path runs from coordinates to routing and GPS.</p></div><div class="body"><div class="chapter-cards">${CHAPTERS.map((c, i) => `<button class="chapter-card" data-chapter="${c.id}"><span class="num">CHAPTER ${String(i + 1).padStart(2, '0')} · ${c.ids.length} LESSONS</span><strong>${esc(c.title.replace(/^\d+\.\s*/, ''))}</strong><p>${esc(c.desc)}</p></button>`).join('')}</div></div></div>
+<footer class="footer"><span>Az Geospatial Lab</span><span>Single file · no external runtime dependencies</span></footer>`;
+ $('#startFirst').onclick = () => openLesson('latlon-haversine');
+ $('#resumeLesson').onclick = () => openLesson(state.current && byId[state.current] ? state.current : 'latlon-haversine');
+ $('#mainView').querySelectorAll('[data-chapter]').forEach(b => b.onclick = () => { const c = CHAPTERS.find(x => x.id === b.dataset.chapter); if (c) openLesson(c.ids[0]); });
+}
+
+function renderProgressPage(){
+ state.page = 'progress';
+ $('#mainView').innerHTML = `<div class="breadcrumb">Geospatial Lab / Bookmarks & progress</div><header class="header"><div class="eyebrow">LOCAL ONLY</div><h1>Bookmarks and progress</h1><p>Your progress stays in this browser. Export the JSON to move it or keep a backup.</p></header>
+<section class="panel"><div class="panel-head"><h2>Completed lessons</h2></div><div class="body">${state.completed.size ? `<div class="references">${[...state.completed].map(id => `<a href="#${id}" data-open="${id}">${esc(byId[id].title)}</a>`).join('')}</div>` : '<p class="muted">No lessons marked complete yet.</p>'}</div></section>
+<section class="panel"><div class="panel-head"><h2>Bookmarks</h2></div><div class="body">${state.bookmarks.size ? `<div class="references">${[...state.bookmarks].map(id => `<a href="#${id}" data-open="${id}">${esc(byId[id].title)}</a>`).join('')}</div>` : '<p class="muted">No bookmarks yet.</p>'}</div></section>
+<section class="panel"><div class="panel-head"><h2>Progress data</h2></div><div class="body"><div class="header-actions" style="margin:0"><button class="btn primary" id="exportProgress">Export progress JSON</button><button class="btn" id="clearProgress">Clear completion marks</button></div><p class="muted" style="font-size:12.5px;margin-top:14px">Import accepts only known lesson IDs and a supported schema version.</p></div></section>`;
+ $('#mainView').querySelectorAll('[data-open]').forEach(a => a.onclick = e => { e.preventDefault(); openLesson(a.dataset.open); });
+ $('#exportProgress').onclick = exportProgress;
+ $('#clearProgress').onclick = () => { if (confirm('Clear all completion marks?')){ state.completed.clear(); save(); renderProgressPage(); renderTree(); toast('Completion marks cleared'); } };
+}
+
+function openLesson(id){ if (!byId[id]) return; renderLesson(id); renderTree(); $('#mainView').focus({ preventScroll: true }); window.scrollTo(0, 0); }
+function downloadText(name, text, type = 'text/plain'){ const blob = new Blob([text], { type }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 800); }
+function exportProgress(){ downloadText('az-geo-lab-progress.json', JSON.stringify({ schemaVersion: 1, completed: [...state.completed], bookmarks: [...state.bookmarks], theme: state.theme, current: state.current, drafts: state.drafts }, null, 2), 'application/json'); toast('Progress exported'); }
+function importProgressFile(file){
+ if (file.size > 2_000_000){ toast('Import rejected: file too large'); return; }
+ const r = new FileReader();
+ r.onload = () => { try{
+  const d = JSON.parse(r.result);
+  if (!d || d.schemaVersion !== 1 || !Array.isArray(d.completed) || !Array.isArray(d.bookmarks) || typeof d.drafts !== 'object') throw Error('bad schema');
+  if ([...d.completed, ...d.bookmarks].some(id => typeof id !== 'string' || !byId[id])) throw Error('unknown id');
+  state.completed = new Set(d.completed);
+  state.bookmarks = new Set(d.bookmarks);
+  state.theme = ['system','light','dark'].includes(d.theme) ? d.theme : 'system';
+  state.current = byId[d.current] ? d.current : null;
+  state.drafts = Object.fromEntries(Object.entries(d.drafts).filter(([k, v]) => byId[k] && typeof v === 'string' && v.length < 100000));
+  applyTheme(); save(); renderTree();
+  state.current ? openLesson(state.current) : renderHome();
+  toast('Progress imported');
+ }catch(e){ toast('Import rejected: invalid progress data'); } };
+ r.readAsText(file);
+}
+
+function bindGlobal(){
+ $('#themeSelect').onchange = () => { state.theme = $('#themeSelect').value; applyTheme(); save(); };
+ $('#printBtn').onclick = () => print();
+ $('#exportBtn').onclick = exportProgress;
+ $('#importBtn').onclick = () => $('#importFile').click();
+ $('#importFile').onchange = e => { if (e.target.files[0]) importProgressFile(e.target.files[0]); e.target.value = ''; };
+ $('#searchInput').oninput = renderTree;
+ $('#chapterFilter').onchange = renderTree;
+ $('#homeLink').onclick = e => { e.preventDefault(); renderHome(); history.replaceState(null, '', '#home'); };
+ $('#courseTree').onclick = e => { const b = e.target.closest('[data-lesson]'); if (b) openLesson(b.dataset.lesson); };
+ document.querySelectorAll('[data-page="home"]').forEach(b => b.onclick = renderHome);
+ document.querySelectorAll('[data-page="progress"]').forEach(b => b.onclick = renderProgressPage);
+ document.addEventListener('keydown', e => {
+  if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){ e.preventDefault(); $('#searchInput').focus(); }
+  if (e.key.toLowerCase() === 't' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){
+   state.theme = state.theme === 'dark' ? 'light' : state.theme === 'light' ? 'system' : 'dark';
+   applyTheme(); save();
+  }
+ });
+}
+
+function init(){
+ load();
+ applyTheme();
+ CHAPTERS.forEach(c => { const op = document.createElement('option'); op.value = c.id; op.textContent = c.title; $('#chapterFilter').append(op); });
+ bindGlobal();
+ renderTree();
+ const hash = location.hash.replace(/^#/, '');
+ if (hash && byId[hash]) renderLesson(hash);
+ else if (state.current && byId[state.current]) renderLesson(state.current);
+ else renderHome();
+ progress();
+}
+init();
+</script></body></html>
