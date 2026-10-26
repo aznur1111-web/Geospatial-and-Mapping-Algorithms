@@ -1,109 +1,266 @@
-<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark light"><meta name="description" content="Az Geospatial Lab, a single-file course for geospatial and mapping algorithms"><title>Az Geospatial Lab</title>
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="Az Geospatial Lab, a single-file course for geospatial and mapping algorithms">
+<title>Az Geospatial Lab</title>
 <style>
-:root{color-scheme:dark;--bg:#111722;--panel:#192230;--panel2:#202b3a;--panel3:#141c27;--line:#2c394b;--line2:#3b4b61;--text:#e8eef7;--muted:#a7b4c7;--subtle:#8190a5;--accent:#8ab4f8;--strong:#c9ddff;--good:#9ed7bd;--warn:#edc477;--bad:#ff929e;--shadow:none;--radius:13px}
-:root[data-theme=light]{color-scheme:light;--bg:#f4f6f8;--panel:#fff;--panel2:#f7f9fb;--panel3:#f0f4f8;--line:#dce2e9;--line2:#cbd4df;--text:#17212d;--muted:#596a7e;--subtle:#718197;--accent:#315fa2;--strong:#244a82;--good:#176b4c;--warn:#8c5c04;--bad:#b33143;--shadow:0 8px 24px rgba(20,35,50,.05)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button,a,select{touch-action:manipulation}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}a{color:var(--accent);text-decoration:none}.muted{color:var(--muted)}.mono,code,pre,textarea{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
-.topbar{height:64px;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;padding:0 22px;background:var(--bg);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px;color:var(--text)}.brand-mark{width:34px;height:34px;border:1px solid var(--line2);border-radius:10px;background:var(--panel2);display:grid;place-items:center;color:var(--strong);font-weight:850;font-size:14px}.brand strong{display:block;font-size:14px;line-height:1.2}.brand small{display:block;font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
-.top-meta{flex:1;color:var(--subtle);font-size:12px;letter-spacing:.02em}
-.top-actions{display:flex;align-items:center;gap:7px}.top-actions label{font-size:11px;color:var(--muted)}
-select,.btn{border:1px solid var(--line2);background:var(--panel3);color:var(--text);border-radius:8px;padding:8px 11px;font-size:12px}.btn{font-weight:600;white-space:nowrap}.btn:hover{border-color:var(--accent);color:var(--strong)}.btn.primary{background:var(--accent);color:#10203a;border-color:var(--accent)}:root[data-theme=light] .btn.primary{color:white}
-.layout{display:grid;grid-template-columns:264px minmax(420px,1fr);max-width:1500px;margin:auto;min-height:calc(100vh - 64px)}
-.sidebar{position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column}
-.side-title{display:flex;justify-content:space-between;color:var(--subtle);font-size:10px;letter-spacing:.14em;font-weight:800;padding:0 4px 12px}
-.pill,.tag{border:1px solid var(--line2);border-radius:6px;padding:3px 7px;font-size:10px;color:var(--muted);white-space:nowrap}
-.search{display:flex;gap:7px;align-items:center;border:1px solid var(--line);border-radius:9px;background:var(--panel3);height:39px;padding:0 10px;margin-bottom:10px}
+:root{
+  color-scheme:dark;
+  --bg:#161313;--panel:#1c1818;--panel2:#211d1d;--panel3:#1a1616;
+  --line:#302c2c;--line2:#454040;
+  --text:#f1eeee;--muted:#9a9898;--subtle:#646262;
+  --accent:#f59e0b;--accent-hover:#d97706;--strong:#fbbf24;
+  --good:#10b981;--warn:#facc15;--bad:#f87171;
+  --shadow:none;--radius:4px;
+}
+:root[data-theme=light]{
+  color-scheme:light;
+  --bg:#fdfcfc;--panel:#faf8f7;--panel2:#f4f0ef;--panel3:#f4f0ef;
+  --line:#dcd9d9;--line2:#c9c4c4;
+  --text:#201d1d;--muted:#646262;--subtle:#9a9898;
+  --accent:#b45309;--accent-hover:#92400e;--strong:#92400e;
+  --good:#047857;--warn:#a16207;--bad:#b91c1c;
+  --shadow:none;--radius:4px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:13px/1.6 "IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit}
+button,a,select{touch-action:manipulation}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hover)}
+.muted{color:var(--muted)}
+.mono,code,pre,textarea{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* ---------- topbar ---------- */
+.topbar{height:60px;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;
+  padding:0 20px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text)}
+.brand-mark{width:30px;height:30px;border:1px solid var(--line2);border-radius:5px;
+  background:var(--panel2);display:grid;place-items:center;color:var(--accent);font-weight:700;font-size:12px}
+.brand strong{display:block;font-size:12.5px;line-height:1.2;font-weight:600}
+.brand small{display:block;font-size:9px;letter-spacing:.14em;color:var(--muted);margin-top:2px}
+.top-meta{flex:1;color:var(--subtle);font-size:11px;letter-spacing:.02em}
+.top-actions{display:flex;align-items:center;gap:6px}
+.top-actions label{font-size:10px;color:var(--muted)}
+select,.btn{border:1px solid var(--line2);background:var(--panel);color:var(--text);
+  border-radius:4px;padding:7px 10px;font-size:11.5px}
+.btn{font-weight:600;white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#1c1818;border-color:var(--accent)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#1c1818}
+:root[data-theme=light] .btn.primary{color:#fdfcfc}
+:root[data-theme=light] .btn.primary:hover{color:#fdfcfc}
+
+/* ---------- layout / sidebar ---------- */
+.layout{display:grid;grid-template-columns:240px minmax(400px,1fr);max-width:1500px;margin:auto;
+  min-height:calc(100vh - 60px)}
+.sidebar{position:sticky;top:60px;height:calc(100vh - 60px);overflow:auto;border-right:1px solid var(--line);
+  padding:18px 12px;display:flex;flex-direction:column}
+.side-title{display:flex;justify-content:space-between;color:var(--subtle);font-size:9.5px;
+  letter-spacing:.14em;font-weight:700;padding:0 4px 12px}
+.pill,.tag{border:1px solid var(--line2);border-radius:4px;padding:2px 6px;font-size:9.5px;
+  color:var(--muted);white-space:nowrap}
+.search{display:flex;gap:7px;align-items:center;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel);height:36px;padding:0 10px;margin-bottom:10px}
 .search input{min-width:0;width:100%;background:transparent;border:0;outline:0;color:var(--text);font-size:12px}
-.search kbd{border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--subtle);font-size:10px}
-.filter{display:block;color:var(--subtle);font-size:11px;margin-bottom:12px}.filter select{display:block;width:100%;max-width:none;margin-top:5px;padding:7px}
+.search kbd{border:1px solid var(--line);border-radius:3px;padding:1px 5px;color:var(--subtle);font-size:10px}
+.filter{display:block;color:var(--subtle);font-size:11px;margin-bottom:12px}
+.filter select{display:block;width:100%;max-width:none;margin-top:5px;padding:6px;border-radius:4px}
 .tree{display:flex;flex-direction:column;gap:12px}
-.group-label{display:flex;justify-content:space-between;color:var(--subtle);font-size:10px;font-weight:800;letter-spacing:.08em;padding:4px 5px}
-.link{width:100%;text-align:left;display:flex;gap:8px;align-items:center;background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 8px;border-radius:8px;min-height:34px}
+.group-label{display:flex;justify-content:space-between;color:var(--subtle);font-size:9.5px;
+  font-weight:700;letter-spacing:.08em;padding:4px 5px;text-transform:uppercase}
+.link{width:100%;text-align:left;display:flex;gap:8px;align-items:center;background:transparent;
+  border:1px solid transparent;color:var(--muted);padding:6px 8px;border-radius:4px;min-height:32px}
 .link .num{font:10px ui-monospace,monospace;color:var(--subtle);width:19px;flex:none}
-.link .name{font-size:12px;flex:1}.link .done{color:var(--good)}
+.link .name{font-size:11.5px;flex:1}
+.link .done{color:var(--good)}
 .link:hover{background:var(--panel2);color:var(--text)}
-.link.active{background:var(--panel2);border-color:var(--line2);color:var(--strong)}
+.link.active{background:var(--panel2);border-color:var(--line2);color:var(--accent)}
 .side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
-.progress-row{display:flex;justify-content:space-between;color:var(--subtle);font-size:11px;margin-bottom:7px}
-.progress{height:5px;background:var(--panel2);border-radius:9px;overflow:hidden}.progress>div{height:100%;width:0;background:var(--accent);transition:width .25s}
-.side-actions{display:flex;gap:6px;margin-top:12px}.side-actions .btn{flex:1;padding:7px;font-size:11px}
-main{max-width:920px;width:100%;min-width:0;margin:auto;padding:28px 30px 40px}
-.breadcrumb{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--subtle);margin-bottom:16px}
-.header{padding:2px 2px 22px;border-bottom:1px solid var(--line);margin-bottom:20px}
-.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:var(--accent);margin-bottom:9px}
-.header h1{font-size:clamp(27px,3vw,36px);line-height:1.12;letter-spacing:-.035em;margin:0 0 10px;font-weight:700}
-.header p{font-size:14.5px;color:var(--muted);margin:0 0 14px;max-width:740px}
+.progress-row{display:flex;justify-content:space-between;color:var(--subtle);font-size:10.5px;margin-bottom:7px}
+.progress{height:4px;background:var(--panel2);border-radius:2px;overflow:hidden}
+.progress>div{height:100%;width:0;background:var(--accent);transition:width .25s}
+.side-actions{display:flex;gap:6px;margin-top:12px}
+.side-actions .btn{flex:1;padding:6px;font-size:10.5px}
+
+/* ---------- main ---------- */
+main{max-width:900px;width:100%;min-width:0;margin:auto;padding:26px 28px 40px}
+.breadcrumb{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--subtle);margin-bottom:14px}
+.header{padding:2px 2px 20px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.eyebrow{font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;font-weight:700;
+  color:var(--accent);margin-bottom:8px}
+.header h1{font-size:clamp(21px,2.2vw,26px);line-height:1.2;letter-spacing:-.01em;
+  margin:0 0 10px;font-weight:600}
+.header p{font-size:13px;color:var(--muted);margin:0 0 14px;max-width:700px;line-height:1.6}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag.good{color:var(--good)}.tag.warn{color:var(--warn)}
-.header-actions{display:flex;gap:7px;margin-top:16px;flex-wrap:wrap}
-.panel{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)}
-.panel-head{padding:18px 20px 0}.panel-head h2{font-size:15px;margin:0 0 4px;letter-spacing:-.01em;font-weight:650}.panel-head p{font-size:12.5px;color:var(--muted);margin:0}
-.body{padding:16px 20px 20px}
-.idea{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:20px}
-.idea p{font-size:13.5px;color:var(--muted);margin:0 0 13px}
-.mental{background:var(--panel3);border:1px solid var(--line);border-radius:10px;padding:13px}
-.mental small{color:var(--subtle);font-size:10px;letter-spacing:.11em;text-transform:uppercase}
-.mental strong{display:block;margin:6px 0;font-size:13px;color:var(--strong)}
-.mental p{font-size:12px;color:var(--muted);margin:0}
-.takeaway{padding:11px 13px;border:1px solid var(--line2);background:var(--panel3);border-radius:8px;color:var(--strong);font-size:12.5px;line-height:1.6}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.mini{background:var(--panel3);border:1px solid var(--line);border-radius:10px;padding:13px}
-.mini h3{font-size:12px;margin:0 0 7px;font-weight:650}
-.mini p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.6}
-.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
-.steps li{counter-increment:s;display:flex;gap:10px;color:var(--muted);font-size:12.5px;line-height:1.55}
-.steps li:before{content:counter(s);width:23px;height:23px;flex:none;display:grid;place-items:center;border:1px solid var(--line2);background:var(--panel3);border-radius:6px;color:var(--accent);font:11px ui-monospace,monospace}
-.pseudo{white-space:pre-wrap;overflow:auto;background:var(--panel3);border:1px solid var(--line);border-radius:10px;padding:14px;font:12px/1.75 ui-monospace,monospace;color:var(--strong);margin:0}
+.tag.good{color:var(--good)}
+.tag.warn{color:var(--warn)}
+.header-actions{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+
+/* ---------- panels ---------- */
+.panel{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)}
+.panel-head{padding:16px 18px 0}
+.panel-head h2{font-size:13px;margin:0 0 4px;letter-spacing:-.005em;font-weight:600}
+.panel-head p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.5}
+.body{padding:14px 18px 18px}
+.idea{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px}
+.idea p{font-size:12.5px;color:var(--muted);margin:0 0 12px;line-height:1.65}
+.mental{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:12px}
+.mental small{color:var(--subtle);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:600}
+.mental strong{display:block;margin:6px 0;font-size:12px;color:var(--strong);font-weight:600}
+.mental p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.6}
+.takeaway{padding:10px 12px;border:1px solid var(--line2);background:var(--panel2);
+  border-radius:4px;color:var(--text);font-size:12px;line-height:1.6}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:12px}
+.mini h3{font-size:11.5px;margin:0 0 6px;font-weight:600}
+.mini p{font-size:12px;color:var(--muted);margin:0;line-height:1.6}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.steps li{counter-increment:s;display:flex;gap:10px;color:var(--muted);font-size:12px;line-height:1.55}
+.steps li:before{content:counter(s);width:22px;height:22px;flex:none;display:grid;place-items:center;
+  border:1px solid var(--line2);background:var(--panel2);border-radius:4px;color:var(--accent);
+  font:10.5px ui-monospace,monospace}
+.pseudo{white-space:pre-wrap;overflow:auto;background:var(--panel2);border:1px solid var(--line);
+  border-radius:4px;padding:12px;font:11.5px/1.7 "IBM Plex Mono",ui-monospace,monospace;
+  color:var(--text);margin:0}
 .table-wrap{overflow:auto}
-table{border-collapse:collapse;width:100%;font-size:12.5px}
-th,td{border-bottom:1px solid var(--line);text-align:left;padding:9px 10px;vertical-align:top}
-th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:11.5px}
+th,td{border-bottom:1px solid var(--line);text-align:left;padding:8px 10px;vertical-align:top}
+th{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle);font-weight:700}
 td{color:var(--muted)}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tile{padding:12px;background:var(--panel3);border:1px solid var(--line);border-radius:9px}
-.tile span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle)}
-.tile strong{display:block;color:var(--strong);font:700 14px ui-monospace,monospace;margin-top:6px}
-.tile small{font-size:10.5px;color:var(--muted);display:block;margin-top:2px}
-.notice{padding:12px 13px;background:var(--panel3);border:1px solid color-mix(in srgb,var(--warn) 35%,var(--line));border-radius:9px;font-size:12.5px;color:var(--muted);line-height:1.65}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{padding:10px 12px;background:var(--panel2);border:1px solid var(--line);border-radius:4px}
+.tile span{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--subtle);font-weight:600}
+.tile strong{display:block;color:var(--text);font:600 12.5px "IBM Plex Mono",ui-monospace,monospace;margin-top:5px}
+.tile small{font-size:10.5px;color:var(--muted);display:block;margin-top:2px;line-height:1.5}
+
+/* ---------- notices ---------- */
+.notice{padding:11px 12px;background:var(--panel2);
+  border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));
+  border-radius:4px;font-size:12px;color:var(--muted);line-height:1.6}
 .notice strong{color:var(--warn)}
-.notice.info{border-color:var(--line2)}.notice.info strong{color:var(--accent)}
+.notice.info{border-color:var(--line2)}
+.notice.info strong{color:var(--accent)}
+
+/* ---------- VISUAL LAB STAGE (always dark) ---------- */
+.lab-input,.lab-output{
+  --bg:#141110;--panel:#1a1613;--panel2:#1f1a17;--panel3:#1a1613;
+  --line:#2a2620;--line2:#3a332c;
+  --text:#f5f5f4;--muted:#a8a29e;--subtle:#78716c;
+  --accent:#f59e0b;--accent-hover:#d97706;--strong:#fbbf24;
+  --good:#10b981;--warn:#f59e0b;--bad:#f87171;
+  background:#141110;border:1px solid #2a2620;border-radius:4px;color:#f5f5f4;
+}
 .lab-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .lab-top label{font-size:11.5px;color:var(--muted)}
-.lab-input{width:100%;min-height:80px;resize:vertical;background:var(--panel3);border:1px solid var(--line2);border-radius:9px;padding:11px;color:var(--text);font:12px/1.65 ui-monospace,monospace;margin:11px 0}
-.lab-output{padding:13px;background:var(--panel3);border:1px solid var(--line);border-radius:9px;min-height:70px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--strong);font:12px/1.75 ui-monospace,monospace;overflow-x:auto}
+.lab-input{width:100%;min-height:80px;resize:vertical;padding:10px;
+  font:11.5px/1.65 "IBM Plex Mono",ui-monospace,monospace;margin:11px 0}
+.lab-output{padding:12px;min-height:70px;white-space:pre-wrap;overflow-wrap:anywhere;
+  font:11.5px/1.7 "IBM Plex Mono",ui-monospace,monospace;overflow-x:auto}
 .lab-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.label{font-size:10px;color:var(--subtle);font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px}
-.code-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:11px 13px;background:var(--panel3);border-bottom:1px solid var(--line)}
-.code-editor{display:block;width:100%;min-height:220px;resize:vertical;border:0;border-radius:0;background:var(--panel3);color:var(--text);padding:15px;font:12px/1.7 ui-monospace,monospace;outline:0}
-.code-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 13px;color:var(--subtle);font-size:10px;border-top:1px solid var(--line)}
-.practice{border:1px solid var(--line);background:var(--panel3);border-radius:9px;padding:13px}
-.practice summary{cursor:pointer;font-size:12.5px;font-weight:600}
-.practice p{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.65}
-.references{display:flex;flex-direction:column;gap:8px}
-.references a{font-size:12.5px;overflow-wrap:anywhere}
-.home-hero{padding:30px;background:linear-gradient(150deg,var(--panel),var(--panel3));border:1px solid var(--line);border-radius:14px;margin-bottom:16px}
-.home-hero h1{font-size:clamp(30px,3.6vw,42px);line-height:1.1;letter-spacing:-.04em;margin:8px 0 14px;font-weight:700}
-.home-hero p{color:var(--muted);font-size:14px;max-width:720px;margin:0 0 18px;line-height:1.65}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
-.stat strong{display:block;font:700 22px ui-monospace,monospace;color:var(--strong)}
-.stat span{display:block;font-size:10.5px;color:var(--muted);margin-top:3px}
-.chapter-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.chapter-card{padding:14px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text)}
+.label{font-size:9.5px;color:var(--subtle);font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:6px}
+.plot{width:100%;height:auto;display:block;background:#0f0d0b;
+  border:1px solid #2a2620;border-radius:4px;margin:8px 0}
+
+/* ---------- code ---------- */
+.code-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:10px 12px;background:var(--panel2);border-bottom:1px solid var(--line)}
+.code-editor{display:block;width:100%;min-height:220px;resize:vertical;border:0;border-radius:0;
+  background:var(--panel2);color:var(--text);padding:14px;
+  font:11.5px/1.7 "IBM Plex Mono",ui-monospace,monospace;outline:0}
+.code-editor:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.code-foot{display:flex;justify-content:space-between;gap:8px;align-items:center;
+  padding:8px 12px;color:var(--subtle);font-size:9.5px;border-top:1px solid var(--line)}
+.practice{border:1px solid var(--line);background:var(--panel2);border-radius:4px;padding:12px}
+.practice summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--text)}
+.practice p{font-size:12px;color:var(--muted);margin:10px 0 0;line-height:1.6}
+.references{display:flex;flex-direction:column;gap:7px}
+.references a{font-size:12px;overflow-wrap:anywhere;color:var(--accent)}
+.references a:hover{color:var(--accent-hover);text-decoration:underline}
+
+/* ---------- home ---------- */
+.home-hero{padding:26px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius);margin-bottom:16px}
+.home-hero h1{font-size:clamp(24px,2.8vw,30px);line-height:1.15;letter-spacing:-.02em;
+  margin:8px 0 14px;font-weight:600}
+.home-hero p{color:var(--muted);font-size:13px;max-width:700px;margin:0 0 18px;line-height:1.65}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px 14px}
+.stat strong{display:block;font:600 20px "IBM Plex Mono",ui-monospace,monospace;color:var(--strong)}
+.stat span{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.chapter-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chapter-card{padding:12px;text-align:left;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel2);color:var(--text);transition:border-color .15s}
 .chapter-card:hover{border-color:var(--accent)}
-.chapter-card .num{font-size:10px;color:var(--accent);letter-spacing:.09em;font-weight:800}
-.chapter-card strong{display:block;font-size:13px;margin:5px 0;font-weight:650}
-.chapter-card p{font-size:11.5px;color:var(--muted);margin:0;line-height:1.55}
-.toast{position:fixed;z-index:99;bottom:20px;left:50%;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:11px 15px;box-shadow:var(--shadow);font-size:12px;transition:opacity .14s,transform .14s}
+.chapter-card .num{font-size:9.5px;color:var(--accent);letter-spacing:.09em;font-weight:700}
+.chapter-card strong{display:block;font-size:12px;margin:5px 0;font-weight:600;line-height:1.4}
+.chapter-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.55}
+
+/* ---------- toast / footer ---------- */
+.toast{position:fixed;z-index:99;bottom:20px;left:50%;transform:translate(-50%,10px);opacity:0;
+  pointer-events:none;background:var(--panel);border:1px solid var(--line2);border-radius:4px;
+  padding:10px 14px;box-shadow:0 4px 16px rgba(0,0,0,.15);font-size:11.5px;
+  transition:opacity .14s,transform .14s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-.footer{font-size:10.5px;color:var(--subtle);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:6px 2px 14px;align-items:center}
-.plot{width:100%;height:auto;display:block;background:var(--bg);border:1px solid var(--line);border-radius:8px;margin:6px 0}
-@media(max-width:1080px){.layout{grid-template-columns:240px minmax(360px,1fr)}main{padding:24px 22px 36px}}
-@media(max-width:840px){.topbar{height:auto;min-height:60px;flex-wrap:wrap;gap:10px;padding:10px 14px}.top-meta{display:none}.top-actions{margin-left:auto}.top-actions label{display:none}.layout{display:block}.sidebar{position:static;height:auto;max-height:none;border:0;border-bottom:1px solid var(--line);padding:14px}.tree{max-height:260px;overflow:auto}.side-foot{display:none}main{padding:20px 15px 32px}.idea{grid-template-columns:1fr}.mental{order:-1}.stats{grid-template-columns:1fr 1fr}.chapter-cards,.two,.lab-cols{grid-template-columns:1fr}}
-@media(max-width:520px){.brand small{display:none}.brand-mark{width:30px;height:30px}.brand strong{font-size:12px}.top-actions select{max-width:92px;padding:6px;font-size:10px}.top-actions .btn{padding:6px 8px;font-size:10px}.chapter-cards{grid-template-columns:1fr}.tiles{grid-template-columns:1fr}.home-hero{padding:20px}.home-hero h1{font-size:30px}.header h1{font-size:27px}.body,.panel-head{padding-left:15px;padding-right:15px}.footer{display:block}.footer span{display:block;margin-bottom:6px}}
+.footer{font-size:10px;color:var(--subtle);display:flex;justify-content:space-between;gap:10px;
+  flex-wrap:wrap;padding:6px 2px 14px;align-items:center}
+
+/* ---------- responsive ---------- */
+@media(max-width:1080px){.layout{grid-template-columns:220px minmax(340px,1fr)}main{padding:22px 20px 32px}}
+@media(max-width:840px){
+  .topbar{height:auto;min-height:56px;flex-wrap:wrap;gap:8px;padding:10px 14px}
+  .top-meta{display:none}
+  .top-actions{margin-left:auto}
+  .top-actions label{display:none}
+  .layout{display:block}
+  .sidebar{position:static;height:auto;max-height:none;border:0;border-bottom:1px solid var(--line);padding:12px}
+  .tree{max-height:260px;overflow:auto}
+  .side-foot{display:none}
+  main{padding:18px 14px 32px}
+  .idea{grid-template-columns:1fr}
+  .mental{order:-1}
+  .stats{grid-template-columns:1fr 1fr}
+  .chapter-cards,.two,.lab-cols{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .brand small{display:none}
+  .brand-mark{width:26px;height:26px;font-size:11px}
+  .brand strong{font-size:11.5px}
+  .top-actions select{max-width:88px;padding:5px;font-size:10px}
+  .top-actions .btn{padding:5px 7px;font-size:10px}
+  .chapter-cards{grid-template-columns:1fr}
+  .tiles{grid-template-columns:1fr}
+  .home-hero{padding:18px}
+  .home-hero h1{font-size:22px}
+  .header h1{font-size:21px}
+  .body,.panel-head{padding-left:14px;padding-right:14px}
+  .footer{display:block}
+  .footer span{display:block;margin-bottom:6px}
+}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
-@media print{.topbar,.sidebar,.header-actions,.lab-top,.btn,.toast{display:none!important}.layout{display:block}main{padding:0;max-width:none}.panel,.home-hero{break-inside:avoid;box-shadow:none}body{background:#fff;color:#111}}
-</style></head><body>
+@media print{
+  .topbar,.sidebar,.header-actions,.lab-top,.btn,.toast{display:none!important}
+  .layout{display:block}
+  main{padding:0;max-width:none}
+  .panel,.home-hero{break-inside:avoid;box-shadow:none}
+  body{background:#fff;color:#111}
+  .lab-input,.lab-output{color:#111!important;background:#fff!important;border-color:#ccc!important}
+  .plot{background:#f5f5f5!important;border-color:#ccc!important}
+}
+</style>
+</head>
+<body>
 
 <header class="topbar">
   <a class="brand" href="#home" id="homeLink"><span class="brand-mark">Az</span><span><strong>Az Geospatial Lab</strong><small>GEOSPATIAL · MAPPING · GEO ALGORITHMS</small></span></a>
@@ -137,7 +294,7 @@ td{color:var(--muted)}
 
 <script>
 /* ============================================================
-   Az Geospatial Lab
+   Az Geospatial Lab — data + logic unchanged except DEM/IDW colormap
    ============================================================ */
 const CHAPTERS=[
  {id:"coords",title:"1. Geographic coordinates",desc:"Latitude/longitude, spherical distance, Haversine, geodesic distance, map units.",ids:["latlon-haversine","geodesic-vincenty","map-units"]},
@@ -315,7 +472,7 @@ const RAW=[
  mental:"Hash the globe into a grid of cells with string or integer IDs",
  mentalText:"Higher zoom levels mean smaller cells. The ID prefix identifies the parent cell, so nearby cells share prefixes.",
  steps:["Choose the system (Geohash, S2, H3).","Encode a coordinate to a cell ID.","Use prefixes to build a hierarchy.","Query neighbours by cell adjacency."],
- pseudo:"Geohash (base-32):\n  alphabet = '0123456789bcdefghjkmnpqrstuvwxyz'\n  interleave longitude and latitude bits, 5 bits per character\n  longer strings => smaller cells\n\n  precision (chars):  1  2  3   4    5   6    7    8     9\n  cell size (approx): 5000 1250 156 39 4.9 1.2 0.15 0.038 0.0047 km\n\nS2 (Google):\n  project the sphere onto a cube\n  index cells on each face with a Hilbert curve\n  cell ID is a 64-bit integer\n  range queries use the Hilbert curve locality\n\nH3 (Uber):\n  hexagonal grid, hierarchical\n  122 base cells (icosahedral)\n  16 resolutions (0 to 15)\n  each cell has 7 children (1 centre + 6 neighbours)\n  hexagons have uniform distance to all neighbours\n\nComparisons:\n  Geohash:   square cells, easy, no native neighbours\n  S2:        square cells on a cube, Hilbert ordering, complex\n  H3:        hexagonal cells, uniform adjacency, growing adoption\n\nApplications:\n  spatial databases (MongoDB, Elasticsearch)\n  ride-sharing (H3 for trip clustering)\n  map tiling\n  geographic joins",
+ pseudo:"Geohash (base-32):\n  alphabet = '0123456789bcdefghjkmnpqrstuvwxyz'\n  interleave longitude and latitude bits, 5 bits per character\n  longer strings => smaller cells\n\n  precision (chars):  1  2  3   4    5   6    7   8     9\n  cell size (approx): 5000 1250 156 39 4.9 1.2 0.15 0.038 0.0047 km\n\nS2 (Google):\n  project the sphere onto a cube\n  index cells on each face with a Hilbert curve\n  cell ID is a 64-bit integer\n  range queries use the Hilbert curve locality\n\nH3 (Uber):\n  hexagonal grid, hierarchical\n  122 base cells (icosahedral)\n  16 resolutions (0 to 15)\n  each cell has 7 children (1 centre + 6 neighbours)\n  hexagons have uniform distance to all neighbours\n\nComparisons:\n  Geohash:   square cells, easy, no native neighbours\n  S2:        square cells on a cube, Hilbert ordering, complex\n  H3:        hexagonal cells, uniform adjacency, growing adoption\n\nApplications:\n  spatial databases (MongoDB, Elasticsearch)\n  ride-sharing (H3 for trip clustering)\n  map tiling\n  geographic joins",
  uses:"Spatial databases, ride-sharing, geographic joins, clustering.",
  strength:"Compact IDs. Hierarchy with prefix queries. Fast.",
  limits:"Geohash has edge-crossing issues. S2 needs care with face boundaries. H3 cells are not exact hexagons on the sphere.",
@@ -567,7 +724,6 @@ function initialBearing(lat1, lon1, lat2, lon2){
  return t;
 }
 function vincenty(lat1, lon1, lat2, lon2){
- // WGS-84
  const a = 6378137.0, f = 1 / 298.257223563;
  const b = (1 - f) * a;
  const phi1 = lat1 * D2R, phi2 = lat2 * D2R;
@@ -600,7 +756,6 @@ function vincenty(lat1, lon1, lat2, lon2){
  const B = u2/1024 * (256 + u2 * (-128 + u2 * (74 - 47 * u2)));
  const dsigma = B * sinSigma * (cos2SigmaM + B/4 * (cosSigma * (-1 + 2 * cos2SigmaM**2) - B/6 * cos2SigmaM * (-3 + 4 * sinSigma**2) * (-3 + 4 * cos2SigmaM**2)));
  const s = b * A * (sigma - dsigma);
- // initial and final bearing
  const alpha1 = Math.atan2(cosU2 * Math.sin(lambda), cosU1 * sinU2 - sinU1 * cosU2 * Math.cos(lambda));
  const alpha2 = Math.atan2(cosU1 * Math.sin(lambda), -sinU1 * cosU2 + cosU1 * sinU2 * Math.cos(lambda));
  let ib = alpha1 / D2R; if (ib < 0) ib += 360;
@@ -753,7 +908,6 @@ function hillshadeFromDEM(grid, cellSize, sunAz, sunAlt){
  return out;
 }
 function idwInterpolate(samples, qx, qy, p, k){
- // samples: [{x, y, v}]
  const dists = samples.map(s => ({ ...s, d: Math.hypot(s.x - qx, s.y - qy) }));
  dists.sort((a, b) => a.d - b.d);
  const use = dists.slice(0, k || dists.length);
@@ -880,28 +1034,324 @@ function svgRaster(grid, opts = {}){
    Code examples
    ============================================================ */
 const CODE = {
- "haversine":{python:`import math\n\ndef haversine(lat1, lon1, lat2, lon2, R=6371008.8):\n    phi1, phi2 = math.radians(lat1), math.radians(lat2)\n    dphi = math.radians(lat2 - lat1)\n    dlambda = math.radians(lon2 - lon1)\n    a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2\n    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))\n    return R * c\n\ndef bearing(lat1, lon1, lat2, lon2):\n    phi1, phi2 = math.radians(lat1), math.radians(lat2)\n    dl = math.radians(lon2 - lon1)\n    y = math.sin(dl) * math.cos(phi2)\n    x = math.cos(phi1)*math.sin(phi2) - math.sin(phi1)*math.cos(phi2)*math.cos(dl)\n    return (math.degrees(math.atan2(y, x)) + 360) % 360\n\nprint(haversine(52.52, 13.405, 48.8566, 2.3522))\nprint(bearing(52.52, 13.405, 48.8566, 2.3522))\n`},
- "vincenty":{python:`from geographiclib.geodesic import Geodesic\n\ng = Geodesic.WGS84\nr = g.Inverse(52.52, 13.405, 48.8566, 2.3522)\nprint(r["s12"], r["azi1"], r["azi2"])\n\n# Or use pyproj\nfrom pyproj import Geod\ngeod = Geod(ellps="WGS84")\nazi1, azi2, dist = geod.inv(13.405, 52.52, 2.3522, 48.8566)\nprint(azi1, azi2, dist)\n`},
- "map-units":{python:`import math\n\ndef meters_per_degree(lat):\n    phi = math.radians(lat)\n    lat_m = 111132.92 - 559.82*math.cos(2*phi) + 1.175*math.cos(4*phi) - 0.0023*math.cos(6*phi)\n    lon_m = 111412.84*math.cos(phi) - 93.5*math.cos(3*phi) + 0.118*math.cos(5*phi)\n    return lat_m, lon_m\n\nfor lat in [0, 30, 45, 60, 75]:\n    print(lat, meters_per_degree(lat))\n`},
- "mercator":{python:`import math\n\ndef to_web_mercator(lat, lon, R=6378137.0):\n    x = R * math.radians(lon)\n    y = R * math.log(math.tan(math.pi/4 + math.radians(lat)/2))\n    return x, y\n\ndef from_web_mercator(x, y, R=6378137.0):\n    lon = math.degrees(x / R)\n    lat = math.degrees(2 * math.atan(math.exp(y / R)) - math.pi/2)\n    return lat, lon\n\ndef tile(lat, lon, z):\n    n = 2 ** z\n    x = int((lon + 180) / 360 * n)\n    y = int((1 - math.log(math.tan(math.radians(lat)) + 1/math.cos(math.radians(lat))) / math.pi) / 2 * n)\n    return x, y, z\n\nprint(to_web_mercator(52.52, 13.405))\nprint(tile(52.52, 13.405, 12))\n`},
- "utm":{python:`from pyproj import Transformer\n\n# WGS-84 lat/lon to UTM zone 33N\ntransformer = Transformer.from_crs("EPSG:4326", "EPSG:32633", always_xy=True)\nx, y = transformer.transform(13.405, 52.52)\nprint(x, y)\n\n# Inverse\ntransformer_inv = Transformer.from_crs("EPSG:32633", "EPSG:4326", always_xy=True)\nlon, lat = transformer_inv.transform(x, y)\nprint(lat, lon)\n`},
- "equal-area":{python:`import math\n\ndef lambert_azimuthal_equal_area(lat, lon, lat0, lon0, R=6371008.8):\n    phi = math.radians(lat)\n    phi0 = math.radians(lat0)\n    dl = math.radians(lon - lon0)\n    denom = 1 + math.sin(phi0)*math.sin(phi) + math.cos(phi0)*math.cos(phi)*math.cos(dl)\n    k = math.sqrt(2 / denom)\n    x = R * k * math.cos(phi) * math.sin(dl)\n    y = R * k * (math.cos(phi0)*math.sin(phi) - math.sin(phi0)*math.cos(phi)*math.cos(dl))\n    return x, y\n\nprint(lambert_azimuthal_equal_area(52.52, 13.405, 52.0, 10.0))\n`},
- "quadtree":{python:`from rtree import index\nfrom shapely.geometry import Point, box\n\nidx = index.Index()\nfor i in range(1000):\n    x, y = random.uniform(0, 100), random.uniform(0, 100)\n    idx.insert(i, (x, y, x, y))\n\n# Range query\nbbox = (20, 20, 30, 30)\nresults = list(idx.intersection(bbox))\nprint(len(results), "points in bbox")\n\n# Nearest neighbour\nnearest = list(idx.nearest((25, 25, 25, 25), 1))\nprint("nearest:", nearest)\n`},
- "rtree-kd":{python:`from scipy.spatial import KDTree\nimport numpy as np\n\npoints = np.random.rand(1000, 2) * 100\ntree = KDTree(points)\n\n# Range search\nindices = tree.query_ball_point([50, 50], r=10)\nprint(len(indices), "points within 10")\n\n# k-nearest\ndists, idx = tree.query([50, 50], k=5)\nprint("k-nearest:", idx, dists)\n`},
- "geohash":{python:`import geohash2\n\nh = geohash2.encode(52.52, 13.405, precision=9)\nprint(h)\n\nlat, lon = geohash2.decode(h)\nprint(lat, lon)\n\n# H3\nfrom h3 import h3\nh3_index = h3.geo_to_h3(52.52, 13.405, 9)\nprint(h3_index)\nprint(h3.h3_to_geo(h3_index))\n\n# S2\nfrom s2sphere import LatLng, CellId\nll = LatLng.from_degrees(52.52, 13.405)\ncell = CellId.from_lat_lng(ll).parent(15)\nprint(cell.to_token())\n`},
- "pip":{python:`from shapely.geometry import Point, Polygon\n\npoly = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])\nprint(poly.contains(Point(5, 5)))   # True\nprint(poly.contains(Point(15, 5)))  # False\n\n# With holes\npoly = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)], holes=[[(2, 2), (4, 2), (4, 4), (2, 4)]])\nprint(poly.contains(Point(3, 3)))   # False (in hole)\n`},
- "range":{python:`from scipy.spatial import KDTree\nimport numpy as np\n\n# 1000 random points in a 100 x 100 box\npoints = np.random.rand(1000, 2) * 100\ntree = KDTree(points)\n\n# Range query: within 5 units of (50, 50)\nidx = tree.query_ball_point([50, 50], 5)\nprint(len(idx))\n\n# k-NN\ndist, idx = tree.query([50, 50], k=3)\nprint(idx, dist)\n`},
- "spatial-join":{python:`import geopandas as gpd\n\n# Load two layers\ncities = gpd.read_file("cities.geojson")\ncounties = gpd.read_file("counties.geojson")\n\n# Spatial join: assign each city to its county\njoined = gpd.sjoin(cities, counties, predicate="within")\nprint(joined.head())\n`},
- "dem":{python:`import numpy as np\nimport rasterio\n\nwith rasterio.open("dem.tif") as src:\n    dem = src.read(1)\n    transform = src.transform\n\n# Slope and aspect with Horn's method\ncell_size = transform.a  # metres per pixel\n\n# dz/dx, dz/dy via 3x3 Sobel-like kernels\ndzdx = np.zeros_like(dem, dtype=float)\ndzdy = np.zeros_like(dem, dtype=float)\ndzdx[1:-1, 1:-1] = ((dem[:-2, 2:] + 2*dem[1:-1, 2:] + dem[2:, 2:]) -\n                     (dem[:-2, :-2] + 2*dem[1:-1, :-2] + dem[2:, :-2])) / (8 * cell_size)\ndzdy[1:-1, 1:-1] = ((dem[2:, :-2] + 2*dem[2:, 1:-1] + dem[2:, 2:]) -\n                     (dem[:-2, :-2] + 2*dem[:-2, 1:-1] + dem[:-2, 2:])) / (8 * cell_size)\n\nslope = np.degrees(np.arctan(np.hypot(dzdx, dzdy)))\naspect = np.degrees(np.arctan2(dzdy, -dzdx)) % 360\nprint("slope range:", slope.min(), slope.max())\n`},
- "hillshade":{python:`import numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.colors import LightSource\n\n# Load DEM with rasterio\n# dem = ...\n\nls = LightSource(azdeg=315, altdeg=45)\nhs = ls.hillshade(dem, vert_exag=1, dx=cell_size, dy=cell_size)\nplt.imshow(hs, cmap="gray")\nplt.show()\n`},
- "viewshed":{python:`# Viewshed with GDAL\nfrom osgeo import gdal\n\ngdal.ViewshedGenerate(\n    srcBand=dem_band,\n    driverName="GTiff",\n    targetFilename="viewshed.tif",\n    creationOptions=[],\n    observerX=..., observerY=...,\n    observerHeight=1.7,\n    targetHeight=0,\n    visibleVal=255,\n    invisibleVal=0,\n    outOfRangeVal=0,\n    noDataVal=0,\n    dfCurvCoeff=0.85714,\n    mode=0,\n)\n`},
- "idw":{python:`import numpy as np\nfrom scipy.spatial import cKDTree\n\ndef idw(samples, values, query, power=2, k=5):\n    tree = cKDTree(samples)\n    d, idx = tree.query(query, k=k)\n    if d[0] == 0: return values[idx[0]]\n    w = 1 / d**power\n    return np.sum(w * values[idx]) / np.sum(w)\n\nsamples = np.random.rand(50, 2) * 100\nvalues = np.sin(samples[:, 0] / 20) + np.cos(samples[:, 1] / 20)\nprint(idw(samples, values, [50, 50]))\n`},
- "spline":{python:`from scipy.interpolate import CubicSpline, RBFInterpolator\nimport numpy as np\n\nx = np.array([0, 1, 2, 3, 4, 5])\ny = np.array([0, 1, 0, 2, 0, 1])\n\ncs = CubicSpline(x, y, bc_type="natural")\nprint(cs(1.5), cs(2.5))\n\n# 2D RBF\npts = np.random.rand(50, 2) * 10\nvals = np.sin(pts[:, 0]) + np.cos(pts[:, 1])\nrbf = RBFInterpolator(pts, vals, kernel="thin_plate_spline")\nprint(rbf([[5, 5]]))\n`},
- "dijkstra":{python:`import heapq\n\ndef dijkstra(n, adj, src, tgt):\n    dist = [float("inf")] * n\n    dist[src] = 0\n    prev = [-1] * n\n    pq = [(0, src)]\n    while pq:\n        d, u = heapq.heappop(pq)\n        if u == tgt: break\n        if d > dist[u]: continue\n        for v, w in adj[u]:\n            if dist[u] + w < dist[v]:\n                dist[v] = dist[u] + w\n                prev[v] = u\n                heapq.heappush(pq, (dist[v], v))\n    return dist[tgt], prev\n`},
- "contraction":{python:`# Use OSRM (Contraction Hierarchies under the hood)\n# import requests\n# r = requests.get("http://router.project-osrm.org/route/v1/driving/13.405,52.52;2.3522,48.8566")\n# route = r.json()["routes"][0]\n# print(route["distance"], route["duration"])\n\n# Or GraphHopper, Valhalla\nprint("see comments for a real routing engine call")\n`},
- "map-matching":{python:`# Use Valhalla's map matching\n# import requests\n# r = requests.post("http://localhost:8002/trace_route", json={\n#     "shape": [{"lat": 52.52, "lon": 13.405}, {"lat": 52.53, "lon": 13.41}],\n#     "costing": "auto",\n# })\n# print(r.json())\n\n# Or a HMM library: leuven-map-matching, trackintel, etc.\nprint("see comments for a real map-matching call")\n`},
- "dp":{python:`def perp_distance(p, a, b):\n    dx, dy = b[0] - a[0], b[1] - a[1]\n    denom = math.hypot(dx, dy)\n    return abs(dy * p[0] - dx * p[1] + b[0] * a[1] - b[1] * a[0]) / denom\n\ndef douglas_peucker(points, tol):\n    if len(points) < 3: return points[:]\n    dmax, index = 0, 0\n    for i in range(1, len(points) - 1):\n        d = perp_distance(points[i], points[0], points[-1])\n        if d > dmax: dmax, index = d, i\n    if dmax > tol:\n        left = douglas_peucker(points[:index+1], tol)\n        right = douglas_peucker(points[index:], tol)\n        return left[:-1] + right\n    return [points[0], points[-1]]\n\nprint(douglas_peucker([(0,0),(1,0.1),(2,-0.1),(3,5),(4,6),(5,7)], 1.0))\n`},
- "generic":{python:`# See the lesson text and pseudocode for details.\nprint("Concept lesson: see pseudocode for the full algorithm.")\n`}
+ "haversine":{python:`import math
+
+def haversine(lat1, lon1, lat2, lon2, R=6371008.8):
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
+
+def bearing(lat1, lon1, lat2, lon2):
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    dl = math.radians(lon2 - lon1)
+    y = math.sin(dl) * math.cos(phi2)
+    x = math.cos(phi1)*math.sin(phi2) - math.sin(phi1)*math.cos(phi2)*math.cos(dl)
+    return (math.degrees(math.atan2(y, x)) + 360) % 360
+
+print(haversine(52.52, 13.405, 48.8566, 2.3522))
+print(bearing(52.52, 13.405, 48.8566, 2.3522))
+`},
+ "vincenty":{python:`from geographiclib.geodesic import Geodesic
+
+g = Geodesic.WGS84
+r = g.Inverse(52.52, 13.405, 48.8566, 2.3522)
+print(r["s12"], r["azi1"], r["azi2"])
+
+# Or use pyproj
+from pyproj import Geod
+geod = Geod(ellps="WGS84")
+azi1, azi2, dist = geod.inv(13.405, 52.52, 2.3522, 48.8566)
+print(azi1, azi2, dist)
+`},
+ "map-units":{python:`import math
+
+def meters_per_degree(lat):
+    phi = math.radians(lat)
+    lat_m = 111132.92 - 559.82*math.cos(2*phi) + 1.175*math.cos(4*phi) - 0.0023*math.cos(6*phi)
+    lon_m = 111412.84*math.cos(phi) - 93.5*math.cos(3*phi) + 0.118*math.cos(5*phi)
+    return lat_m, lon_m
+
+for lat in [0, 30, 45, 60, 75]:
+    print(lat, meters_per_degree(lat))
+`},
+ "mercator":{python:`import math
+
+def to_web_mercator(lat, lon, R=6378137.0):
+    x = R * math.radians(lon)
+    y = R * math.log(math.tan(math.pi/4 + math.radians(lat)/2))
+    return x, y
+
+def from_web_mercator(x, y, R=6378137.0):
+    lon = math.degrees(x / R)
+    lat = math.degrees(2 * math.atan(math.exp(y / R)) - math.pi/2)
+    return lat, lon
+
+def tile(lat, lon, z):
+    n = 2 ** z
+    x = int((lon + 180) / 360 * n)
+    y = int((1 - math.log(math.tan(math.radians(lat)) + 1/math.cos(math.radians(lat))) / math.pi) / 2 * n)
+    return x, y, z
+
+print(to_web_mercator(52.52, 13.405))
+print(tile(52.52, 13.405, 12))
+`},
+ "utm":{python:`from pyproj import Transformer
+
+# WGS-84 lat/lon to UTM zone 33N
+transformer = Transformer.from_crs("EPSG:4326", "EPSG:32633", always_xy=True)
+x, y = transformer.transform(13.405, 52.52)
+print(x, y)
+
+# Inverse
+transformer_inv = Transformer.from_crs("EPSG:32633", "EPSG:4326", always_xy=True)
+lon, lat = transformer_inv.transform(x, y)
+print(lat, lon)
+`},
+ "equal-area":{python:`import math
+
+def lambert_azimuthal_equal_area(lat, lon, lat0, lon0, R=6371008.8):
+    phi = math.radians(lat)
+    phi0 = math.radians(lat0)
+    dl = math.radians(lon - lon0)
+    denom = 1 + math.sin(phi0)*math.sin(phi) + math.cos(phi0)*math.cos(phi)*math.cos(dl)
+    k = math.sqrt(2 / denom)
+    x = R * k * math.cos(phi) * math.sin(dl)
+    y = R * k * (math.cos(phi0)*math.sin(phi) - math.sin(phi0)*math.cos(phi)*math.cos(dl))
+    return x, y
+
+print(lambert_azimuthal_equal_area(52.52, 13.405, 52.0, 10.0))
+`},
+ "quadtree":{python:`from rtree import index
+from shapely.geometry import Point, box
+
+idx = index.Index()
+for i in range(1000):
+    x, y = random.uniform(0, 100), random.uniform(0, 100)
+    idx.insert(i, (x, y, x, y))
+
+# Range query
+bbox = (20, 20, 30, 30)
+results = list(idx.intersection(bbox))
+print(len(results), "points in bbox")
+
+# Nearest neighbour
+nearest = list(idx.nearest((25, 25, 25, 25), 1))
+print("nearest:", nearest)
+`},
+ "rtree-kd":{python:`from scipy.spatial import KDTree
+import numpy as np
+
+points = np.random.rand(1000, 2) * 100
+tree = KDTree(points)
+
+# Range search
+indices = tree.query_ball_point([50, 50], r=10)
+print(len(indices), "points within 10")
+
+# k-nearest
+dists, idx = tree.query([50, 50], k=5)
+print("k-nearest:", idx, dists)
+`},
+ "geohash":{python:`import geohash2
+
+h = geohash2.encode(52.52, 13.405, precision=9)
+print(h)
+
+lat, lon = geohash2.decode(h)
+print(lat, lon)
+
+# H3
+from h3 import h3
+h3_index = h3.geo_to_h3(52.52, 13.405, 9)
+print(h3_index)
+print(h3.h3_to_geo(h3_index))
+
+# S2
+from s2sphere import LatLng, CellId
+ll = LatLng.from_degrees(52.52, 13.405)
+cell = CellId.from_lat_lng(ll).parent(15)
+print(cell.to_token())
+`},
+ "pip":{python:`from shapely.geometry import Point, Polygon
+
+poly = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)])
+print(poly.contains(Point(5, 5)))   # True
+print(poly.contains(Point(15, 5)))  # False
+
+# With holes
+poly = Polygon([(0, 0), (10, 0), (10, 10), (0, 10)], holes=[[(2, 2), (4, 2), (4, 4), (2, 4)]])
+print(poly.contains(Point(3, 3)))   # False (in hole)
+`},
+ "range":{python:`from scipy.spatial import KDTree
+import numpy as np
+
+# 1000 random points in a 100 x 100 box
+points = np.random.rand(1000, 2) * 100
+tree = KDTree(points)
+
+# Range query: within 5 units of (50, 50)
+idx = tree.query_ball_point([50, 50], 5)
+print(len(idx))
+
+# k-NN
+dist, idx = tree.query([50, 50], k=3)
+print(idx, dist)
+`},
+ "spatial-join":{python:`import geopandas as gpd
+
+# Load two layers
+cities = gpd.read_file("cities.geojson")
+counties = gpd.read_file("counties.geojson")
+
+# Spatial join: assign each city to its county
+joined = gpd.sjoin(cities, counties, predicate="within")
+print(joined.head())
+`},
+ "dem":{python:`import numpy as np
+import rasterio
+
+with rasterio.open("dem.tif") as src:
+    dem = src.read(1)
+    transform = src.transform
+
+# Slope and aspect with Horn's method
+cell_size = transform.a  # metres per pixel
+
+# dz/dx, dz/dy via 3x3 Sobel-like kernels
+dzdx = np.zeros_like(dem, dtype=float)
+dzdy = np.zeros_like(dem, dtype=float)
+dzdx[1:-1, 1:-1] = ((dem[:-2, 2:] + 2*dem[1:-1, 2:] + dem[2:, 2:]) -
+                     (dem[:-2, :-2] + 2*dem[1:-1, :-2] + dem[2:, :-2])) / (8 * cell_size)
+dzdy[1:-1, 1:-1] = ((dem[2:, :-2] + 2*dem[2:, 1:-1] + dem[2:, 2:]) -
+                     (dem[:-2, :-2] + 2*dem[:-2, 1:-1] + dem[:-2, 2:])) / (8 * cell_size)
+
+slope = np.degrees(np.arctan(np.hypot(dzdx, dzdy)))
+aspect = np.degrees(np.arctan2(dzdy, -dzdx)) % 360
+print("slope range:", slope.min(), slope.max())
+`},
+ "hillshade":{python:`import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import LightSource
+
+# Load DEM with rasterio
+# dem = ...
+
+ls = LightSource(azdeg=315, altdeg=45)
+hs = ls.hillshade(dem, vert_exag=1, dx=cell_size, dy=cell_size)
+plt.imshow(hs, cmap="gray")
+plt.show()
+`},
+ "viewshed":{python:`# Viewshed with GDAL
+from osgeo import gdal
+
+gdal.ViewshedGenerate(
+    srcBand=dem_band,
+    driverName="GTiff",
+    targetFilename="viewshed.tif",
+    creationOptions=[],
+    observerX=..., observerY=...,
+    observerHeight=1.7,
+    targetHeight=0,
+    visibleVal=255,
+    invisibleVal=0,
+    outOfRangeVal=0,
+    noDataVal=0,
+    dfCurvCoeff=0.85714,
+    mode=0,
+)
+`},
+ "idw":{python:`import numpy as np
+from scipy.spatial import cKDTree
+
+def idw(samples, values, query, power=2, k=5):
+    tree = cKDTree(samples)
+    d, idx = tree.query(query, k=k)
+    if d[0] == 0: return values[idx[0]]
+    w = 1 / d**power
+    return np.sum(w * values[idx]) / np.sum(w)
+
+samples = np.random.rand(50, 2) * 100
+values = np.sin(samples[:, 0] / 20) + np.cos(samples[:, 1] / 20)
+print(idw(samples, values, [50, 50]))
+`},
+ "spline":{python:`from scipy.interpolate import CubicSpline, RBFInterpolator
+import numpy as np
+
+x = np.array([0, 1, 2, 3, 4, 5])
+y = np.array([0, 1, 0, 2, 0, 1])
+
+cs = CubicSpline(x, y, bc_type="natural")
+print(cs(1.5), cs(2.5))
+
+# 2D RBF
+pts = np.random.rand(50, 2) * 10
+vals = np.sin(pts[:, 0]) + np.cos(pts[:, 1])
+rbf = RBFInterpolator(pts, vals, kernel="thin_plate_spline")
+print(rbf([[5, 5]]))
+`},
+ "dijkstra":{python:`import heapq
+
+def dijkstra(n, adj, src, tgt):
+    dist = [float("inf")] * n
+    dist[src] = 0
+    prev = [-1] * n
+    pq = [(0, src)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if u == tgt: break
+        if d > dist[u]: continue
+        for v, w in adj[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                prev[v] = u
+                heapq.heappush(pq, (dist[v], v))
+    return dist[tgt], prev
+`},
+ "contraction":{python:`# Use OSRM (Contraction Hierarchies under the hood)
+# import requests
+# r = requests.get("http://router.project-osrm.org/route/v1/driving/13.405,52.52;2.3522,48.8566")
+# route = r.json()["routes"][0]
+# print(route["distance"], route["duration"])
+
+# Or GraphHopper, Valhalla
+print("see comments for a real routing engine call")
+`},
+ "map-matching":{python:`# Use Valhalla's map matching
+# import requests
+# r = requests.post("http://localhost:8002/trace_route", json={
+#     "shape": [{"lat": 52.52, "lon": 13.405}, {"lat": 52.53, "lon": 13.41}],
+#     "costing": "auto",
+# })
+# print(r.json())
+
+# Or a HMM library: leuven-map-matching, trackintel, etc.
+print("see comments for a real map-matching call")
+`},
+ "dp":{python:`def perp_distance(p, a, b):
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    denom = math.hypot(dx, dy)
+    return abs(dy * p[0] - dx * p[1] + b[0] * a[1] - b[1] * a[0]) / denom
+
+def douglas_peucker(points, tol):
+    if len(points) < 3: return points[:]
+    dmax, index = 0, 0
+    for i in range(1, len(points) - 1):
+        d = perp_distance(points[i], points[0], points[-1])
+        if d > dmax: dmax, index = d, i
+    if dmax > tol:
+        left = douglas_peucker(points[:index+1], tol)
+        right = douglas_peucker(points[index:], tol)
+        return left[:-1] + right
+    return [points[0], points[-1]]
+
+print(douglas_peucker([(0,0),(1,0.1),(2,-0.1),(3,5),(4,6),(5,7)], 1.0))
+`},
+ "generic":{python:`# See the lesson text and pseudocode for details.
+print("Concept lesson: see pseudocode for the full algorithm.")
+`}
 };
 
 /* ============================================================
@@ -938,7 +1388,6 @@ function demoMapUnits(text){
  const mpd = metersPerDegree(lat);
  const mPerLat = dlat * mpd.lat;
  const mPerLon = dlon * mpd.lon;
- // nautical miles
  const nm = Math.hypot(mPerLat, mPerLon) / 1852;
  return{
   encoded:`Reference point: (${lat}, ${lon})\nDelta: (${dlat}, ${dlon}) degrees\n\nMetres per degree at ${lat}°:\n  latitude:  ${mpd.lat.toFixed(2)}\n  longitude: ${mpd.lon.toFixed(2)}\n\nDistance for the delta:\n  north component: ${mPerLat.toFixed(2)} m\n  east component:  ${mPerLon.toFixed(2)} m\n  total:           ${Math.hypot(mPerLat, mPerLon).toFixed(2)} m = ${nm.toFixed(4)} nm\n\nPrecision rules of thumb:\n  5 decimal places ~ 1.1 m\n  6 decimal places ~ 0.11 m\n  7 decimal places ~ 0.011 m`,
@@ -990,13 +1439,11 @@ function demoQuadtreeGrid(text){
  let s = seed;
  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
  const points = Array.from({length: n}, () => [rnd() * 100, rnd() * 100]);
- // Uniform grid
  const cells = {};
  points.forEach((p, i) => {
   const key = `${Math.floor(p[0]/gridSize)},${Math.floor(p[1]/gridSize)}`;
   (cells[key] = cells[key] || []).push(i);
  });
- // Query box
  const qx = 30, qy = 30;
  const qBox = [qx, qy, qx + querySize, qy + querySize];
  let gridResults = [];
@@ -1013,23 +1460,18 @@ function demoQuadtreeGrid(text){
    }
   }
  }
- // Linear scan for comparison
  const linearResults = points.filter(p => p[0] >= qBox[0] && p[0] <= qBox[2] && p[1] >= qBox[1] && p[1] <= qBox[3]);
- // Draw
  const W = 500, H = 500;
  let svg = '';
  const cell = W / 100;
- // Grid
  for (let i = 0; i <= 100; i += gridSize){
   svg += `<line x1="${i*cell}" y1="0" x2="${i*cell}" y2="${H}" stroke="var(--line2)" opacity="0.3"/>`;
   svg += `<line x1="0" y1="${i*cell}" x2="${W}" y2="${i*cell}" stroke="var(--line2)" opacity="0.3"/>`;
  }
- // Points
  points.forEach(p => {
   const inside = p[0] >= qBox[0] && p[0] <= qBox[2] && p[1] >= qBox[1] && p[1] <= qBox[3];
   svg += `<circle cx="${p[0]*cell}" cy="${H - p[1]*cell}" r="2" fill="${inside ? 'var(--good)' : 'var(--accent)'}" opacity="0.7"/>`;
  });
- // Query box
  svg += `<rect x="${qBox[0]*cell}" y="${H - qBox[3]*cell}" width="${querySize*cell}" height="${querySize*cell}" fill="none" stroke="var(--warn)" stroke-width="2"/>`;
  return{
   html: `<svg class="plot" viewBox="0 0 ${W} ${H}">${svg}</svg>`,
@@ -1047,12 +1489,9 @@ function demoRtreeKd(text){
  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
  const points = Array.from({length: n}, () => Array.from({length: dims}, () => rnd() * 100));
  const query = Array.from({length: dims}, () => 50);
- // Simple linear k-NN
  const dists = points.map((p, i) => ({ i, d: Math.sqrt(p.reduce((s, x, j) => s + (x - query[j])**2, 0)) }));
  dists.sort((a, b) => a.d - b.d);
- // Simulate a k-d tree by counting how many points we'd need to examine
- // (in practice the tree prunes)
- const examined = n; // linear scan
+ const examined = n;
  const kdExamined = Math.min(n, Math.ceil(Math.log2(n)) * 3);
  return{
   encoded:`Points: ${n}\nDimensions: ${dims}\nQuery: [${query.map(v => v.toFixed(1)).join(', ')}]\n\nLinear scan distances (top ${k}):\n${dists.slice(0, k).map(d => `  index ${d.i}: ${d.d.toFixed(3)}`).join('\n')}\n\nEstimated work:\n  linear scan: ${examined} distance computations\n  k-d tree:    ~${kdExamined} nodes visited (log-scale)\n\nThe k-d tree prunes subtrees farther than the current best.`,
@@ -1068,7 +1507,6 @@ function demoGeohash(text){
  for (let p = 1; p <= prec; p++){
   hashes.push(`  precision ${p}: ${geohashEncode(lat, lon, p)}`);
  }
- // Cell size approximations
  const cellSizes = [5000, 1250, 156, 39, 4.9, 1.2, 0.15, 0.038, 0.0047];
  return{
   encoded:`Point: (${lat}, ${lon})\n\nGeohash at increasing precision:\n${hashes.join('\n')}\n\nCell size (approx) at precision:\n${cellSizes.slice(0, prec).map((s, i) => `  ${i+1}: ${s} km`).join('\n')}\n\nNeighbours of the precision-${prec} hash share a prefix.\nParent cell = first ${Math.max(1, prec - 1)} characters.`,
@@ -1084,7 +1522,6 @@ function demoPointInPolygon(text){
  const queryLine = lines[2] || '5 5';
  const [qx, qy] = queryLine.split(/\s+/).map(Number);
  const inside = pointInPolygon(qx, qy, poly);
- // Draw
  const W = 500, H = 500;
  const pad = 40;
  const xs = poly.map(p => p[0]), ys = poly.map(p => p[1]);
@@ -1095,7 +1532,7 @@ function demoPointInPolygon(text){
  let pathD = '';
  poly.forEach((p, i) => { pathD += (i === 0 ? 'M ' : ' L ') + sx(p[0]).toFixed(1) + ' ' + sy(p[1]).toFixed(1); });
  pathD += ' Z';
- let svg = `<path d="${pathD}" fill="${inside ? 'rgba(158,215,189,0.3)' : 'rgba(255,146,158,0.2)'}" stroke="var(--accent)" stroke-width="2"/>`;
+ let svg = `<path d="${pathD}" fill="${inside ? 'rgba(16,185,129,0.25)' : 'rgba(248,113,113,0.2)'}" stroke="var(--accent)" stroke-width="2"/>`;
  svg += `<circle cx="${sx(qx).toFixed(1)}" cy="${sy(qy).toFixed(1)}" r="6" fill="${inside ? 'var(--good)' : 'var(--bad)'}"/>`;
  svg += `<line x1="${sx(qx).toFixed(1)}" y1="${sy(qy).toFixed(1)}" x2="${W-pad}" y2="${sy(qy).toFixed(1)}" stroke="var(--warn)" stroke-dasharray="4 4"/>`;
  return{
@@ -1114,12 +1551,9 @@ function demoRangeNearest(text){
  let s = seed;
  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
  const points = Array.from({length: n}, () => [rnd() * 100, rnd() * 100]);
- // Range
  const inRange = points.filter(p => Math.hypot(p[0] - cx, p[1] - cy) <= radius);
- // k-NN
  const sorted = points.map((p, i) => ({ i, d: Math.hypot(p[0] - cx, p[1] - cy) })).sort((a, b) => a.d - b.d);
  const knn = sorted.slice(0, k);
- // Draw
  const W = 500, H = 500;
  const cell = W / 100;
  let svg = '';
@@ -1144,7 +1578,6 @@ function demoSpatialJoins(text){
  const seed = 5;
  let s = seed;
  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
- // Build a polygon grid
  const polygons = [];
  for (let i = 0; i < g; i++){
   for (let j = 0; j < g; j++){
@@ -1152,7 +1585,6 @@ function demoSpatialJoins(text){
   }
  }
  const points = Array.from({length: n}, () => [rnd() * 100, rnd() * 100]);
- // Spatial join: assign each point to its polygon
  const joined = points.map(p => {
   const poly = polygons.find(pl => p[0] >= pl.bbox[0] && p[0] < pl.bbox[2] && p[1] >= pl.bbox[1] && p[1] < pl.bbox[3]);
   return { point: p, polygon: poly ? poly.id : -1 };
@@ -1169,7 +1601,6 @@ function demoDem(text){
  const rows = lines[0] || 20, cols = lines[1] || 20, seed = lines[2] || 5;
  let s = seed;
  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
- // Generate a synthetic DEM with a hill
  const dem = Array.from({length: rows}, (_, r) =>
   Array.from({length: cols}, (_, c) => {
    const x = r / rows, y = c / cols;
@@ -1188,7 +1619,10 @@ function demoDem(text){
  });
  const dirNames = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
  return{
-  html: svgRaster(dem, { colorFn: v => `hsl(${(1 - (v-100)/60)*240},60%,${40 + (v-100)/60*30}%)` }),
+  html: svgRaster(dem, { colorFn: v => {
+    const t = Math.max(0, Math.min(1, (v-100)/60));
+    return `hsl(${30 + t*20}, ${50 + t*20}%, ${22 + t*55}%)`;
+  }}),
   encoded:`DEM size: ${rows} x ${cols}\n\nSlope:\n  min: ${Math.min(...validSlope).toFixed(2)}°\n  max: ${maxS.toFixed(2)}°\n  mean: ${(validSlope.reduce((a, b) => a + b, 0) / validSlope.length).toFixed(2)}°\n\nAspect distribution:\n${aspectHist.map((c, i) => `  ${dirNames[i]}: ${c}`).join('\n')}\n\nSlope = atan(sqrt(dzdx² + dzdy²)), aspect = atan2(dzdy, -dzdx).`,
   decoded:`Slope measures steepness. Aspect measures the compass direction of steepest descent. Both use the local derivatives of the DEM.`
  };
@@ -1231,7 +1665,6 @@ function demoViewshed(text){
    return 100 + 40 * Math.sin(x * Math.PI) * Math.sin(y * Math.PI) + 5 * rnd();
   })
  );
- // Simple viewshed: for each cell, check line to observer
  const visible = Array.from({length: rows}, () => new Array(cols).fill(0));
  for (let r = 0; r < rows; r++){
   for (let c = 0; c < cols; c++){
@@ -1271,7 +1704,6 @@ function demoIdw(text){
  let s = seed;
  const rnd = () => { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; };
  const samples = Array.from({length: n}, () => ({ x: rnd() * 100, y: rnd() * 100, v: rnd() * 100 }));
- // Grid of interpolated values
  const grid = [];
  let minV = Infinity, maxV = -Infinity;
  for (let r = 0; r < res; r++){
@@ -1287,7 +1719,10 @@ function demoIdw(text){
  }
  const normalized = grid.map(row => row.map(v => (v - minV) / ((maxV - minV) || 1)));
  return{
-  html: svgRaster(normalized, { colorFn: v => `hsl(${(1-v)*240},60%,${30+v*40}%)` }),
+  html: svgRaster(normalized, { colorFn: v => {
+    const t = Math.max(0, Math.min(1, v));
+    return `hsl(${30 + t*20}, ${50 + t*20}%, ${22 + t*55}%)`;
+  }}),
   encoded:`Samples: ${n}\nGrid resolution: ${res} x ${res}\nIDW power: ${p}\nNeighbours used: ${k}\n\nValue range: [${minV.toFixed(2)}, ${maxV.toFixed(2)}]\n\nIDW: value(x) = sum(w_i v_i) / sum(w_i), w_i = 1/d_i^p\nHigher p => more local. p -> infinity => nearest neighbour.`,
   decoded:`IDW is exact at sample points and smooth between them. It produces bull's-eye patterns around isolated samples.`
  };
@@ -1300,7 +1735,6 @@ function demoSpline(text){
   if (isNaN(x) || isNaN(y)) break;
   pts.push([x, y]);
  }
- // Generate a smooth curve via Catmull-Rom
  const smooth = catmullRom(pts, 10);
  return{
   html: svgLinePlot(pts, { color: 'var(--muted)', r: 5 }) +
@@ -1322,7 +1756,6 @@ function demoDijkstra(text){
  const tgt = parseInt(lines[3 + m]) || (n - 1);
  const { dist, prev } = dijkstra(n, edges, src);
  const path = pathFrom(prev, src, tgt);
- // A* with Euclidean heuristic (approximate)
  const pos = Array.from({length: n}, (_, i) => [Math.cos(i) * 10, Math.sin(i) * 10]);
  const h = (u, v) => Math.hypot(pos[u][0] - pos[v][0], pos[u][1] - pos[v][1]);
  const astarResult = astar(n, edges, src, tgt, h);
@@ -1571,4 +2004,6 @@ function init(){
  progress();
 }
 init();
-</script></body></html>
+</script>
+</body>
+</html>
